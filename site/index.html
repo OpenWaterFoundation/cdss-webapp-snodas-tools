@@ -1,0 +1,509 @@
+<html>
+<head>
+	<title> SNODAS Daily SWE and Snow Coverage Statistics </title>
+	
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
+	<link rel="stylesheet" href="include/style.css"/>
+	<link rel="stylesheet" href="include/L.Control.MousePosition.css"/>
+	<link rel="stylesheet" href="include/leaflet.zoomhome.css"/>
+	<link  rel="stylesheet" href="include/lightbox.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	<script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
+	<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="include/L.Control.MousePosition.js"></script>
+	<script src="include/https://d3js.org/d3.v4.min.js"></script>
+	<script src="include/lightbox.js"></script>
+	<script src="include/leaflet.zoomhome.min.js"></script>
+</head>
+
+<!-- If at anytime there is code that starts with the letter 'L', that is the command used by Leaflet. -->
+<body>
+	<header>
+		<h1>Colorado's Decision Support Systems (CDSS) SNODAS Tools</h1>
+	</header>
+	<div id="main">
+	
+		<nav>
+			<h3>Daily Snow Statistics of Colorado Watershed Basins</h3>
+			<p><a href="https://nsidc.org/data/g02158">Snow Data Assimilation System (SNODAS)</a> data are collected and summarized daily to display Snow Water Equivalent (SWE) and Snow Coverage statistics for water supply basins in Colorado.
+			Snow Water Equivalent is the estimate of the depth of liquid water contained within the snowpack.
+			Snow coverage is a percent of the basin land surface covered by snow.
+			The national SNODAS gridded dataset has been processed to provide data products for Colorado.
+
+			Mean SWE is currently displayed in the map viewer - darker colors correspond to larger daily mean SWE values.
+			Hover over a basin to see the daily mean SWE value and other daily statistics.
+			Use the 'Select Date' button to display historical data.
+			Future enhancements to this site will include displaying a graph of SWE values over time.</p>
+		</nav>
+
+		<article>
+			<div id="mapid">
+				<script>
+					var map = L.map('mapid', {zoomControl: false}).setView([38.99, -105.54], 7);
+					
+					L.tileLayer('https://api.mapbox.com/styles/v1/korysam/cixur5uy7003g2sqwthpjmbxa/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoia29yeXNhbSIsImEiOiJjaXd4dDRxbTQwMXRkMm9tZzd5b3BqdTBwIn0.A2EGyNrWG2Lbbd5c-I-94w', {
+						attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+						maxZoom: 18		
+					}).addTo(map);
+
+					var zoomHome = L.Control.zoomHome();
+					zoomHome.addTo(map);
+
+					L.control.mousePosition({position: 'bottomright',lngFormatter: function(num) {
+				    var direction = (num < 0) ? 'W' : 'E';
+				    var formatted = Math.abs(L.Util.formatNum(num, 3)) + 'º ' + direction;
+				    return formatted; 
+				  	},
+				  	latFormatter: function(num) {
+				    var direction = (num < 0) ? 'S' : 'N';
+				    var formatted = Math.abs(L.Util.formatNum(num, 3)) + 'º ' + direction;
+				    return formatted;
+				  	}}).addTo(map);
+					L.control.scale({position: 'bottomright',imperial: true}).addTo(map);
+
+					/* Functions below created by Emma. getColor is called by the onEachFeature
+					method. This is what controls the color of each basin depending on the 
+					Mean SME data value. This also controls the colors that are shown in the legend. */
+					function getColor(d) {
+						return d < 0.02 ? '#ffffff':
+							   d < 0.04 ? '#eff3ff':
+							   d < 0.2 ? '#bdd7e7':
+							   d < 0.4 ? '#6baed6':
+							   d < 1.0 ? '#3182bd':
+							   d < 2.0 ? '#08519c':
+							   d < 4.0 ? '#49006a':
+							   d < 6.0 ? '#7a0177':
+							   d < 10.0 ? '#ae017e':
+							   d < 20.0 ? '#dd3497':
+							   d < 30.0 ? '#f768a1':
+							   d < 40.0 ? '#fa9fb5':
+							   d < 80.0 ? '#fcc5c0':
+							   			  '#fde0dd';
+					}
+
+					var geojson;
+					/* The function below is called when adding the geojson data from the SNODAS files.
+					Style controls the fill color of each basin, the weight of the lines surrounding the 
+					basin, the color of the lines outlining each basin, and the opacity. */					
+					function style(feature){
+					return {
+						fillColor: getColor(feature.properties.Mean_inches),
+						weight: 1, 
+						color: 'black',
+						fillOpacity: 0.60
+						};
+					}
+
+					/* This feature is used for the CO_boundary style. It sets the weight of the line used
+					to border Colorado, the color of that line, and sets the fill opacity to 0. */
+					function CO_Style(feature){
+						return {
+						// fillColor: getColor(feature.properties.Mean_inches),
+						weight: 5, 
+						color: 'black',
+						fillOpacity: 0,
+						};
+					}
+					
+					/* This feature is called by the onEachFeature method. It is what allows users to 
+					highlight over basins and will pop up a gray line outlining the basin. */	
+					function highlightFeature(e) {
+						var layer = e.target;
+						layer.setStyle({
+							weight: 6,
+							color: '#666',
+							dashArray: '',
+							
+						});
+
+						if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+							layer.bringToFront();
+						}
+						
+						info.update(layer.feature.properties);
+					}
+					
+					/* This function is also called by the onEachFeature method. It is used
+					once a basin has been highlighted over, then the user moves the mouse it will
+					reset the layer back to the original state. */
+					function resetHighlight(e) {
+						geojson.resetStyle(e.target);
+						info.update();
+					}
+					
+					/* This function is called by the onEachFeature method. It is used
+					if a user clicks on a basin. It will automatically fit the basin to the map size
+					and zoom in on the indiviudal basin selected */
+					function zoomToFeature(e) {
+						map.fitBounds(e.target.getBounds());
+						SetSNODASPlot(e.target.feature.properties.LOCAL_ID);
+					}
+							
+					/* This method is used when adding the SNODAS data to the map. It makes every object
+					in the data have these certain "properties". So each object will have a mouseover,
+					mouseout, and click property. All of these properties allow users to highlight over
+					basins, and click on basins to zoom in on  them */
+					function onEachFeature(feature, layer) {
+						layer.on({
+							mouseover: highlightFeature,
+							mouseout: resetHighlight,
+							click: zoomToFeature
+						});
+							
+						}
+					var myStyle = {
+				    "color": "#ff7800",
+				    "weight": 5,
+				    "opacity": 0.65
+					};
+
+					/* The below code is used to create the informational legend on the map. 
+					Emma can add more to this explanation since she made this code  */
+					var info = L.control({position: 'bottomleft'});
+
+					info.onAdd = function(map){
+						this._div = L.DomUtil.create('div', 'info');
+						this.update();
+						return this._div;
+					};
+
+					info.update = function(props) {
+						this._div.innerHTML = '<h4> Daily Basin Statistics </h4>' +  (props ? "<b>Date: </b>" + props.Date_YYYYMMDD + "<br><b>Local Name: </b>" + props.LOCAL_NAME + 
+							"<br><b>Local ID: </b>" + props.LOCAL_ID + "<br>" + "<br><b><u> SWE (meters | inches)</b></u>" + "<br><b>Mean: </b>" 
+							+ props.Mean_meters + " m | " + props.Mean_inches + " in" + "<br><b>Minimum: </b>" + props.Minimum_meters + " m | " + props.Min_inches + " in" + "<br><b>Maximum: </b>" + props.Maximum_meters + " m | " + props.Max_inches + " in" 
+							+ "<br><b>Standard Deviation: </b>" + props.StdDev_meters + " m | " + props.StDev_inches + " in" + "<br>" + "<br><b>Snow Coverage: </b>" + props.SnowCover_percent + "%"
+							:'Hover over a basin');
+					};
+
+					info.addTo(map);	
+					
+					/* This code below creates the legend on the map. It iterates through
+					an array of "grades" (snow melt in inches). It then adds this to the 
+					legend and will create the html code required to do so */
+					var legend = L.control({position: 'topright'});
+
+					legend.onAdd = function (map) {
+
+						var div = L.DomUtil.create('div', 'info legend'),
+
+							grades = [0,0.02,0.04,0.2,0.4,1,2,4,6,10,20,30,40,80],
+							/* Referenced legend from this website. https://www.nohrsc.noaa.gov/snow_model/images/full/National/nsm_swe/201701/nsm_swe_2017012005_National.jpg
+							grades = [0,0.02,0.04,0.2,0.39,0.98,2,3.9,5.9,9.8,20,30,39,79], */
+							labels = ['<strong>Mean SWE' + '<br>(inches)</strong>'],
+							from, to;
+
+						for (var i = 0; i < grades.length; i++) {
+							from = grades[i];
+							to = grades[i + 1];
+
+							labels.push(
+								'<i style="background:' + getColor(from + 0) + '"></i>&nbsp; ' +
+								from + (to ? '&ndash;' + to : '+'));
+						}
+
+						div.innerHTML = labels.join('<br>');
+						return div;
+					};
+					legend.addTo(map);
+				</script>
+			</div>
+		</article>
+
+		<aside>
+			<div class="dropdown">
+			<button onclick="myFunction()" class="dropbtn">Select Date</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="SNODASTitle">SNODAS Date</span>
+			  <div id="myDropdown" class="dropdown-content">
+			    <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+			    <div id="ListOfDates">
+			    	<script>
+				    	$.ajaxSetup({
+					    	async: false
+					    });
+				    	var text = new Array();
+						var Current_Date, Latest_Date;
+				    	var text = new Array();
+						$.get("Current_Dates.txt",function(data)
+						{
+							text = data.split('\n');
+							/* Sort the dates in descending order (Most recent day first) */
+							text.sort(function(a, b) {
+								return b - a;
+							});
+							Current_Date = text[0];
+							Latest_Date = text[text.length-1];
+							document.getElementById('ListOfDates').appendChild(createDateList(text));
+						});
+
+						/* createDateList will create a ul, li list that contains all the dates of
+						available geojson files of the SNODAS data */
+						function createDateList(text)
+						{	
+							var list = document.createElement('ul');
+							text.forEach(function(result) {
+								var item = document.createElement('li');
+								var a = document.createElement('a');
+								var date = document.createTextNode(result.substr(0,4) + "-" + result.substr(4,2) + "-" + result.substr(6,2));
+								a.setAttribute("href","#");
+								a.setAttribute("onclick", "updateFile(" + result + ");document.getElementById('myDropdown').classList.toggle('show');return false;");
+								a.appendChild(date);
+								item.appendChild(a);
+								list.appendChild(item);
+							});
+							return list;
+						}
+			    	</script>
+			    </div>
+			  </div>
+			</div>
+			<script>
+				  	/* Grabs the data from CO_boundary.geojson and adds it as a
+					layer to the map. This is what creates the big black border around
+					Colorado */
+					$.getJSON("CO_boundary.geojson",function(data){
+						L.geoJSON(data, {style: CO_Style}).addTo(map);
+				  	});
+
+					/* The below code grabs the SNODAS data from the file SNODAS20161130.
+					It then assigns that data/object into the SNODAS_Statistics variable */
+				    var SNODAS_FILE = "withComma/SNODAS" + Current_Date + ".json";
+					var SNODAS_Statistics = (function() {
+						var result;
+						$.getJSON(SNODAS_FILE,function(data) {
+							result = data;
+						});
+						return result;
+					})();
+
+					/* The below code grabs the SNODAS data from the file SNODAS_geometry.
+					It then assigns that data/object into the SNODAS_Geometry variable */
+					var SNODAS_Geometry = (function() {
+						var result;
+						$.getJSON("SNODAS_geometry.geojson",function(data) {
+							result = data;
+						}); return result;
+					})();
+
+					/* This call below merges the Geometry data with the statistics of each basin. 
+					It then adds that merged object to the map as a layer allowing users to see
+					the SNODAS data visually on the map. */
+				  	geojson = L.geoJson(MergeData(SNODAS_Geometry,SNODAS_Statistics), {style: style, onEachFeature: onEachFeature}).addTo(map);
+
+
+				  	/* This funtion takes in a SNODAS Geometry geojson file and a Properties file 
+				  	that contains multiple objects. Each object contains the statistics/data of each
+				  	basin. This function than merges those properties into the SNODAS Geometry file and
+				  	returns this new object. */
+					function MergeData(SNODAS_Geometry, SNODAS_Statistics)
+					{
+						for(var index in SNODAS_Geometry.features)
+						{
+							for(var key in SNODAS_Statistics.features[index])
+							{
+								SNODAS_Geometry.features[index]["properties"][key] = SNODAS_Statistics.features[index][key];
+							}
+						}
+						return SNODAS_Geometry;
+					}
+
+					/* This function is called by the elements in the ul, li list created for the dropdown
+					menu. Once called, it will construct the file name and get the data from that SNODAS file.
+					This data is than added to the original SNODAS Geometry data file and added to the map as a layer.
+					The function will then remove the OLD SNODAS Geometry layer so there will be no overlap on the map. */
+					function updateFile(file)
+					{
+						var old_geojson = geojson;
+						var FileName = file.toString();
+						FileName = FileName.substr(0,4) + "-" + FileName.substr(4,2) + "-" + FileName.substr(6,2);
+						file = "withComma/" + "SNODAS" + file + ".json";
+						d3.selectAll("aside").selectAll("h4").text(FileName);
+						file = (function() {
+						var result;
+						$.getJSON(file,function(data) {
+							result = data;
+						}); return result;
+						})();
+						geojson = L.geoJson(MergeData(SNODAS_Geometry,file),{style: style, onEachFeature: onEachFeature}).addTo(map);
+						map.removeLayer(old_geojson);
+						return false;
+					}
+			</script>
+			<h4>Title</h4>
+			<h3>SNODAS Animation</h3>
+			<form id="sliderInfo">
+				<div id="StartDate">
+					<script>
+						document.getElementById("StartDate").innerHTML = 
+						'Starting Date: (Earliest Available Date: ' + 
+						Latest_Date.substr(0,4) + '-' + Latest_Date.substr(4,2)
+						 + '-' + Latest_Date.substr(6,2) + ')';
+					</script>
+					<br>
+					<input type="text" name="startdate" placeholder="YYYYMMDD">
+					&nbsp;&nbsp;<i class="fa fa-question-circle" aria-hidden="true"><span class="tooltiptext">The starting date of data you would like to see. For example, 20161101.</span></i>
+					<br><br>
+				</div>
+
+				<div id="EndDate">
+					<script>
+						document.getElementById("EndDate").innerHTML = 
+						'Ending Date: (Latest Available Date: ' + 
+						Current_Date.substr(0,4) + '-' + Current_Date.substr(4,2)
+						 + '-' + Current_Date.substr(6,2) + ')'
+					</script>
+					<br>
+					<input type="text" name="enddate" placeholder="YYYYMMDD">
+					&nbsp;&nbsp;<i class="fa fa-question-circle" aria-hidden="true"><span class="tooltiptext">The ending date of data you would like to see. For example, 20161130.</span></i>
+					<br><br>
+				</div>
+
+				Increment (days): (Default is set to 1)<br>
+				<input type="text" name="incrementsize" placeholder="value between 1 and 10">
+				&nbsp;&nbsp;<i class="fa fa-question-circle" aria-hidden="true"><span class="tooltiptext">Progresses the animation by the inputted amount. For example, if the input was five, the map data would change every 5 days.</span></i>
+				<br><br>
+				<input type="Submit" value="Submit" style="font-family: Trebuchet MS,Helvetica,sans-serif!important;" onclick="updateSliderMin_Max(this.form.startdate.value, this.form.enddate.value, this.form.incrementsize.value);return false;"/>
+			</form>
+			<input type="range" style="width: 450px; height: 50px" id="dateSlider" min="null" max="null" value="" step="1" list="ticks" onchange="showValue(this.value);return false;" width="1000px">
+			<div id="DataList">
+			</div>
+			<span id="range"></span>
+			<br>
+			<input type="Submit" value= &#9658 style="width: 75px;" onclick="PlaySlider()">
+			<input type="Submit" value= &#10073;&#10073; style="width: 75px;" onclick="PauseSlider()">
+			<script>
+				var range_size, startdate, interval, step, original_startdate;
+				var iterations = 0;
+				function PlaySlider()
+				{
+					if(iterations == 0)
+					{
+						original_startdate = startdate;
+					}
+					interval = setInterval(function(){
+						if(iterations % step == 0)
+						{
+							document.getElementById("dateSlider").value = startdate;
+						}
+						showValue(startdate.toString());
+						iterations++; 
+						if(iterations == range_size)
+						{
+							clearInterval(interval);
+							iterations = 1;
+							startdate = original_startdate;
+						}
+						startdate++;
+					},100);
+				}
+				function PauseSlider()
+				{
+					clearInterval(interval);
+				}
+				/* ShowValue is called whenever the slidebar value is updated.
+				It will select the span element with id='range' and update it's 
+				value to the newValue. */
+				function showValue(newValue)
+				{
+					document.getElementById("range").innerHTML = newValue.substr(0,4) + "-" + newValue.substr(4,2) + "-" + newValue.substr(6,2);
+					updateFile(newValue);
+					// d3.selectAll("nav").selectAll("h4").text(newValue);
+				}
+
+				/* updateSliderMin_Max is called whenever the submit button is selected.
+				It will update the min and max value of the range (slidebar) element.
+				This then also creates tick marks on the slidebar by an increment of 
+				one. */
+				function updateSliderMin_Max(startdate,enddate,scale)
+				{
+					step = scale;
+					this.startdate = startdate;
+					range_size = (enddate - startdate) + 1;
+					updateFile(startdate);
+					document.getElementById("dateSlider").min = startdate;
+					document.getElementById("dateSlider").value = startdate;
+					document.getElementById("dateSlider").max = enddate;
+					document.getElementById("dateSlider").step = scale;
+					document.getElementById("range").innerHTML = startdate.substr(0,4) + "-" + startdate.substr(4,2) + "-" + startdate.substr(6,2);
+
+					var datalist = document.createElement('datalist');
+					datalist.id = "ticks";
+					for(var index = startdate; index <= enddate; index++)
+					{
+						var option = document.createElement('option');
+						option.appendChild(document.createTextNode(index));
+						datalist.appendChild(option);
+					}
+					document.getElementById('DataList').appendChild(datalist);
+				}
+
+				SNODAS_FILE = SNODAS_FILE.replace("withComma/","");
+				SNODAS_FILE = SNODAS_FILE.replace(".json","");
+				SNODAS_FILE = SNODAS_FILE.replace("SNODAS","");
+				SNODAS_FILE = SNODAS_FILE.substr(0,4) + "-" + SNODAS_FILE.substr(4,2) + "-" + SNODAS_FILE.substr(6,2);
+				d3.select("aside").select("h4").text(SNODAS_FILE);
+
+				/* updateTitle is a function that takes in a file name. This will then
+				update the webpage underneath the SNODAS Date text with the current date
+				shown on the leaflet map. */
+				function updateTitle(data)
+				{
+					data = data.replace("withComma/","");
+					data = data.replace(".json","");
+					data = data.replace("SNODAS","");
+					data = data.substr(0,4) + "-" + data.substr(4,2) + "-" + data.substr(6,2);
+					d3.selectAll("nav").selectAll("h4").text(data);
+				}
+			</script>
+			<!-- PNG FILE -->
+			<h3>SNODAS Plots</h3>
+			<a id="lightbox_ref" href="" data-lightbox="402-SNODAS-SWE"><img src="" id="SNODASPlot"/></a>
+			<script>
+				/* SetSNODASPlot is called whenever a basin is clicked. Once clicked,
+				this function will recieve the LOCAL_ID of that basin and then update
+				the SNDOAS Plots image section with the proper plot graph. This will
+				then get updated everytime a new basin is selected */
+				function SetSNODASPlot(name)
+				{
+					document.getElementById("lightbox_ref").href = "StatisticsByBasin-Graphs/" + name + "-SNODAS-SWE.png";
+					document.getElementById("SNODASPlot").src = "StatisticsByBasin-Graphs/" + name + "-SNODAS-SWE.png";
+				}
+			</script>
+
+		</aside>
+	</div>
+	
+	<script>
+		/* Functions used for the dropdown menu. When the user clicks on the button
+		toggle between hiding and showing the dropdown content. myFunction selects
+		the dropdown element. */
+		function myFunction() {
+		    document.getElementById("myDropdown").classList.toggle("show");
+		}
+
+		/* filterFunction is used to grab the list of elements in the dropdown menu.
+		This function also allows users to use the search key and will display 
+		if there is a matching element. If there is nothing that mathces the search,
+		then the function returns nothing and the dropdown menu will show that no elements
+		match that search. */
+		function filterFunction() {
+		    var input, filter, ul, li, a, i;
+		    input = document.getElementById("myInput");
+		    filter = input.value.toUpperCase();
+		    div = document.getElementById("myDropdown");
+		    a = div.getElementsByTagName("li");
+		    for (i = 0; i < a.length; i++) {
+		        if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
+		            a[i].style.display = "";
+		        } else {
+		            a[i].style.display = "none";
+		        }
+		    }
+		}
+	</script>
+	<footer>
+		<h5>Created by <a href="http://openwaterfoundation.org/">Open Water Foundation</a> 
+		for <a href="http://cwcb.state.co.us/Pages/CWCBHome.aspx">Colorado Water Conservation Board</a></h5>
+	</footer>
+</body>
+</html>
