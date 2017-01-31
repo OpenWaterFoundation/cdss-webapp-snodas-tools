@@ -1,5 +1,5 @@
 body {
-    font-family: Trebuchet MS,Helvetica,sans-serif!important;
+    font-family: Trebuchet,Helvetica,sans-serif!important;
     background: #999999;
 }
 
@@ -18,6 +18,8 @@ body {
     background: #eee;
     flex: 3 1 60%;
     order: 2;
+    max-height: 800px;
+    min-height: 800px;
 }
 
 #main > nav {
@@ -27,6 +29,9 @@ body {
     background: #eee;
     flex: 1 6 60%;
     order: 1;
+    max-height: 800px;
+    min-height: 800px;
+    max-width: 400px;
 }
 
 #main > aside {
@@ -36,6 +41,9 @@ body {
     background: #eee;
     flex: 1 6 60%;
     order: 3;
+    max-height: 800px;
+    min-height: 800px;
+    max-width: 350px;
 }
 
 header h1 {
@@ -45,8 +53,7 @@ header h1 {
 header, footer {
     color: white;
     display: block;
-    padding: 3px;
-    max-height: 50px;
+    padding: 2px;
     border-radius: 7pt;
     background: #091835;
     text-align: center;
@@ -63,15 +70,15 @@ header, footer {
         order: 0;
     }
 
-    #main > nav, #main > aside, header, footer {
-        min-height: 50px;
-        max-height: 50px;
+    #main > nav, #main > aside {
+        min-height: 100%;
+        max-height: 100%;
     }
 }
 
 /* FOOTER STYLING */
 footer h5 a {
-font-family: Trebuchet MS,Helvetica,sans-serif!important;
+font-family: Trebuchet,Helvetica,sans-serif!important;
 color: white;
 text-decoration: none;
 }
@@ -90,72 +97,81 @@ text-align: center;
 #SNODASTitle {
     text-decoration: underline;
     font-size: 25px;
-    font-family: Trebuchet MS,Helvetica,sans-serif!important;
+    font-family: Trebuchet,Helvetica,sans-serif!important;
+    font-weight: bold;
+}
+
+#FileDate {
+    font-size: 25px;
+    font-family: Trebuchet,Helvetica,sans-serif!important;
     font-weight: bold;
 }
 
 /*-----------------------------------------------------------------------------------------------------*/
 
 /* DROPDOWN BUTTON */
-#mydropdown {
-max-height: 500px; 
-overflow: auto;
-z-index: 100000;
+#mydropdown, #dataDropdown, #plotDropdown {
+    max-height: 500px; 
+    overflow: auto;
+    z-index: 100000;
 }
 
 .dropbtn {
-background-color: #216791;
-font-family: Trebuchet MS,Helvetica,sans-serif!important;
-color: white;
-padding: 5px;
-font-size: 16px;
-border: none;
-cursor: pointer;
+    background-color: #216791;
+    font-family: Trebuchet,Helvetica,sans-serif!important;
+    color: white;
+    padding: 5px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
 }
 
 .dropbtn:hover, .dropbtn:focus {
-background-color: #2887C1;
+    background-color: #2887C1;
 }
 
-#myInput {
-border-box: box-sizing;
-background-position: 14px 12px;
-background-repeat: no-repeat;
-font-size: 16px;
-padding: 14px 20px 12px 45px;
-border: none;
+#myInput, #dataInput, #plotInput {
+    border-box: box-sizing;
+    background-position: 14px 12px;
+    background-repeat: no-repeat;
+    font-size: 16px;
+    padding: 14px 20px 12px 45px;
+    border: none;
 }
 
 .dropdown {
-position: relative;
-display: inline-block;
+    position: relative;
+    display: inline-block;
 }
 
 .dropdown-content {
-display: none;
-position: absolute;
-background-color: #f6f6f6;
-min-width: 230px;
-overflow: auto;
-box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    display: none;
+    position: absolute;
+    background-color: #f6f6f6;
+    min-width: 230px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
 }
 
-.dropdown-content ul li, ul li a {
-color: black;
-padding: 12px 16px;
-text-decoration: none;
-display: block;
+.dropdown-content span a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-family: Trebuchet,Helvetica,sans-serif!important;
+
 }
 
-.dropdown ul li:hover {
-background-color: #2171b5
+.dropdown span a:hover {
+    background-color: #2171b5
 }
 
 /* LEAFLET MAP */
 #mapid {
-width: 1000px; height: 800px;
-margin-left: auto;
-margin-right: auto;
+    width: 1000px; height: 800px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .show {display:block;}
@@ -166,58 +182,88 @@ margin-right: auto;
 
 /* HELPFUL INFORMATION ? */
 .fa {
-position: relative;
-display: inline-block;
-border-bottom: 1px dotted black;
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
 }
 .fa .tooltiptext {
- visibility: hidden;
-width: 120px;
-background-color: black;
-color: #fff;
-text-align: center;
-border-radius: 6px;
-padding: 5px 0;
+     visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
 
-/* Position the tooltip */
-position: absolute;
-z-index: 1;
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
 }
 
 .fa:hover .tooltiptext {
-visibility: visible;
-font-family: Trebuchet MS,Helvetica,sans-serif!important;
+    visibility: visible;
+    font-family: Trebuchet,Helvetica,sans-serif!important;
 }
 
 /* SLIDER */
 #sliderinfo {
-    font-family: Trebuchet MS,Helvetica,sans-serif!important;
+    font-family: Trebuchet,Helvetica,sans-serif!important;
 }
 
 #SNODASPlot {
-    width: 450px;
-    height: 280px;
+    max-width: 450px;
+    height: 340px;
     border: 2px solid black;
+    max-width: 350px;
 }
 
 /* NAVBAR */
-
-#main nav ul {
-
+#navbar > ul {
+    cursor: pointer;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid #e7e7e7;
+    background-color: #f3f3f3;
+    height: 40px;
 }
 
-#main nav li {
-
+#navbar li {
+    float: left;
 }
 
-#main nav li a {
-
+#navbar li a {
+    display: block;
+    color: #666;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
 }
 
-#main nav li a:hover:not(.active) {
-
+#navbar li a:hover:not(.active) {
+    background-color: #ddd;
 }
 
-#main nav li a.active {
-    
+#navbar li a.active {
+    color: white;
+    background-color: #216791;
 }
+
+#navbar h3 {
+    font-family: Trebuchet,Helvetica,sans-serif!important;
+    text-align: center;
+}
+
+#navbar h1, p {
+    font-family: Trebuchet,Helvetica,sans-serif!important;
+    text-align: left;
+}
+
+/* SCROLL */
+div .scroll {
+    max-height: 750px;
+    height: 750px;
+    overflow: auto;
+}
+
