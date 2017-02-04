@@ -3,38 +3,38 @@
     <title> SNODAS Daily SWE and Snow Coverage Statistics </title>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
-    <link rel="stylesheet" href="style.css"/>
-    <link rel="stylesheet" href="L.Control.MousePosition.css"/>
-    <link rel="stylesheet" href="leaflet.zoomhome.css"/>
-    <link  rel="stylesheet" href="lightbox.css">
+    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/L.Control.MousePosition.css"/>
+    <link rel="stylesheet" href="css/leaflet.zoomhome.css"/>
+    <link  rel="stylesheet" href="css/lightbox.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="shortcut icon" type="image/x-icon" href="snodas-tools-favicon.ico"/>
+    <link rel="shortcut icon" type="image/x-icon" href="images/snodas-tools-favicon.ico"/>
 
     <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="L.Control.MousePosition.js"></script>
     <script src="https://d3js.org/d3.v4.min.js"></script>
-    <script src="lightbox.js"></script>
-    <script src="leaflet.zoomhome.min.js"></script>
-    <script src="papaparse.js"></script>
+    <script src="javascript/L.Control.MousePosition.js"></script>
+    <script src="javascript/lightbox.js"></script>
+    <script src="javascript/leaflet.zoomhome.min.js"></script>
+    <script src="javascript/papaparse.js"></script>
     </head>
 
     <script>
-        function resize_windows () {
-            var body_width = $("body").width();
-            var main_width = $("#main").width();
-            var navbar_width = $("nav").width();
-            var article_width = $("#mapid").width();
+        function resize_windows() 
+        {
+            var header_width = $("header").width();
+            var nav_width = $("nav").width();
+            var article_width = $("article").width();
             var aside_width = $("aside").width();
-            $("#mapid").css("width",main_width-navbar_width-aside_width);
-            $("#dateSlider").css("width",aside_width);
-            $("#SNODASPlot").css("width",aside_width);
-        };
+            var footer_width = $("footer").width();
+            /* ASSIGN MAPID */
+            $("#mapid").css("width",(header_width-nav_width-aside_width));
+        }
     </script>
     <!-- If at anytime there is code that starts with the letter 'L', that is the command used by Leaflet. -->
     <body onload="resize_windows()" onresize='resize_windows()'>
-    <header ID="header">
+    <header>
         <h1>Colorado's Decision Support Systems (CDSS) SNODAS Tools</h1>
     </header>
     <div id="main">
@@ -63,7 +63,7 @@
                 Project resources are available on the <span style="text-decoration: underline;">OWF SNODAS project website</span> (link to <a href="http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas</a>).</p>
                 <p style="font-weight: bold;">This website is under development with a scheduled completion date of June 30, 2017.  It is likely that changes in the site’s functionality and access to data will occur until then.</p>
                 </div>
-                <div id="data" style="display: none;">
+                <div id="data" style="display: none; min-width: 300px;">
                     <h3>The input data and results from analysis will be made available soon, as details of the operational website are finalized.</h3>
                     <h6>SNODAS data citation:  
                     National Operational Hydrologic Remote Sensing Center. 2004. Snow Data Assimilation System (SNODAS) Data Products at NSIDC, Version 1.  SWE dataset.  Boulder, Colorado USA. NSIDC: National Snow and Ice Data Center. doi: http://dx.doi.org/10.7265/N5TB14TC.  Data are accessed daily, and historical period is also accessed as needed for historical period products.</h6>
@@ -133,7 +133,7 @@
                     
                     L.tileLayer('https://api.mapbox.com/styles/v1/korysam/cixur5uy7003g2sqwthpjmbxa/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoia29yeXNhbSIsImEiOiJjaXd4dDRxbTQwMXRkMm9tZzd5b3BqdTBwIn0.A2EGyNrWG2Lbbd5c-I-94w', {
                         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-                        maxZoom: 18		
+                        maxZoom: 18     
                     }).addTo(map);
 
                     var zoomHome = L.Control.zoomHome();
@@ -174,7 +174,7 @@
                     var geojson;
                     /* The function below is called when adding the geojson data from the SNODAS files.
                     Style controls the fill color of each basin, the weight of the lines surrounding the 
-                    basin, the color of the lines outlining each basin, and the opacity. */					
+                    basin, the color of the lines outlining each basin, and the opacity. */                 
                     function style(feature){
                         return {
                             fillColor: getColor(feature.properties.SNODAS_SWE_Mean_in),
@@ -196,7 +196,7 @@
                     }
 
                     /* This feature is called by the onEachFeature method. It is what allows users to 
-                    highlight over basins and will pop up a gray line outlining the basin. */	
+                    highlight over basins and will pop up a gray line outlining the basin. */   
                     function highlightFeature(e) {
                         var layer = e.target;
                         layer.setStyle({
@@ -275,7 +275,7 @@
                         return event;
                     }
 
-                    info.addTo(map);	
+                    info.addTo(map);    
                     
                     /* This code below creates the legend on the map. It iterates through
                     an array of "grades" (snow melt in inches). It then adds this to the 
@@ -311,7 +311,7 @@
 
             <aside>
                 <div class="dropdown">
-                    <button onclick="myFunction()" class="dropbtn">Select Date</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="SNODASTitle">SNODAS Date:</span><span id="FileDate"></span>
+                    <button onclick="myFunction()" class="dropbtn">Select Date</button>&nbsp;<span id="SNODASTitle">SNODAS Date:</span><span id="FileDate"></span>
                     <div id="myDropdown" class="dropdown-content">
                         <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
                         <div id="ListOfDates">
@@ -330,14 +330,14 @@
                                         return b - a;
                                     });
                                     Current_Date = text[0];
-                                    Latest_Date = text[text.length-1];
+                                    Latest_Date = text[text.length-2];
                                     document.getElementById('ListOfDates').appendChild(createDateList(text));
                                 });
 
                                 /* createDateList will create a ul, li list that contains all the dates of
                                 available geojson files of the SNODAS data */
                                 function createDateList(text)
-                                {	
+                                {   
                                     var list = document.createElement('span');
                                     text.forEach(function(result) {
                                         // var item = document.createElement('li');
@@ -358,23 +358,23 @@
                     /* Grabs the data from CO_boundary.geojson and adds it as a
                     layer to the map. This is what creates the big black border around
                     Colorado */
-                    $.getJSON("CO_boundary.geojson",function(data){
+                    $.getJSON("json/CO_boundary.geojson",function(data){
                         L.geoJSON(data, {style: CO_Style}).addTo(map);
                     });
 
                     /* The below code grabs the SNODAS data fromt he fie file SnowpackbyDate_(CURRENT DATE).csv. It then assigns that data/object into the SNODAS_Statistics variable. */
-                    var SNODAS_FILE = "SNODAS_DATA/SnowpackByDate_20170127.csv";
+                    var SNODAS_FILE = "SNODAS_DATA/SnowpackByDate_" + Current_Date + ".csv";
                     var SNODAS_Statistics;
                     $.get(SNODAS_FILE, function(data)
                     {
                         SNODAS_Statistics = Papa.parse(data, { header: true, skipEmptyLines: true});
                     });
-
+                    console.log(SNODAS_Statistics);
                     /* The below code grabs the SNODAS data from the file SNODAS_geometry.
                     It then assigns that data/object into the SNODAS_Geometry variable */
                     var SNODAS_Geometry = (function() {
                         var result;
-                        $.getJSON("SNODAS_geometry.geojson",function(data) {
+                        $.getJSON("json/SNODAS_geometry.geojson",function(data) {
                             result = data;
                         }); return result;
                     })();
@@ -406,24 +406,23 @@
                     The function will then remove the OLD SNODAS Geometry layer so there will be no overlap on the map. */
                     function updateFile(file)
                     {
-                        console.log(file);
                         var old_geojson = geojson;
                         var FileName = file.toString();
                         FileName = FileName.substr(0,4) + "-" + FileName.substr(4,2) + "-" + FileName.substr(6,2);
                         file = "SNODAS_DATA/" + "SnowpackByDate_" + file + ".csv";
                         d3.selectAll("#FileDate").text(" " + FileName);
-                        console.log(file);
+                        map.removeLayer(old_geojson);
+                        // // console.log(file);
                         var data_array;
                         $.get(file, function(data) {
                            data_array = Papa.parse(data, { header: true, skipEmptyLines: true});
                         });
-
+                        console.log(data_array);
                         geojson = L.geoJson(MergeData(SNODAS_Geometry,data_array),{style: style, onEachFeature: onEachFeature}).addTo(map);
-                        map.removeLayer(old_geojson);
-                        return false;
+                        // return false;
                     }
                 </script>
-                <h3>SNODAS Animation</h3>
+                <h3 style="font-size: 19px">SNODAS Animation</h3>
                 <form id="sliderInfo">
                     <div id="StartDate">
                         <script>
@@ -457,7 +456,7 @@
                     <br><br>
                     <input type="Submit" value="Submit" style="font-family: Trebuchet MS,Helvetica,sans-serif!important;" onclick="updateSliderMin_Max(this.form.startdate.value, this.form.enddate.value, this.form.incrementsize.value);return false;"/>
                 </form>
-                <input type="range" style="max-width: 350px; height: 50px" id="dateSlider" min="null" max="null" value="" step="1" list="ticks" onchange="showValue(this.value);return false;">
+                <input type="range" style="width: 350px; height: 50px" id="dateSlider" min="null" max="null" value="" step="1" list="ticks" onchange="showValue(this.value);return false;">
                 <div id="DataList">
                 </div>
                 <span id="range"></span>
@@ -566,23 +565,10 @@
                     SNODAS_FILE = SNODAS_FILE.replace(".csv","");
                     SNODAS_FILE = SNODAS_FILE.substr(0,4) + "-" + SNODAS_FILE.substr(4,2) + "-" + SNODAS_FILE.substr(6,2);
                     d3.select("#FileDate").text(" " + SNODAS_FILE);
-
-
-                    /* updateTitle is a function that takes in a file name. This will then
-                    update the webpage underneath the SNODAS Date text with the current date
-                    shown on the leaflet map. */
-                    function updateTitle(data)
-                    {
-                        data = data.replace("withComma/","");
-                        data = data.replace(".json","");
-                        data = data.replace("SNODAS","");
-                        data = data.substr(0,4) + "-" + data.substr(4,2) + "-" + data.substr(6,2);
-                        d3.select("#FileDate").text(" " + data);
-                    }
                 </script>
                 <!-- PNG FILE -->
                 <h3>SNODAS Plots</h3>
-                <a id="lightbox_ref" href="" data-lightbox="402-SNODAS-SWE"><img src="" id="SNODASPlot" style="max-height: 289px; max-width: 348px;"/></a>
+                <a id="lightbox_ref" href="" data-lightbox="402-SNODAS-SWE"><img src="" id="SNODASPlot" style="max-height: 300px; max-width: 350x;"/></a>
                 <script>
                     /* SetSNODASPlot is called whenever a basin is clicked. Once clicked,
                     this function will recieve the LOCAL_ID of that basin and then update
