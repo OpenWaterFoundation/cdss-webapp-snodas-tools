@@ -101,10 +101,31 @@ aside h1, p, h4, h3 {
     font-weight: bold;
 }
 
-#FileDate {
+#FileDate, #BasinSelector {
     font-size: 19px;
     font-family: Trebuchet,Helvetica,sans-serif!important;
     font-weight: bold;
+}
+
+#about p, ul li {
+    font-size: 14px;
+}
+
+#analysis ol li, p {
+    font-size: 14px;
+}
+
+#about h3, #data h3, #analysis h3 {
+    font-size: 18px;
+}
+#about a {
+    color: black;
+}
+
+#about a:hover {
+    color: #00A0C6;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 /*-----------------------------------------------------------------------------------------------------*/
@@ -115,6 +136,12 @@ aside h1, p, h4, h3 {
     overflow: auto;
     z-index: 100000;
 }
+
+ #mydropdown2 {
+    max-height: 400px;
+    overflow: auto;
+    z-index: 100000;
+ }
 
 .dropbtn {
     background-color: #216791;
@@ -130,7 +157,7 @@ aside h1, p, h4, h3 {
     background-color: #2887C1;
 } 
 
-#myInput {
+#myInput, #myinput2 {
     border-box: box-sizing;
     background-position: 14px 12px;
     background-repeat: no-repeat;
@@ -154,7 +181,7 @@ aside h1, p, h4, h3 {
     z-index: 1;
 }
 
-.dropdown-content span a {
+.dropdown-content span a, .dropdown-content ul li, .dropdown ul li a {
     color: black;
     padding: 12px 16px;
     text-decoration: none;
@@ -163,7 +190,7 @@ aside h1, p, h4, h3 {
 
 }
 
-.dropdown span a:hover {
+.dropdown span a:hover, .dropdown ul li:hover {
     background-color: #2171b5
 }
 
@@ -187,8 +214,9 @@ aside h1, p, h4, h3 {
     border-bottom: 1px dotted black;
 }
 .fa .tooltiptext {
-     visibility: hidden;
-    width: 120px;
+    visibility: hidden;
+    width: 150px;
+    height: 200px;
     background-color: black;
     color: #fff;
     text-align: center;
@@ -198,6 +226,11 @@ aside h1, p, h4, h3 {
     /* Position the tooltip */
     position: absolute;
     z-index: 1;
+}
+
+.fa .tooltiptext ul li {
+    list-style-type: none;
+    text-align: left;
 }
 
 .fa:hover .tooltiptext {
@@ -270,4 +303,3 @@ div .scroll {
     height: 750px;
     overflow: auto;
 }
-
