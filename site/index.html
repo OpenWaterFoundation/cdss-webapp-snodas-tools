@@ -333,7 +333,7 @@
         </article>
 
         <aside>
-            <div id="animation" style="background-color: #eef;">
+            <div id="animation" style="background-color: #D3D3D3;">
                 <div class="dropdown">
                     <button onclick="myFunction()" class="dropbtn" style="font-size: 15px;">Select Date</button>&nbsp;<span id="SNODASTitle" style="font-size: 15px;">SNODAS Date:</span><span id="FileDate" style="font-size: 15px;"></span>
                     <div id="myDropdown" class="dropdown-content">
@@ -352,6 +352,8 @@
                                     text.sort(function(a, b) {
                                         return b - a;
                                     });
+                                    /* trim each element. For some reason the split keeps the newline
+                                    delimiter. */
                                     for(var date in text)
                                     {
                                         text[date] = text[date].trim();
@@ -408,6 +410,8 @@
                     It then adds that merged object to the map as a layer allowing users to see
                     the SNODAS data visually on the map. */
                     geojson = L.geoJson(MergeData(SNODAS_Geometry,SNODAS_Statistics), {style: style, onEachFeature: onEachFeature}).addTo(map);
+                    // DeleteData(SNODAS_Geometry,SNODAS_Statistics);
+
 
                     /* This funtion takes in a SNODAS Geometry geojson file and a Properties file 
                     that contains multiple objects. Each object contains the statistics/data of each
@@ -423,6 +427,26 @@
                             }
                         }
                         return SNODAS_Geometry;
+                    }
+
+                    /* This function takes in a SNODAS Geometry geojson file and a Properties file
+                    that contains multiple objects. Each object contains the statistics/data of each
+                    basin. This function than deletes those properties after the new leaflet layer has
+                    been added. (This function is used since there are two different header columns
+                    within the SNODAS CSV DATA files). */
+                    function DeleteData(SNODAS_Geometry, SNODAS_Statistics)
+                    {
+                        for(var index in SNODAS_Geometry.features)
+                        {
+                            for(var key in SNODAS_Statistics)
+                            {
+                                if(SNODAS_Geometry.features[index]["properties"][SNODAS_Statistics[key]] != undefined)
+                                {
+                                    var temp = SNODAS_Statistics[key];
+                                    delete SNODAS_Geometry.features[index]["properties"][temp];
+                                }
+                            }
+                        }
                     }
 
                     /* This function is called by the elements in the ul, li list created for the dropdown
@@ -441,6 +465,7 @@
                         $.get(file, function(data) {
                            data_array = Papa.parse(data, { header: true, skipEmptyLines: true});
                         });
+                        DeleteData(SNODAS_Geometry, PropertyArray);
                         geojson.addData(MergeData(SNODAS_Geometry,data_array));
                     }
                 </script>
@@ -454,7 +479,7 @@
                             + '-' + Latest_Date.substr(6,2) + ')';
                         </script>
                         <br>
-                        <input type="text" name="startdate" placeholder="YYYY-MM-DD">
+                        <input type="text" name="startdate" placeholder="YYYY-MM-DD" required>
                         &nbsp;&nbsp;<i class="fa fa-question-circle" aria-hidden="true"><span class="tooltiptext">The starting date of data you would like to see.<br><br>For example: <ul><li>20161101</li><br><li>2016-11-01</li></ul></span></i>
                         <br><br>
                     </div>
@@ -467,16 +492,16 @@
                             + '-' + Current_Date.substr(6,2) + ')'
                         </script>
                         <br>
-                        <input type="text" name="enddate" placeholder="YYYY-MM-DD">
+                        <input type="text" name="enddate" placeholder="YYYY-MM-DD" required>
                         &nbsp;&nbsp;<i class="fa fa-question-circle" aria-hidden="true"><span class="tooltiptext">The ending date of data you would like to see.<br><br>For example: <ul><li>20161130</li><br><li>2016-11-30</li></ul></span></i>
                         <br><br>
                     </div>
 
                     <span style="font-size: 15px;">Increment (days): (Default is set to 1)</span><br>
-                    <input type="text" name="incrementsize" placeholder="value between 1 and 10">
+                    <input type="text" name="incrementsize" placeholder="value between 1 and 10" required>
                     &nbsp;&nbsp;<i class="fa fa-question-circle" aria-hidden="true"><span class="tooltiptext">Progresses the animation by the inputted amount.<br><br>For example, if the input was five, the map data would change every 5 days.</span></i>
                     <br><br>
-                    <input type="Submit" value="Submit" style="font-family: Trebuchet MS,Helvetica,sans-serif!important;" onclick="updateSliderMin_Max(this.form.startdate.value, this.form.enddate.value, this.form.incrementsize.value);return false;"/>
+                    <input type="Submit" disabled value="Submit" style="font-family: Trebuchet MS,Helvetica,sans-serif!important;" onclick="updateSliderMin_Max(this.form.startdate.value, this.form.enddate.value, this.form.incrementsize.value);return false;"/>
                 </form>
                 <input type="range" id="dateSlider" min="null" max="null" value="" step="1" list="ticks" onchange="showValue(this.value);return false;" style="width: 350px;">
                 <div id="DataList">
@@ -492,6 +517,10 @@
                     var has_complete = false;
                     var has_reset = true;
                     var iterations = 0;
+
+                    /* This is the function the reset button calls. This will reset the 
+                    range to the beginning date (startdate) and will update certain booleans
+                    so the animation can run properly */
                     function reload()
                     {
                         clearInterval(interval);
@@ -502,7 +531,11 @@
                         has_complete = false;
                         has_reset = true;
                     }
-
+                    /* This function is in charge of playing/running the animation
+                    slider. It will progress through an array of dates that the 
+                    user inputted (startdate to enddate). Once it has reached the
+                    end the user must click the reset button in order to play the
+                    animation again. */
                     function PlaySlider()
                     {
                         if(has_complete == true)
@@ -561,19 +594,19 @@
                 {
                     /* ERROR HANDLING */
                     /* Stardate must match format YYYYMMDD or YYYY-MM-DD */
-                    if(!startdate.match(/^\d{4}\-\d{1,2}\-\d{1,2}$/) && !startdate.match(/^\d{8}$/) && startdate != "")
+                    if(!startdate.match(/^\d{4}\-\d{1,2}\-\d{1,2}$/) && !startdate.match(/^\d{8}$/) ^ stardate == "")
                     {
                         alert("Incorrect format for Starting Date value!");
                         return false;
                     }
                     /* Enddate must match format YYYYMMDD or YYYY-MM-DD */
-                    else if(!enddate.match(/^\d{4}\-\d{1,2}\-\d{1,2}$/) && !enddate.match(/^\d{8}$/) && enddate != "")
+                    else if(!enddate.match(/^\d{4}\-\d{1,2}\-\d{1,2}$/) && !enddate.match(/^\d{8}$/) ^ enddate == "")
                     {
                         alert("Incorrect format for Ending Date value!");
                         return false;
                     }
                     /* Increment must match format (int) or (int)(int) EX: 1 or 10. Must be between 1 and 10*/
-                    else if(!scale.match(/^\d{1}$/) && !scale.match(/^\d{1,2}$/) && scale != "" ^ scale > 10 && scale != "")
+                    else if(!scale.match(/^\d{1}$/) && !scale.match(/^\d{1,2}$/) && scale != "" ^ scale > 10 ^ scale != "")
                     {
                         alert("Incorrect format for Increment value!")
                         return false;
@@ -621,10 +654,10 @@
                 SNODAS_FILE = SNODAS_FILE.substr(0,4) + "-" + SNODAS_FILE.substr(4,2) + "-" + SNODAS_FILE.substr(6,2);
                 d3.select("#FileDate").text(" " + SNODAS_FILE);
                 </script>
-                <!-- PNG FILE -->
+                </div>
                 <br>
                 <br>
-                <div style="background-color: red">
+                <div style="background-color: #D3D3D3">
                     <div class="dropdown">
                         <button onclick="myFunction2()" class="dropbtn" style="font-size: 15px;">Select Basin</button>&nbsp;<span id="BasinSelector" style="font-size: 15px; font-weight: bold; text-decoration: underline;">Selected Basin:</span><span id="CurrentBasin" style="font-size: 15px;"></span>
                         <div id="myDropdown2" class="dropdown-content">
@@ -669,7 +702,6 @@
                 </div>
             </div>
         </aside>
-
     </div>
 
     <script>
