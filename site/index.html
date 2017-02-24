@@ -564,7 +564,7 @@
                         return false;
                     }
                     /* Increment must match format (int) or (int)(int) EX: 1 or 10. Must be between 1 and 10*/
-                    else if(!scale.match(/^\d{1}$/) && !scale.match(/^\d{1,2}$/) ^ scale > 10)
+                    else if(!scale.match(/^\d{1}$/) && !scale.match(/^\d{1,2}$/) && scale != "" ^ scale > 10 && scale != "")
                     {
                         alert("Incorrect format for Increment value!")
                         return false;
