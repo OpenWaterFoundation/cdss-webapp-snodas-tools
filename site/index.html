@@ -21,6 +21,7 @@
     </head>
 
     <script>
+        // TODO Resize window properly
         function resize_windows() 
         {
             var header_width = $("header").width();
@@ -225,7 +226,8 @@
                     if a user clicks on a basin. It will automatically fit the basin to the map size
                         and zoom in on the indiviudal basin selected */
                     function zoomToFeature(e) {
-                        map.fitBounds(e.target.getBounds());
+                        // TODO Select the right graph based on date and basin
+                        // map.fitBounds(e.target.getBounds());
                         SetSNODASPlot(e.target.feature.properties.LOCAL_ID);
                     }
 
@@ -241,6 +243,11 @@
                         });
                         layer._leaflet_id = feature.properties.LOCAL_ID;
                     }
+
+                    /* clickOnMapItem is used whenever a user selects a basin using the "Select Basin" 
+                    button. Once a basin is selected, this function will be called with the LOCAL_ID 
+                    of the basin that was selected. It then firese a mouseover event and will highlight
+                    the selected basin */
                     function clickOnMapItem(itemId) {
                         var id = itemId;
                         //get target layer by it's id
@@ -250,11 +257,6 @@
                         document.getElementById("CurrentBasin").innerHTML = " " + itemId;
                         SetSNODASPlot(itemId);
                     }
-                    var myStyle = {
-                        "color": "#ff7800",
-                        "weight": 5,
-                        "opacity": 0.65
-                    };
 
                     /* The below code is used to create the informational legend on the map. 
                     Emma can add more to this explanation since she made this code  */
@@ -285,11 +287,15 @@
                             :'Hover over a basin');
                     };
 
+                    /* This function will take in a float or long and will round 
+                    the value to two decimal places. Rounds to the hundredths. */
                     function setTwoNumberDecimal(event) {
                         event = parseFloat(event).toFixed(2);
                         return event;
                     }
 
+                    /* This function will take in a float or long and will round 
+                    the value to one decimal place. Rounds to the tenths. */
                     function setOneNumberDecimal(event) {
                         event = parseFloat(event).toFixed(1);
                         return event;
@@ -339,19 +345,18 @@
                             $.ajaxSetup({
                                 async: false
                             });
-                            var text = new Array();
+                            var DatesArray = new Array();
                             var Current_Date, Latest_Date;
-                            var text = new Array();
                             $.get("SNODAS_DATA/ListOfDates.txt",function(data)
                             {
-                                text = data.split('\n');
+                                DatesArray = data.split('\n');
                                 /* Sort the dates in descending order (Most recent day first) */
-                                text.sort(function(a, b) {
+                                DatesArray.sort(function(a, b) {
                                     return b - a;
                                 });
-                                Current_Date = text[0];
-                                Latest_Date = text[text.length-2];
-                                document.getElementById('ListOfDates').appendChild(createDateList(text));
+                                Current_Date = DatesArray[0];
+                                Latest_Date = DatesArray[DatesArray.length-2];
+                                document.getElementById('ListOfDates').appendChild(createDateList(DatesArray));
                             });
 
                             /* createDateList will create a ul, li list that contains all the dates of
@@ -421,8 +426,7 @@
 
                 /* This function is called by the elements in the ul, li list created for the dropdown
                 menu. Once called, it will construct the file name and get the data from that SNODAS file.
-                This data is than added to the original SNODAS Geometry data file and added to the map as a layer.
-                The function will then remove the OLD SNODAS Geometry layer so there will be no overlap on the map. */
+                This data is than added to the original SNODAS Geometry data file and added to the map as a layer. The function will then remove the OLD SNODAS Geometry layer so there will be no overlap on the map. */
                 function updateFile(file)
                 {
                     var old_geojson = geojson;
@@ -448,8 +452,8 @@
                         + '-' + Latest_Date.substr(6,2) + ')';
                     </script>
                     <br>
-                    <input type="text" name="startdate" placeholder="YYYY-MM-DD">
-                    &nbsp;&nbsp;<i class="fa fa-question-circle" aria-hidden="true"><span class="tooltiptext">The starting date of data you would like to see. For example, 20161101 or 2016-11-01.</span></i>
+                    <input type="text" name="startdate" placeholder="YYYY-MM-DD" required>
+                    &nbsp;&nbsp;<i class="fa fa-question-circle" aria-hidden="true"><span class="tooltiptext">The starting date of data you would like to see.<br><br>For example: <ul><li>20161101</li><br><li>2016-11-01</li></ul></span></i>
                     <br><br>
                 </div>
 
@@ -461,14 +465,14 @@
                         + '-' + Current_Date.substr(6,2) + ')'
                     </script>
                     <br>
-                    <input type="text" name="enddate" placeholder="YYYY-MM-DD">
-                    &nbsp;&nbsp;<i class="fa fa-question-circle" aria-hidden="true"><span class="tooltiptext">The ending date of data you would like to see. For example, 20161130 or 206-111-30..</span></i>
+                    <input type="text" name="enddate" placeholder="YYYY-MM-DD" required>
+                    &nbsp;&nbsp;<i class="fa fa-question-circle" aria-hidden="true"><span class="tooltiptext">The ending date of data you would like to see.<br><br>For example: <ul><li>20161130</li><br><li>2016-11-30</li></ul></span></i>
                     <br><br>
                 </div>
 
                 <span style="font-size: 15px;">Increment (days): (Default is set to 1)</span><br>
-                <input type="text" name="incrementsize" placeholder="value between 1 and 10">
-                &nbsp;&nbsp;<i class="fa fa-question-circle" aria-hidden="true"><span class="tooltiptext">Progresses the animation by the inputted amount. For example, if the input was five, the map data would change every 5 days.</span></i>
+                <input type="text" name="incrementsize" placeholder="value between 1 and 10" required>
+                &nbsp;&nbsp;<i class="fa fa-question-circle" aria-hidden="true"><span class="tooltiptext">Progresses the animation by the inputted amount.<br><br>For example, if the input was five, the map data would change every 5 days.</span></i>
                 <br><br>
                 <input type="Submit" value="Submit" style="font-family: Trebuchet MS,Helvetica,sans-serif!important;" onclick="updateSliderMin_Max(this.form.startdate.value, this.form.enddate.value, this.form.incrementsize.value);return false;"/>
             </form>
@@ -546,6 +550,27 @@
                 one. */
                 function updateSliderMin_Max(startdate,enddate,scale)
                 {
+                    /* ERROR HANDLING */
+                    /* Stardate must match format YYYYMMDD or YYYY-MM-DD */
+                    if(!startdate.match(/^\d{4}\-\d{1,2}\-\d{1,2}$/) && !startdate.match(/^\d{8}$/) && startdate != "")
+                    {
+                        alert("Incorrect format for Starting Date value!");
+                        return false;
+                    }
+                    /* Enddate must match format YYYYMMDD or YYYY-MM-DD */
+                    else if(!enddate.match(/^\d{4}\-\d{1,2}\-\d{1,2}$/) && !enddate.match(/^\d{8}$/) && enddate != "")
+                    {
+                        alert("Incorrect format for Ending Date value!");
+                        return false;
+                    }
+                    /* Increment must match format (int) or (int)(int) EX: 1 or 10. Must be between 1 and 10*/
+                    else if(!scale.match(/^\d{1}$/) && !scale.match(/^\d{1,2}$/) ^ scale > 10)
+                    {
+                        alert("Incorrect format for Increment value!")
+                        return false;
+                    }
+
+                    has_reset = true;
                     if(startdate.match(/^\d{4}\-\d{1,2}\-\d{1,2}$/))
                     {
                         startdate = startdate.replace("-","");
@@ -613,7 +638,7 @@
                             </script>
                         </div>
                     </div>
-            <a id="lightbox_ref" href="" data-lightbox="402-SNODAS-SWE"><img src="" id="SNODASPlot" style="max-height: 300px; max-width: 350x;"/></a>
+            <a id="lightbox_ref" href="" data-lightbox="402-SNODAS-SWE"><img src="" id="SNODASPlot" style="max-height: 450px; max-width: 350x;"/></a>
             <script>
                 /* SetSNODASPlot is called whenever a basin is clicked. Once clicked,
                 this function will recieve the LOCAL_ID of that basin and then update
