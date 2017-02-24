@@ -408,8 +408,6 @@
                     It then adds that merged object to the map as a layer allowing users to see
                     the SNODAS data visually on the map. */
                     geojson = L.geoJson(MergeData(SNODAS_Geometry,SNODAS_Statistics), {style: style, onEachFeature: onEachFeature}).addTo(map);
-                    // DeleteData(SNODAS_Geometry,SNODAS_Statistics);
-
 
                     /* This funtion takes in a SNODAS Geometry geojson file and a Properties file 
                     that contains multiple objects. Each object contains the statistics/data of each
@@ -425,26 +423,6 @@
                             }
                         }
                         return SNODAS_Geometry;
-                    }
-
-                    /* This function takes in a SNODAS Geometry geojson file and a Properties file
-                    that contains multiple objects. Each object contains the statistics/data of each
-                    basin. This function than deletes those properties after the new leaflet layer has
-                    been added. (This function is used since there are two different header columns
-                    within the SNODAS CSV DATA files). */
-                    function DeleteData(SNODAS_Geometry, SNODAS_Statistics)
-                    {
-                        for(var index in SNODAS_Geometry.features)
-                        {
-                            for(var key in SNODAS_Statistics)
-                            {
-                                if(SNODAS_Geometry.features[index]["properties"][SNODAS_Statistics[key]] != undefined)
-                                {
-                                    var temp = SNODAS_Statistics[key];
-                                    delete SNODAS_Geometry.features[index]["properties"][temp];
-                                }
-                            }
-                        }
                     }
 
                     /* This function is called by the elements in the ul, li list created for the dropdown
@@ -463,7 +441,6 @@
                         $.get(file, function(data) {
                            data_array = Papa.parse(data, { header: true, skipEmptyLines: true});
                         });
-                        DeleteData(SNODAS_Geometry, PropertyArray);
                         geojson.addData(MergeData(SNODAS_Geometry,data_array));
                     }
                 </script>
