@@ -32,13 +32,13 @@
             $("#mapid").css("width",(header_width-nav_width-aside_width));
         }
     </script>
+
     <!-- If at anytime there is code that starts with the letter 'L', that is the command used by Leaflet. -->
     <body onresize='resize_windows()'>
     <header>
         <h1>Colorado's Decision Support Systems (CDSS) SNODAS Tools</h1>
     </header>
     <div id="main">
-
         <nav id="navbar" style="max-width: 350px; min-width: 350px;">
             <ul>
                 <li><a style="font-family: Trebuchet, Helvetica,sans-serif!important;" id="aboutA" class="active" onclick="navbarClick('about',['data','analysis'],'aboutA');return false;">About</a></li>
@@ -127,7 +127,7 @@
         </nav>
 
         <article>
-            <div id="mapid" style="min-width: 300px; max-width: 1000px;">
+            <div id="mapid">
                 <script>
                     var map = L.map('mapid', {zoomControl: false}).setView([38.99, -105.54], 7);
                     
@@ -225,7 +225,7 @@
                     if a user clicks on a basin. It will automatically fit the basin to the map size
                         and zoom in on the indiviudal basin selected */
                     function zoomToFeature(e) {
-                        // map.fitBounds(e.target.getBounds());
+                        map.fitBounds(e.target.getBounds());
                         SetSNODASPlot(e.target.feature.properties.LOCAL_ID);
                     }
 
@@ -240,9 +240,7 @@
                             click: zoomToFeature
                         });
                         layer._leaflet_id = feature.properties.LOCAL_ID;
-
                     }
-
                     function clickOnMapItem(itemId) {
                         var id = itemId;
                         //get target layer by it's id
@@ -252,7 +250,6 @@
                         document.getElementById("CurrentBasin").innerHTML = " " + itemId;
                         SetSNODASPlot(itemId);
                     }
-
                     var myStyle = {
                         "color": "#ff7800",
                         "weight": 5,
@@ -333,349 +330,302 @@
         </article>
 
         <aside>
-            <div id="animation" style="background-color: #eef;">
-                <div class="dropdown">
-                    <button onclick="myFunction()" class="dropbtn" style="font-size: 15px;">Select Date</button>&nbsp;<span id="SNODASTitle" style="font-size: 15px;">SNODAS Date:</span><span id="FileDate" style="font-size: 15px;"></span>
-                    <div id="myDropdown" class="dropdown-content">
-                        <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
-                        <div id="ListOfDates">
-                            <script>
-                                $.ajaxSetup({
-                                    async: false
+            <div class="dropdown">
+                <button onclick="myFunction()" class="dropbtn" style="font-size: 15px;">Select Date</button>&nbsp;<span id="SNODASTitle" style="font-size: 15px;">SNODAS Date:</span><span id="FileDate" style="font-size: 15px;"></span>
+                <div id="myDropdown" class="dropdown-content">
+                    <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+                    <div id="ListOfDates">
+                        <script>
+                            $.ajaxSetup({
+                                async: false
+                            });
+                            var text = new Array();
+                            var Current_Date, Latest_Date;
+                            var text = new Array();
+                            $.get("SNODAS_DATA/ListOfDates.txt",function(data)
+                            {
+                                text = data.split('\n');
+                                /* Sort the dates in descending order (Most recent day first) */
+                                text.sort(function(a, b) {
+                                    return b - a;
                                 });
-                                var text = new Array();
-                                var Current_Date, Latest_Date;
-                                var text = new Array();
-                                $.get("SNODAS_DATA/ListOfDates.txt",function(data)
-                                {
-                                    text = data.split('\n');
-                                    /* Sort the dates in descending order (Most recent day first) */
-                                    text.sort(function(a, b) {
-                                        return b - a;
-                                    });
-                                    Current_Date = text[0];
-                                    Latest_Date = text[text.length-2];
-                                    document.getElementById('ListOfDates').appendChild(createDateList(text));
-                                });
+                                Current_Date = text[0];
+                                Latest_Date = text[text.length-2];
+                                document.getElementById('ListOfDates').appendChild(createDateList(text));
+                            });
 
+                            /* createDateList will create a ul, li list that contains all the dates of
+                            available geojson files of the SNODAS data */
+                            function createDateList(text)
+                            {   
+                                var list = document.createElement('span');
+                                text.forEach(function(result) {
+                                    // var item = document.createElement('li');
+                                    var a = document.createElement('a');
+                                    var date = document.createTextNode(result.substr(0,4) + "-" + result.substr(4,2) + "-" + result.substr(6,2));
+                                        a.setAttribute("href","#");
+                                        a.setAttribute("onclick", "updateFile(" + result + ");document.getElementById('myDropdown').classList.toggle('show');return false;");
+                                    a.appendChild(date);
+                                    list.appendChild(a);
+                                });
+                                return list;
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <script>
+                /* Grabs the data from CO_boundary.geojson and adds it as a
+                layer to the map. This is what creates the big black border around
+                Colorado */
+                $.getJSON("json/CO_boundary.geojson",function(data){
+                    L.geoJSON(data, {style: CO_Style}).addTo(map);
+                });
+
+                /* The below code grabs the SNODAS data fromt he fie file SnowpackbyDate_(CURRENT DATE).csv. It then assigns that data/object into the SNODAS_Statistics variable. */
+                var SNODAS_FILE = "SNODAS_DATA/SnowpackByDate_20161101.csv";
+                var SNODAS_Statistics;
+                $.get(SNODAS_FILE, function(data)
+                {
+                    SNODAS_Statistics = Papa.parse(data, { header: true, skipEmptyLines: true});
+                });
+                /* The below code grabs the SNODAS data from the file SNODAS_geometry.
+                It then assigns that data/object into the SNODAS_Geometry variable */
+                var SNODAS_Geometry = (function() {
+                    var result;
+                    $.getJSON("json/SNODAS_geometry.geojson",function(data) {
+                        result = data;
+                    }); return result;
+                })();
+                /* This call below merges the Geometry data with the statistics of each basin. 
+                It then adds that merged object to the map as a layer allowing users to see
+                the SNODAS data visually on the map. */
+                geojson = L.geoJson(MergeData(SNODAS_Geometry,SNODAS_Statistics), {style: style, onEachFeature: onEachFeature}).addTo(map);
+
+
+                /* This funtion takes in a SNODAS Geometry geojson file and a Properties file 
+                that contains multiple objects. Each object contains the statistics/data of each
+                basin. This function than merges those properties into the SNODAS Geometry file and
+                returns this new object. */
+                function MergeData(SNODAS_Geometry, SNODAS_Statistics)
+                {
+                    for(var index in SNODAS_Geometry.features)
+                    {
+                        for(var key in SNODAS_Statistics["data"][index])
+                        {
+                            SNODAS_Geometry.features[index]["properties"][key] = SNODAS_Statistics["data"][index][key];
+                        }
+                    }
+                    return SNODAS_Geometry;
+                }
+
+                /* This function is called by the elements in the ul, li list created for the dropdown
+                menu. Once called, it will construct the file name and get the data from that SNODAS file.
+                This data is than added to the original SNODAS Geometry data file and added to the map as a layer.
+                The function will then remove the OLD SNODAS Geometry layer so there will be no overlap on the map. */
+                function updateFile(file)
+                {
+                    var old_geojson = geojson;
+                    var FileName = file.toString();
+                    FileName = FileName.substr(0,4) + "-" + FileName.substr(4,2) + "-" + FileName.substr(6,2);
+                    file = "SNODAS_DATA/" + "SnowpackByDate_" + file + ".csv";
+                    d3.selectAll("#FileDate").text(" " + FileName);
+                    map.removeLayer(old_geojson);
+                    var data_array;
+                    $.get(file, function(data) {
+                       data_array = Papa.parse(data, { header: true, skipEmptyLines: true});
+                    });
+                    geojson = L.geoJson(MergeData(SNODAS_Geometry,data_array),{style: style, onEachFeature: onEachFeature}).addTo(map);
+                }
+            </script>
+            <h3 style="font-size: 17px">SNODAS Animation</h3>
+            <form id="sliderInfo">
+                <div id="StartDate" style="font-size: 15px;">
+                    <script>
+                        document.getElementById("StartDate").innerHTML = 
+                        'Starting Date: (earliest available date: ' + 
+                        Latest_Date.substr(0,4) + '-' + Latest_Date.substr(4,2)
+                        + '-' + Latest_Date.substr(6,2) + ')';
+                    </script>
+                    <br>
+                    <input type="text" name="startdate" placeholder="YYYY-MM-DD">
+                    &nbsp;&nbsp;<i class="fa fa-question-circle" aria-hidden="true"><span class="tooltiptext">The starting date of data you would like to see. For example, 20161101 or 2016-11-01.</span></i>
+                    <br><br>
+                </div>
+
+                <div id="EndDate" style="font-size: 15px;">
+                    <script>
+                        document.getElementById("EndDate").innerHTML = 
+                        'Ending Date: (latest available date: ' + 
+                        Current_Date.substr(0,4) + '-' + Current_Date.substr(4,2)
+                        + '-' + Current_Date.substr(6,2) + ')'
+                    </script>
+                    <br>
+                    <input type="text" name="enddate" placeholder="YYYY-MM-DD">
+                    &nbsp;&nbsp;<i class="fa fa-question-circle" aria-hidden="true"><span class="tooltiptext">The ending date of data you would like to see. For example, 20161130 or 206-111-30..</span></i>
+                    <br><br>
+                </div>
+
+                <span style="font-size: 15px;">Increment (days): (Default is set to 1)</span><br>
+                <input type="text" name="incrementsize" placeholder="value between 1 and 10">
+                &nbsp;&nbsp;<i class="fa fa-question-circle" aria-hidden="true"><span class="tooltiptext">Progresses the animation by the inputted amount. For example, if the input was five, the map data would change every 5 days.</span></i>
+                <br><br>
+                <input type="Submit" value="Submit" style="font-family: Trebuchet MS,Helvetica,sans-serif!important;" onclick="updateSliderMin_Max(this.form.startdate.value, this.form.enddate.value, this.form.incrementsize.value);return false;"/>
+            </form>
+            <input type="range" style="width: 350px; height: 50px" id="dateSlider" min="null" max="null" value="" step="1" list="ticks" onchange="showValue(this.value);return false;">
+            <div id="DataList">
+            </div>
+            <span id="range"></span>
+            <br>
+            <input type="Submit" value= &#9658 style="width: 75px;" onclick="PlaySlider()">
+            <input type="Submit" value= &#10073;&#10073; style="width: 75px;" onclick="PauseSlider()">
+            <input type="Submit" value= &#x21bb; style="width: 75px;" onclick="reload()">
+            <script>
+                var range_size, startdate, interval, step, original_startdate;
+                var has_complete = false;
+                var has_reset = true;
+                var iterations = 0;
+                function reload()
+                {
+                    clearInterval(interval);
+                    iterations = 0;
+                    startdate = original_startdate;
+                    document.getElementById("dateSlider").value = startdate;
+                    showValue(startdate);
+                    has_complete = false;
+                    has_reset = true;
+                }
+                function PlaySlider()
+                {
+                    if(has_complete == true)
+                    {
+                        return false;
+                    }
+                    if(iterations == 0)
+                    {
+                        original_startdate = startdate;
+                    }
+                    if(has_reset == true)
+                    {
+                        has_reset = false;
+                        interval = setInterval(function(){
+                        if(iterations % step == 0)
+                        {
+                            document.getElementById("dateSlider").value = startdate;
+                            showValue(startdate.toString());
+                        }
+                        iterations++; 
+                        if(iterations == range_size)
+                        {
+                            has_complete = true;
+                            clearInterval(interval);
+                            iterations = 0;
+                            return false;
+                        }
+                        startdate++;
+                    },100);
+                }
+            }
+                function PauseSlider()
+                {
+                    clearInterval(interval);
+                    has_reset = true;
+                }
+                /* ShowValue is called whenever the slidebar value is updated.
+                It will select the span element with id='range' and update it's 
+                value to the newValue. */
+                function showValue(newValue)
+                {
+                    document.getElementById("range").innerHTML = newValue.substr(0,4) + "-" + newValue.substr(4,2) + "-" + newValue.substr(6,2);
+                    updateFile(newValue);
+                }
+
+                /* updateSliderMin_Max is called whenever the submit button is selected.
+                It will update the min and max value of the range (slidebar) element.
+                This then also creates tick marks on the slidebar by an increment of 
+                one. */
+                function updateSliderMin_Max(startdate,enddate,scale)
+                {
+                    if(startdate.match(/^\d{4}\-\d{1,2}\-\d{1,2}$/))
+                    {
+                        startdate = startdate.replace("-","");
+                        startdate = startdate.replace("-","");
+                    }
+                    if(enddate.match(/^\d{4}\-\d{1,2}\-\d{1,2}$/))
+                    {
+                        enddate = enddate.replace("-","");
+                        enddate = enddate.replace("-","");
+                    }
+                    step = scale;
+                    this.startdate = startdate;
+                    range_size = (enddate - startdate) + 1;
+                    updateFile(startdate);
+                    document.getElementById("dateSlider").min = startdate;
+                    document.getElementById("dateSlider").value = startdate;
+                    document.getElementById("dateSlider").max = enddate;
+                    document.getElementById("dateSlider").step = scale;
+                    document.getElementById("range").innerHTML = startdate.substr(0,4) + "-" + startdate.substr(4,2) + "-" + startdate.substr(6,2);
+
+                    var datalist = document.createElement('datalist');
+                    datalist.id = "ticks";
+                    for(var index = startdate; index <= enddate; index++)
+                    {
+                        var option = document.createElement('option');
+                        option.appendChild(document.createTextNode(index));
+                        datalist.appendChild(option);
+                    }
+                    document.getElementById('DataList').appendChild(datalist);
+                }
+
+                SNODAS_FILE = SNODAS_FILE.replace("SNODAS_DATA/SnowpackByDate_","");
+                SNODAS_FILE = SNODAS_FILE.replace(".csv","");
+                SNODAS_FILE = SNODAS_FILE.substr(0,4) + "-" + SNODAS_FILE.substr(4,2) + "-" + SNODAS_FILE.substr(6,2);
+                d3.select("#FileDate").text(" " + SNODAS_FILE);
+            </script>
+            <!-- PNG FILE -->
+            <br>
+            <br>
+                <div class="dropdown">
+                    <button onclick="myFunction2()" class="dropbtn" style="font-size: 15px;">Select Basin</button>&nbsp;<span id="BasinSelector" style="font-size: 15px; font-weight: bold; text-decoration: underline;">Selected Basin:</span><span id="CurrentBasin" style="font-size: 15px;"></span>
+                    <div id="myDropdown2" class="dropdown-content">
+                        <input type="text" placeholder="Search.." id="myInput2" onkeyup="filterFunction2()">
+                        <div id="BasinList">
+                            <script>
+                                document.getElementById('BasinList').appendChild(createBasinList());
                                 /* createDateList will create a ul, li list that contains all the dates of
                                 available geojson files of the SNODAS data */
-                                function createDateList(text)
+                                function createBasinList()
                                 {   
-                                    var list = document.createElement('span');
-                                    text.forEach(function(result) {
-                                        // var item = document.createElement('li');
+                                    var list = document.createElement('ul');
+                                    for(var index in SNODAS_Geometry.features)
+                                    {
+                                        var li = document.createElement('li');
                                         var a = document.createElement('a');
-                                        var date = document.createTextNode(result.substr(0,4) + "-" + result.substr(4,2) + "-" + result.substr(6,2));
-                                            a.setAttribute("href","#");
-                                            a.setAttribute("onclick", "updateFile(" + result + ");document.getElementById('myDropdown').classList.toggle('show');return false;");
-                                        a.appendChild(date);
-                                        list.appendChild(a);
-                                    });
+                                        a.setAttribute("href","#");
+                                        a.setAttribute("onclick",'clickOnMapItem(' + '"' + SNODAS_Geometry.features[index]["properties"]["LOCAL_ID"] + '");');
+                                        var basin = document.createTextNode("LOCAL_ID: " + SNODAS_Geometry.features[index]["properties"]["LOCAL_ID"] + " LOCAL_NAME: " + SNODAS_Geometry.features[index]["properties"]["LOCAL_NAME"]);
+                                        a.appendChild(basin);
+                                        li.appendChild(a);
+                                        list.appendChild(li);
+                                    }
                                     return list;
                                 }
                             </script>
                         </div>
                     </div>
-                </div>
-                <script>
-                    /* Grabs the data from CO_boundary.geojson and adds it as a
-                    layer to the map. This is what creates the big black border around
-                    Colorado */
-                    $.getJSON("json/CO_boundary.geojson",function(data){
-                        L.geoJSON(data, {style: CO_Style}).addTo(map);
-                    });
-
-                    /* The below code grabs the SNODAS data fromt he fie file SnowpackbyDate_(CURRENT DATE).csv. It then assigns that data/object into the SNODAS_Statistics variable. */
-                    var SNODAS_FILE = "SNODAS_DATA/SnowpackByDate_" + Current_Date + ".csv";
-                    var SNODAS_Statistics;
-                    $.get(SNODAS_FILE, function(data)
-                    {
-                        SNODAS_Statistics = Papa.parse(data, { header: true, skipEmptyLines: true});
-                    });
-                    /* The below code grabs the SNODAS data from the file SNODAS_geometry.
-                    It then assigns that data/object into the SNODAS_Geometry variable */
-                    var SNODAS_Geometry = (function() {
-                        var result;
-                        $.getJSON("json/SNODAS_geometry.geojson",function(data) {
-                            result = data;
-                        }); return result;
-                    })();
-                    /* This call below merges the Geometry data with the statistics of each basin. 
-                    It then adds that merged object to the map as a layer allowing users to see
-                    the SNODAS data visually on the map. */
-                    geojson = L.geoJson(MergeData(SNODAS_Geometry,SNODAS_Statistics), {style: style, onEachFeature: onEachFeature}).addTo(map);
-                    // DeleteData(SNODAS_Geometry,SNODAS_Statistics);
-
-
-                    /* This funtion takes in a SNODAS Geometry geojson file and a Properties file 
-                    that contains multiple objects. Each object contains the statistics/data of each
-                    basin. This function than merges those properties into the SNODAS Geometry file and
-                    returns this new object. */
-                    function MergeData(SNODAS_Geometry, SNODAS_Statistics)
-                    {
-                        for(var index in SNODAS_Geometry.features)
-                        {
-                            for(var key in SNODAS_Statistics["data"][index])
-                            {
-                                SNODAS_Geometry.features[index]["properties"][key] = SNODAS_Statistics["data"][index][key];
-                            }
-                        }
-                        return SNODAS_Geometry;
-                    }
-
-                    /* This function takes in a SNODAS Geometry geojson file and a Properties file
-                    that contains multiple objects. Each object contains the statistics/data of each
-                    basin. This function than deletes those properties after the new leaflet layer has
-                    been added. (This function is used since there are two different header columns
-                    within the SNODAS CSV DATA files). */
-                    function DeleteData(SNODAS_Geometry, SNODAS_Statistics)
-                    {
-                        for(var index in SNODAS_Geometry.features)
-                        {
-                            for(var key in SNODAS_Statistics)
-                            {
-                                delete SNODAS_Geometry.features[index]["properties"][SNODAS_Statistics[key]];
-                            }
-                        }
-                        return SNODAS_Geometry;
-                    }
-
-                    /* This function is called by the elements in the ul, li list created for the dropdown
-                    menu. Once called, it will construct the file name and get the data from that SNODAS file.
-                    This data is than added to the original SNODAS Geometry data file and added to the map as a layer.
-                    The function will then remove the OLD SNODAS Geometry layer so there will be no overlap on the map. */
-                    function updateFile(file)
-                    {
-                        var PropertyArray = ['SWE_Mean_meters','SWE_Minimum_meters','SWE_Maximum_meters','SWE_StdDev_meters','Count_pixels','SnowCover_percent','SWE_Mean_inches','SWE_Min_inches','SWE_Max_inches','SWE_StdDev_inches','SNODAS_SWE_Mean_m','SNODAS_SWE_Min_m','SNODAS_SWE_Max_m','SNODAS_SWE_StdDev_m','SNODAS_Pixels_Count','SNODAS_SnowCover_percent','SNODAS_SWE_Mean_in','SNODAS_SWE_Min_in','SNODAS_SWE_Max_in','SNODAS_SWE_StdDev_in'];
-                        var old_geojson = geojson;
-                        var FileName = file.toString();
-                        FileName = FileName.substr(0,4) + "-" + FileName.substr(4,2) + "-" + FileName.substr(6,2);
-                        file = "SNODAS_DATA/" + "SnowpackByDate_" + file + ".csv";
-                        d3.selectAll("#FileDate").text(" " + FileName);
-                        map.removeLayer(old_geojson);
-                        
-                        $.get(file, function(data) {
-                           data_array = Papa.parse(data, { header: true, skipEmptyLines: true});
-                        });
-                        SNODAS_Geometry = DeleteData(SNODAS_Geometry, PropertyArray);
-                        geojson = L.geoJson(MergeData(SNODAS_Geometry,data_array),{style: style, onEachFeature: onEachFeature}).addTo(map);
-                    }
-                </script>
-                <h3 style="font-size: 17px">SNODAS Animation</h3>
-                <form id="sliderInfo">
-                    <div id="StartDate" style="font-size: 15px;">
-                        <script>
-                            document.getElementById("StartDate").innerHTML = 
-                            'Starting Date: (earliest available date: ' + 
-                            Latest_Date.substr(0,4) + '-' + Latest_Date.substr(4,2)
-                            + '-' + Latest_Date.substr(6,2) + ')';
-                        </script>
-                        <br>
-                        <input type="text" name="startdate" placeholder="YYYY-MM-DD">
-                        &nbsp;&nbsp;<i class="fa fa-question-circle" aria-hidden="true"><span class="tooltiptext">The starting date of data you would like to see.<br><br>For example: <ul><li>20161101</li><br><li>2016-11-01</li></ul></span></i>
-                        <br><br>
-                    </div>
-
-                    <div id="EndDate" style="font-size: 15px;">
-                        <script>
-                            document.getElementById("EndDate").innerHTML = 
-                            'Ending Date: (latest available date: ' + 
-                            Current_Date.substr(0,4) + '-' + Current_Date.substr(4,2)
-                            + '-' + Current_Date.substr(6,2) + ')'
-                        </script>
-                        <br>
-                        <input type="text" name="enddate" placeholder="YYYY-MM-DD">
-                        &nbsp;&nbsp;<i class="fa fa-question-circle" aria-hidden="true"><span class="tooltiptext">The ending date of data you would like to see.<br><br>For example: <ul><li>20161130</li><br><li>2016-11-30</li></ul></span></i>
-                        <br><br>
-                    </div>
-
-                    <span style="font-size: 15px;">Increment (days): (Default is set to 1)</span><br>
-                    <input type="text" name="incrementsize" placeholder="value between 1 and 10">
-                    &nbsp;&nbsp;<i class="fa fa-question-circle" aria-hidden="true"><span class="tooltiptext">Progresses the animation by the inputted amount.<br><br>For example, if the input was five, the map data would change every 5 days.</span></i>
-                    <br><br>
-                    <input type="Submit" value="Submit" style="font-family: Trebuchet MS,Helvetica,sans-serif!important;" onclick="updateSliderMin_Max(this.form.startdate.value, this.form.enddate.value, this.form.incrementsize.value);return false;"/>
-                </form>
-                <input type="range" id="dateSlider" min="null" max="null" value="" step="1" list="ticks" onchange="showValue(this.value);return false;">
-                <div id="DataList">
-                </div>
-                <span id="range"></span>
-                <br>
-                <input type="Submit" value= &#9658 style="width: 75px;" onclick="PlaySlider()">
-                <input type="Submit" value= &#10073;&#10073; style="width: 75px;" onclick="PauseSlider()">
-                <input type="Submit" value= &#x21bb; style="width: 75px;" onclick="reload()">
-                <script>
-                    var range_size, startdate, interval, step, original_startdate;
-                    var has_complete = false;
-                    var has_reset = true;
-                    var iterations = 0;
-                    function reload()
-                    {
-                        clearInterval(interval);
-                        iterations = 0;
-                        startdate = original_startdate;
-                        document.getElementById("dateSlider").value = startdate;
-                        showValue(startdate);
-                        has_complete = false;
-                        has_reset = true;
-                    }
-
-                    function PlaySlider()
-                    {
-                        if(has_complete == true)
-                        {
-                            return false;
-                        }
-                        if(iterations == 0)
-                        {
-                            original_startdate = startdate;
-                        }
-                        if(has_reset == true)
-                        {
-                            has_reset = false;
-                            interval = setInterval(function(){
-                            if(iterations % step == 0)
-                            {
-                                document.getElementById("dateSlider").value = startdate;
-                                showValue(startdate.toString());
-                            }
-                            iterations++; 
-                            if(iterations == range_size)
-                            {
-                                has_complete = true;
-                                clearInterval(interval);
-                                iterations = 0;
-                                return false;
-                            }
-                            startdate++;
-                            },100);
-                        }
-                    }
-
-                    /* This function is called by the pause button. When the pause button 
-                    is clicked, it wil clear the interval that is created in PlaySlider. 
-                    This is what pauses the animation */
-                    function PauseSlider()
-                    {
-                        clearInterval(interval);
-                        has_reset = true;
-                    }
-
-                    /* ShowValue is called whenever the slidebar value is updated.
-                    It will select the span element with id='range' and update it's 
-                    value to the newValue. */
-                    function showValue(newValue)
-                    {
-                        document.getElementById("range").innerHTML = newValue.substr(0,4) + "-" + newValue.substr(4,2) + "-" + newValue.substr(6,2);
-                        updateFile(newValue);
-                    }
-
-                    /* updateSliderMin_Max is called whenever the submit button is selected.
-                    It will update the min and max value of the range (slidebar) element.
-                    This then also creates tick marks on the slidebar by an increment of 
-                    one. */
-                    function updateSliderMin_Max(startdate,enddate,scale)
-                    {
-                        if(startdate.match(/^\d{4}\-\d{1,2}\-\d{1,2}$/))
-                        {
-                            startdate = startdate.replace("-","");
-                            startdate = startdate.replace("-","");
-                        }
-                        if(enddate.match(/^\d{4}\-\d{1,2}\-\d{1,2}$/))
-                        {
-                            enddate = enddate.replace("-","");
-                            enddate = enddate.replace("-","");
-                        }
-                        step = scale;
-                        this.startdate = startdate;
-                        range_size = (enddate - startdate) + 1;
-                        updateFile(startdate);
-                        document.getElementById("dateSlider").min = startdate;
-                        document.getElementById("dateSlider").value = startdate;
-                        document.getElementById("dateSlider").max = enddate;
-                        document.getElementById("dateSlider").step = scale;
-                        document.getElementById("range").innerHTML = startdate.substr(0,4) + "-" + startdate.substr(4,2) + "-" + startdate.substr(6,2);
-
-                        var datalist = document.createElement('datalist');
-                        datalist.id = "ticks";
-                        console.log(Current_Date);
-                        console.log(startdate);
-                        console.log(text.indexOf(Current_Date));
-                        console.log(text.indexOf(startdate));
-
-                        // var end_index = text.indexOf('"' + enddate + '"');
-                        // if(start_index == -1)
-                        // {
-                        //     alert("Start date specified does not exist");
-                        // }
-                        // if(end_index == -1)
-                        // {
-                        //     alert("End date specified does not exist.");
-                        // }
-                        // for(start_index; start_index <= end_index; start_index++)
-                        // {
-                        //     var option = document.createElement('option');
-                        //     option.appendChild(document.createTextNode(text[start_index]));
-                        //     datalist.appendChild(option);
-                        // }
-                        // document.getElementById('DataList').appendChild(datalist);
-                        // return false;
-                    }
-
-                    SNODAS_FILE = SNODAS_FILE.replace("SNODAS_DATA/SnowpackByDate_","");
-                    SNODAS_FILE = SNODAS_FILE.replace(".csv","");
-                    SNODAS_FILE = SNODAS_FILE.substr(0,4) + "-" + SNODAS_FILE.substr(4,2) + "-" + SNODAS_FILE.substr(6,2);
-                    d3.select("#FileDate").text(" " + SNODAS_FILE);
-                </script>
-                <!-- PNG FILE -->
-                <br>
-                <br>
-                <div style="background-color: red">
-                    <div class="dropdown">
-                        <button onclick="myFunction2()" class="dropbtn" style="font-size: 15px;">Select Basin</button>&nbsp;<span id="BasinSelector" style="font-size: 15px; font-weight: bold; text-decoration: underline;">Selected Basin:</span><span id="CurrentBasin" style="font-size: 15px;"></span>
-                        <div id="myDropdown2" class="dropdown-content">
-                            <input type="text" placeholder="Search.." id="myInput2" onkeyup="filterFunction2()">
-                            <div id="BasinList">
-                                <script>
-                                    document.getElementById('BasinList').appendChild(createBasinList());
-                                    /* createDateList will create a ul, li list that contains all the dates of
-                                    available geojson files of the SNODAS data */
-                                    function createBasinList()
-                                    {   
-                                        var list = document.createElement('ul');
-                                        for(var index in SNODAS_Geometry.features)
-                                        {
-                                            var li = document.createElement('li');
-                                            var a = document.createElement('a');
-                                            a.setAttribute("href","#");
-                                            a.setAttribute("onclick",'clickOnMapItem(' + '"' + SNODAS_Geometry.features[index]["properties"]["LOCAL_ID"] + '");');
-                                            var basin = document.createTextNode("LOCAL_ID: " + SNODAS_Geometry.features[index]["properties"]["LOCAL_ID"] + " LOCAL_NAME: " + SNODAS_Geometry.features[index]["properties"]["LOCAL_NAME"]);
-                                            a.appendChild(basin);
-                                            li.appendChild(a);
-                                            list.appendChild(li);
-                                        }
-                                        return list;
-                                    }
-                                </script>
-                            </div>
-                        </div>
-                    </div>
-                <a id="lightbox_ref" href="" data-lightbox="402-SNODAS-SWE"><img src="" id="SNODASPlot"/></a>
-                <script>
-                    /* SetSNODASPlot is called whenever a basin is clicked. Once clicked,
-                    this function will recieve the LOCAL_ID of that basin and then update
-                    the SNDOAS Plots image section with the proper plot graph. This will
-                    then get updated everytime a new basin is selected */
-                    function SetSNODASPlot(name)
-                    {
-                        document.getElementById("lightbox_ref").href = "StatisticsByBasin-Graphs/" + name + "-SNODAS-SWE.png";
-                        document.getElementById("SNODASPlot").src = "StatisticsByBasin-Graphs/" + name + "-SNODAS-SWE.png";
-                    }
-                </script>
-                </div>
-            </div>
+            <a id="lightbox_ref" href="" data-lightbox="402-SNODAS-SWE"><img src="" id="SNODASPlot" style="max-height: 300px; max-width: 350x;"/></a>
+            <script>
+                /* SetSNODASPlot is called whenever a basin is clicked. Once clicked,
+                this function will recieve the LOCAL_ID of that basin and then update
+                the SNDOAS Plots image section with the proper plot graph. This will
+                then get updated everytime a new basin is selected */
+                function SetSNODASPlot(name)
+                {
+                    document.getElementById("lightbox_ref").href = "StatisticsByBasin-Graphs/" + name + "-SNODAS-SWE.png";
+                    document.getElementById("SNODASPlot").src = "StatisticsByBasin-Graphs/" + name + "-SNODAS-SWE.png";
+                }
+            </script>
         </aside>
-
     </div>
 
     <script>
@@ -692,6 +642,7 @@
         function myFunction2() {
             document.getElementById("myDropdown2").classList.toggle("show");
         }
+
 
         /* filterFunction is used to grab the list of elements in the dropdown menu.
         This function also allows users to use the search key and will display 
@@ -712,7 +663,6 @@
                 }
             }
         }
-
         /* filterFunction is used to grab the list of elements in the dropdown menu.
         This function also allows users to use the search key and will display 
         if there is a matching element. If there is nothing that mathces the search,
@@ -735,7 +685,8 @@
     </script>
 
     <footer id="footer">
-        <h5>Created by <a href="http://openwaterfoundation.org/">Open Water Foundation</a> for <a href="http://cwcb.state.co.us/Pages/CWCBHome.aspx">Colorado Water Conservation Board</a></h5>
+    <h5>Created by <a href="http://openwaterfoundation.org/">Open Water Foundation</a> 
+        for <a href="http://cwcb.state.co.us/Pages/CWCBHome.aspx">Colorado Water Conservation Board</a></h5>
     </footer>
 
 </body>
