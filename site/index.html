@@ -515,7 +515,7 @@
                 <br><br>
                 <input type="Submit" value="Submit" style="font-family: Trebuchet MS,Helvetica,sans-serif!important;" onclick="updateSliderMin_Max(this.form.startdate.value, this.form.enddate.value, this.form.incrementsize.value);return false;"/>
             </form>
-            <input type="range" id="dateSlider" min="null" max="null" value="" step="1" list="ticks" onchange="showValue(this.value);return false;" style="width: 350px;">
+            <input type="range" id="dateSlider" min="null" max="null" value="" step="1" list="ticks" onchange="showValue(this.value);return false;" style="width: 350px;" disabled>
             <div id="DataList">
             </div>
             <span id="range"></span>
@@ -568,7 +568,7 @@
                             showValue(startdate.toString());
                         }
                         iterations++; 
-                        if(iterations == RangeDates.length)
+                        if(stardate == RangeDates[RangeDates.length])
                         {
                             has_complete = true;
                             clearInterval(interval);
@@ -665,7 +665,7 @@
                     // document.getElementById('DataList').appendChild(datalist);
                 }
 
-                SNODAS_FILE = SNODAS_FILE.replace("SNODAS_DATA/SnowpackByDate_","");
+                SNODAS_FILE = SNODAS_FILE.replace("SNODAS_DATA/SnowpackStatisticsByDate_","");
                 SNODAS_FILE = SNODAS_FILE.replace(".csv","");
                 SNODAS_FILE = SNODAS_FILE.substr(0,4) + "-" + SNODAS_FILE.substr(4,2) + "-" + SNODAS_FILE.substr(6,2);
                 d3.select("#FileDate").text(" " + SNODAS_FILE);
