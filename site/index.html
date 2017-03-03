@@ -605,25 +605,29 @@
                 one. */
                 function updateSliderMin_Max(startdate,enddate,scale)
                 {
-                    /* ERROR HANDLING */
-                    /* Stardate must match format YYYYMMDD or YYYY-MM-DD */
-                    if(!startdate.match(/^\d{4}\-\d{1,2}\-\d{1,2}$/) && !startdate.match(/^\d{8}$/) ^ stardate == "")
-                    {
-                        alert("Incorrect format for Starting Date value!");
-                        return false;
-                    }
-                    /* Enddate must match format YYYYMMDD or YYYY-MM-DD */
-                    else if(!enddate.match(/^\d{4}\-\d{1,2}\-\d{1,2}$/) && !enddate.match(/^\d{8}$/) ^ enddate == "")
-                    {
-                        alert("Incorrect format for Ending Date value!");
-                        return false;
-                    }
-                    /* Increment must match format (int) or (int)(int) EX: 1 or 10. Must be between 1 and 10*/
-                    else if(!scale.match(/^\d{1}$/) && !scale.match(/^\d{1,2}$/) && scale != "" ^ scale > 10 ^ scale != "")
-                    {
-                        alert("Incorrect format for Increment value!")
-                        return false;
-                    }
+                    iterations = 0;
+                    has_complete = false;
+                    has_reset = true;
+
+                    // /* ERROR HANDLING */
+                    // /* Stardate must match format YYYYMMDD or YYYY-MM-DD */
+                    // if(!startdate.match(/^\d{4}\-\d{1,2}\-\d{1,2}$/) && !startdate.match(/^\d{8}$/) ^ stardate == "")
+                    // {
+                    //     alert("Incorrect format for Starting Date value!");
+                    //     return false;
+                    // }
+                    // /* Enddate must match format YYYYMMDD or YYYY-MM-DD */
+                    // else if(!enddate.match(/^\d{4}\-\d{1,2}\-\d{1,2}$/) && !enddate.match(/^\d{8}$/) ^ enddate == "")
+                    // {
+                    //     alert("Incorrect format for Ending Date value!");
+                    //     return false;
+                    // }
+                    // /* Increment must match format (int) or (int)(int) EX: 1 or 10. Must be between 1 and 10*/
+                    // else if(!scale.match(/^\d{1}$/) && !scale.match(/^\d{1,2}$/) && scale != "" ^ scale > 10 ^ scale != "")
+                    // {
+                    //     alert("Incorrect format for Increment value!")
+                    //     return false;
+                    // }
 
                     RangeDates = [];
                     has_reset = true;
