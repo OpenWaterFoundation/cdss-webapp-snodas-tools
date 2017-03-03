@@ -266,7 +266,6 @@
                     var layer = geojson.getLayer(id);
                     //fire event 'click' on target layer 
                     layer.fireEvent('mouseover');
-                    document.getElementById("CurrentBasin").innerHTML = " " + itemId;
                     SetSNODASPlot(itemId);
                 }
 
@@ -714,6 +713,12 @@
                 {
                     document.getElementById("lightbox_ref").href = "StatisticsByBasin-Graphs/" + name + "-SNODAS-SWE.png";
                     document.getElementById("SNODASPlot").src = "StatisticsByBasin-Graphs/" + name + "-SNODAS-SWE.png";
+                    document.getElementById("BasinSelector").innerHTML = "Selected Basin: " +name;
+                    var interval = setInterval(function(){
+                        document.getElementById("lightbox_ref").href = "";
+                        document.getElementById("SNODASPlot").src = "";
+                        document.getElementById("BasinSelector").innerHTML = "Selected Basin: ";
+                    },50000);
                 }
             </script>
             </div>
