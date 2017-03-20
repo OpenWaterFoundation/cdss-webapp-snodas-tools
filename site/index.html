@@ -357,7 +357,7 @@
                             });
                             var Current_Date, Latest_Date;
                             var text = new Array();
-                            $.get("SNODAS_DATA/ListOfDates.txt",function(data)
+                            $.get("SnowpackStatisticsByDate/ListOfDates.txt",function(data)
                             {
                                 text = data.split('\n');
                                 /* Sort the dates in descending order (Most recent day first) */
@@ -470,7 +470,7 @@
                     var PropertyArray = ['SWE_Mean_meters','SWE_Minimum_meters','SWE_Maximum_meters','SWE_StdDev_meters','Count_pixels','SnowCover_percent','SWE_Mean_inches','SWE_Min_inches','SWE_Max_inches','SWE_StdDev_inches','SNODAS_SWE_Mean_m','SNODAS_SWE_Min_m','SNODAS_SWE_Max_m','SNODAS_SWE_StdDev_m','SNODAS_Pixels_Count','SNODAS_SnowCover_percent','SNODAS_SWE_Mean_in','SNODAS_SWE_Min_in','SNODAS_SWE_Max_in','SNODAS_SWE_StdDev_in'];
                     var FileName = file.toString();
                     FileName = FileName.substr(0,4) + "-" + FileName.substr(4,2) + "-" + FileName.substr(6,2);
-                    file = "SNODAS_DATA/SnowpackStatisticsByDate_" + file + ".csv";
+                    file = "SnowpackStatisticsByDate/SnowpackStatisticsByDate_" + file + ".csv";
                     d3.selectAll("#FileDate").text(" " + FileName);
                     geojson.clearLayers();
 
@@ -669,7 +669,7 @@
                     // document.getElementById('DataList').appendChild(datalist);
                 }
 
-                SNODAS_FILE = SNODAS_FILE.replace("SNODAS_DATA/SnowpackStatisticsByDate_","");
+                SNODAS_FILE = SNODAS_FILE.replace("SnowpackStatisticsByDate/SnowpackStatisticsByDate_","");
                 SNODAS_FILE = SNODAS_FILE.replace(".csv","");
                 SNODAS_FILE = SNODAS_FILE.substr(0,4) + "-" + SNODAS_FILE.substr(4,2) + "-" + SNODAS_FILE.substr(6,2);
                 d3.select("#FileDate").text(" " + SNODAS_FILE);
@@ -780,10 +780,10 @@
                 then get updated everytime a new basin is selected */
                 function SetSNODASPlot(name)
                 {
-                    document.getElementById("Basin_SnowCover_img").src = "StatisticsByBasin-Graphs/" + name + "-SNODAS-SnowCover.png";
-                    document.getElementById("Basin_SWE_img").src = "StatisticsByBasin-Graphs/" + name + "-SNODAS-SWE.png";
-                    document.getElementById("Basin_SWE_Volume_img").src = "StatisticsByBasin-Graphs/" + name + "-SNODAS-SWE-Volume.png";
-                    document.getElementById("Basin_Swe_Volume_1WeekChange_img").src = "StatisticsByBasin-Graphs/" + name + "-SNODAS-SWE-Volume-1WeekChange.png";
+                    document.getElementById("Basin_SnowCover_img").src = "SnowpackGraphsByBasin/" + name + "-SNODAS-SnowCover.png";
+                    document.getElementById("Basin_SWE_img").src = "SnowpackGraphsByBasin/" + name + "-SNODAS-SWE.png";
+                    document.getElementById("Basin_SWE_Volume_img").src = "SnowpackGraphsByBasin/" + name + "-SNODAS-SWE-Volume.png";
+                    document.getElementById("Basin_Swe_Volume_1WeekChange_img").src = "SnowpackGraphsByBasin/" + name + "-SNODAS-SWE-Volume-1WeekChange.png";
                     document.getElementById("BasinID").innerHTML = "Selected Basin ID: " + name;
                     document.getElementById("BasinName").innerHTML = "Basin Name: " + getBasinName(name);
 
