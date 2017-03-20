@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" href="css/L.Control.MousePosition.css"/>
     <link rel="stylesheet" href="css/leaflet.zoomhome.css"/>
-    <link rel="stylesheet" href="css/lightbox.css">
+    <!-- <link rel="stylesheet" href="css/lightbox.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="shortcut icon" type="image/x-icon" href="images/snodas-tools-favicon.ico"/>
 
@@ -17,7 +17,7 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="javascript/L.Control.MousePosition.js"></script>
-    <script src="javascript/lightbox.js"></script>
+    <!-- <script src="javascript/lightbox.js"></script> -->
     <script src="javascript/leaflet.zoomhome.min.js"></script>
     <script src="javascript/papaparse.js"></script>
 </head>
@@ -530,6 +530,7 @@
                 var has_reset = true;
                 var iterations = 0;
 
+
                 /* This is the function the reset button calls. This will reset the 
                 range to the beginning date (startdate) and will update certain booleans
                 so the animation can run properly */
@@ -564,11 +565,11 @@
                         interval = setInterval(function(){
                         if(iterations % step == 0)
                         {
-                            document.getElementById("dateSlider").value = startdate;
+                            document.getElementById("dateSlider").value = this.startdate;
                             showValue(startdate.toString());
                         }
-                        iterations++; 
-                        if(stardate == RangeDates[RangeDates.length])
+                        iterations++;
+                        if(startdate == RangeDates[RangeDates.length])
                         {
                             has_complete = true;
                             clearInterval(interval);
@@ -607,6 +608,7 @@
                     iterations = 0;
                     has_complete = false;
                     has_reset = true;
+                    clearInterval(interval);
 
                     // /* ERROR HANDLING */
                     // /* Stardate must match format YYYYMMDD or YYYY-MM-DD */
@@ -662,6 +664,8 @@
                         option.appendChild(document.createTextNode(text[start_index]));
                         datalist.appendChild(option);
                     }
+                    console.log(RangeDates);
+
                     // document.getElementById('DataList').appendChild(datalist);
                 }
 
@@ -675,7 +679,7 @@
             <br>
             <div style="background-color: #D3D3D3">
                 <div class="dropdown">
-                    <button onclick="myFunction2()" class="dropbtn" style="font-size: 15px;">Select Basin</button>&nbsp;<span id="BasinSelector" style="font-size: 15px; font-weight: bold; text-decoration: underline;">Selected Basin:</span><span id="CurrentBasin" style="font-size: 15px;"></span>
+                    <button onclick="myFunction2()" class="dropbtn" style="font-size: 15px;">Select Basin</button>&nbsp;<span id="CurrentBasin" style="font-size: 15px;"></span>
                     <div id="myDropdown2" class="dropdown-content">
                         <input type="text" placeholder="Search.." id="myInput2" onkeyup="filterFunction2()">
                         <div id="BasinList">
@@ -702,8 +706,73 @@
                             </script>
                         </div>
                     </div>
+               </div>
+               <br>
+               <span id="BasinID" style="font-size: 15px; font-weight: bold; text-decoration:"></span>
+               <br>
+               <span id="BasinName" style="font-size: 15px; font-weight: bold; text-decoration:"></span>
+
+                <br>
+                <br>
+                <button onclick="document.getElementById('Basin_SnowCover').style.display='inline';">SNODAS Snow Cover Graph</button>
+                <br>
+                <br>
+                <button onclick="document.getElementById('Basin_SWE').style.display='inline';">SNODAS SWE Graph</button>
+                <br>
+                <br>
+                <button onclick="document.getElementById('Basin_SWE_Volume').style.display='inline';">SNODAS SWE Volume Graph</button>
+                <br>
+                <br>
+                <button onclick="document.getElementById('Basin_Swe_Volume_1WeekChange').style.display='inline';">SNODAS SWE 1 Week Change Graph</button>
+
+                <div id="Basin_SnowCover" class="lightbox" style="display: none" onclick="document.getElementById('Basin_SnowCover').style.display='none'">
+                    <table class="lightbox_table">
+                    <tr>
+                    <td class="lightbox_table_cell" align="center">
+                        <div id="lightbox_content">
+                            <img id="Basin_SnowCover_img" src="">
+                        </div>
+                    </td>
+                    </tr>
+                    </table>
                 </div>
-            <a id="lightbox_ref" href="" data-lightbox="402-SNODAS-SWE"><img src="" id="SNODASPlot"/></a>
+
+                <div id="Basin_SWE" class="lightbox" style="display: none" onclick="document.getElementById('Basin_SWE').style.display='none'">
+                    <table class="lightbox_table">
+                    <tr>
+                    <td class="lightbox_table_cell" align="center">
+                        <div id="lightbox_content">
+                            <img id="Basin_SWE_img" src="">
+                        </div>
+                    </td>
+                    </tr>
+                    </table>
+                </div>
+
+                <div id="Basin_SWE_Volume" class="lightbox" style="display: none" onclick="document.getElementById('Basin_SWE_Volume').style.display='none'">
+                    <table class="lightbox_table">
+                    <tr>
+                    <td class="lightbox_table_cell" align="center">
+                        <div id="lightbox_content">
+                            <img id="Basin_SWE_Volume_img" src="">
+                        </div>
+                    </td>
+                    </tr>
+                    </table>
+                </div>
+
+                <div id="Basin_Swe_Volume_1WeekChange" class="lightbox" style="display: none" onclick="document.getElementById('Basin_Swe_Volume_1WeekChange').style.display='none'">
+                    <table class="lightbox_table">
+                    <tr>
+                    <td class="lightbox_table_cell" align="center">
+                        <div id="lightbox_content">
+                            <img id="Basin_Swe_Volume_1WeekChange_img" src="">
+                        </div>
+                    </td>
+                    </tr>
+                    </table>
+                </div>
+
             <script>
                 /* SetSNODASPlot is called whenever a basin is clicked. Once clicked,
                 this function will recieve the LOCAL_ID of that basin and then update
@@ -711,14 +780,28 @@
                 then get updated everytime a new basin is selected */
                 function SetSNODASPlot(name)
                 {
-                    document.getElementById("lightbox_ref").href = "StatisticsByBasin-Graphs/" + name + "-SNODAS-SWE.png";
-                    document.getElementById("SNODASPlot").src = "StatisticsByBasin-Graphs/" + name + "-SNODAS-SWE.png";
-                    document.getElementById("BasinSelector").innerHTML = "Selected Basin: " +name;
-                    var interval = setInterval(function(){
-                        document.getElementById("lightbox_ref").href = "";
-                        document.getElementById("SNODASPlot").src = "";
-                        document.getElementById("BasinSelector").innerHTML = "Selected Basin: ";
-                    },50000);
+                    document.getElementById("Basin_SnowCover_img").src = "03-20-17-FinalProductFiles/" + name + "-SNODAS-SnowCover.png";
+                    document.getElementById("Basin_SWE_img").src = "03-20-17-FinalProductFiles/" + name + "-SNODAS-SWE.png";
+                    document.getElementById("Basin_SWE_Volume_img").src = "03-20-17-FinalProductFiles/" + name + "-SNODAS-SWE-Volume.png";
+                    document.getElementById("Basin_Swe_Volume_1WeekChange_img").src = "03-20-17-FinalProductFiles/" + name + "-SNODAS-SWE-Volume-1WeekChange.png";
+                    document.getElementById("BasinID").innerHTML = "Selected Basin ID: " + name;
+                    document.getElementById("BasinName").innerHTML = "Basin Name: " + getBasinName(name);
+
+                }
+
+                /* getBasinName takes in a basin id and will search through the 
+                SNODAS_Geometry.json file to find the local name of the basin. It will
+                then return the local name of the coinciding local id. */
+                function getBasinName(id)
+                {
+                    for(var index in SNODAS_Geometry.features)
+                    {
+                        if(SNODAS_Geometry.features[index]["properties"]["LOCAL_ID"] == id)
+                        {
+                            console.log(SNODAS_Geometry.features[index]["properties"]["LOCAL_NAME"]);
+                            return SNODAS_Geometry.features[index]["properties"]["LOCAL_NAME"];
+                        }
+                    }
                 }
             </script>
             </div>
