@@ -28,8 +28,8 @@ rem Now sync the local files up to Amazon S3
 rem - apparently can't pass an empty argument so comment out %dryrun%
 rem %dryrun%
 
-rem aws s3 cp ../site/index.html %s3Folder%/index.html --profile %awsProfile%
-rem aws s3 sync ../site/css %s3Folder%/css --delete --profile %awsProfile%
-rem aws s3 sync ../site/images %s3Folder%/images --delete --profile %awsProfile%
-rem aws s3 sync ../site/javascript %s3Folder%/javascript --delete --profile %awsProfile%
-aws s3 sync ../site/json %s3Folder%/json --delete --profile %awsProfile%
+call aws s3 cp ../site/index.html %s3Folder%/index.html --profile %awsProfile%
+call aws s3 sync ../site/css %s3Folder%/css --delete --profile %awsProfile%
+call aws s3 sync ../site/images %s3Folder%/images --delete --profile %awsProfile%
+call aws s3 sync ../site/javascript %s3Folder%/javascript --delete --profile %awsProfile%
+call s3 sync ../site/json %s3Folder%/json --delete --profile %awsProfile%
