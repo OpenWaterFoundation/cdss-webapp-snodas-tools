@@ -51,39 +51,65 @@
             <li><a style="font-family: Trebuchet, Helvetica,sans-serif!important;" id="analysisA" class="not-active" onclick="navbarClick('analysis',['about','data'],'analysisA');return false;">Analysis</a></li>
         </ul>
         <div id="about" class="scroll">
-            <h3>Daily Snow Statistics of Colorado Watershed Basins</h3>
-            <p>The purpose of this website is to provide access to a historical archive of SNODAS data products for Colorado water supply basins.<a href="https://nsidc.org/data/g02158">Snow Data Assimilation System (SNODAS)</a> data are processed daily to calculate Snow Water Equivalent (SWE) and Snow Coverage statistics for water supply basins in Colorado. Snow Water Equivalent is the estimate of the depth of liquid water contained within the snowpack. Snow coverage is a percent of the basin land surface covered by snow (water bodies in the basin are ignored). The national SNODAS gridded dataset has been processed to provide data products for Colorado. Mean SWE is displayed in the map using a legend similar to National Weather Service.  The SNODAS Tools website provides access to an archive of daily products.</p>
+            <h3>Daily SNODAS Snow Statistics for Colorado Watershed Basins</h3>
+            <p>This website provides access to a historical archive of SNODAS data products for Colorado water supply basins. <a href="https://nsidc.org/data/g02158">Snow Data Assimilation System (SNODAS)</a> data are processed daily to calculate Snow Water Equivalent (SWE) and Snow Coverage statistics for water supply basins in Colorado. Snow Water Equivalent is the estimate of the depth of liquid water contained within the snowpack. Snow coverage is a percent of the basin land surface covered by snow (water bodies in the basin are ignored). The national SNODAS gridded dataset has been processed to provide data products for Colorado. Mean SWE is displayed in the map using a legend similar to the National Weather Service. The SNODAS Tools website provides access to an archive of daily products.</p>
             <ul>
+                <li>The website is best viewed on a widescreen display. If the layout seems out of order press <span style="font-weight: bold">Ctrl and minus </span> to zoom out until the layout seems to be in correct order.</li>
                 <li>Hover over a basin to see the daily mean SWE value and other daily statistics.</li>
                 <li>Use the <span style="font-weight: bold;">Select Date</span> button to display historical data for a specified day.</li>
-                <li>Enter animation start and end dates and press the play button to view the animation of daily SWE data.</li>
-                <li>Enter animation start and end dates and press the play button to view the animation of daily SWE data.</li>
-                <li>Click on a basin to display a thumbnail version of the SWE plot in the lower-right.  Click on the plot to view the full-size plot.</li>
+                <li>Enter animation start and end dates, press <span style="font-weight: bold;">Submit</span>, and then press the play button to view the animation of daily SWE data.</li>
+                <li>Click on a basin in the map to select the basin or use the <span style="font-weight: bold">Select Basin</span> to select from the basin list. Then click on buttons in the lower right to display graphs.<li>
                 <li>Reposition the map by holding the mouse button down and dragging.</li>
-                <li>Zoom in and out of the map using the control in the upper left, or use the mouse whelegel.</li>
+                <li>Zoom in and out of the map using the control in the upper left, or use the mouse wheel.</li>
                 <li>Use the <span style="font-weight: bold;">Data</span> tab on the left to access raw data.</li>
             </ul>
             <p>&nbsp;</p>
             <p>Development of the SNODAS Tools was funded by the <a href="http://cwcb.state.co.us">Colorado Water Conservation Board</a>.  The tools were developed by the <a href="http://openwaterfoundation.org">Open Water Foundation</a>.
-            Project resources are available on the<a href="http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas">OWF SNODAS project website</a></p>
+            Project resources are available on the<a href="http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas"> OWF SNODAS project website</a></p>
             <p style="font-weight: bold;">This website is under development with a scheduled completion date of June 30, 2017.  It is likely that changes in the site’s functionality and access to data will occur until then.</p>
+            <p>Website version 1.0.1 (2017-03-20)</p>
             </div>
-            <div id="data" style="display: none; min-width: 300px;">
+            <div id="data" class="scroll" style="display: none; min-width: 300px;">
                 <h3>The input data and results from analysis will be made available soon, as details of the operational website are finalized.</h3>
+
+                <p>The national SNODAS data are available from the <a href="https://nsidc.org/data/g02158">Snow Data Assimilation System (SNODAS)</a>.  The SNODAS data are processed into statistical data products by the CDSS SNODAS Tools.   The output consists of comma-separated-value (CSV) files <span style="font-weight: bold">“ByDate”</span> (basin data for each day) and <span style="font-weight: bold">“ByBasin”</span> (historical period for each basin).  Data files can be downloaded using the download buttons in the interface as well as by accessing the following URL resources.  The zip file contains a shapefile with daily statistics in the attribute table (names have been truncated to adhere to shapefile limit).</p>
+
+                <p style="font-size: 13px">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByBasin/SnowpackStatisticsByBasin_Local_ID.csv</p>
+
+                <p style="font-size: 13px">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_YYYYMMDD.csv</p>
+
+                <p style="font-size: 13px">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_YYYYMMDD.geojson</p>
+
+                <p style="font-size: 13px">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_YYYYMMDD.zip</p>
+                
+                <p style="font-size: 13px">The following static resources are also available:</p>
+
+                <p style="font-size: 13px">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/json/CO_boundary.geojson    (State of Colorado rectangular boundary)</p>
+
+                <p style="font-size: 13px">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/json/SNODAS_geometry.geojson      (basin boundaries, same as daily boundaries)</p>
+
+                <p style="font-size: 13px">xxxx/xxx .zip    (input basin boundary layer shapefile)</p>
+
+                <p style="font-size: 13px">xxxx/Watershed_Connectivity_v3.xlsx    (input basin connectivity shapefile for total basin calculations)</p>
+
+                <p>Refer to the <a href="http://software.openwaterfoundation.org/cdss-app-snodas-tools-doc-user/">SNODAS Tools User Manual</a> and <a href="http://software.openwaterfoundation.org/cdss-app-snodas-tools-doc-dev/">SNODAS Tools Developer Manual</a> for more information.</p>
+
                 <h6>SNODAS data citation:  
                 National Operational Hydrologic Remote Sensing Center. 2004. Snow Data Assimilation System (SNODAS) Data Products at NSIDC, Version 1.  SWE dataset.  Boulder, Colorado USA. NSIDC: National Snow and Ice Data Center. doi: http://dx.doi.org/10.7265/N5TB14TC.  Data are accessed daily, and historical period is also accessed as needed for historical period products.</h6>
             </div>
             <div id="analysis" style="display: none;">
-                <h3>SNODAS data are processed into data products as follows:</h3>
+                <h3>SNODAS data are processed into data products using QGIS and Python software as follows:</h3>
                 <ol>
-                    <li>Download daily SNODAS national data.</li>
-                    <li>Clip data to extend of Colorado water supply basin boundaries and save as TIF image.</li>
-                    <li>Use Colorado SNODAS TIF image and water supply basin boundaries to calculate statistics for the basins.  Output to comma-separated-value (CSV) files and GeoJSON map layer.</li>
-                    <li>Process CSV files into time series plots.  Publish files to SNODAS website.</li>
+                    <li>Download daily SNODAS SWE national data.</li>
+                    <li>Clip the national data to the extent of the Colorado water supply basin boundaries and save as TIF image.  Basins extend outside of the Colorado boundary.</li>
+                    <li>Use the Colorado SNODAS SWE TIF image and water supply basin boundaries to calculate statistics for the basins.  The effective area used in calculations is that of the sum of the SNODAS grid cells, which differs slightly from the original basin boundary area.  SNODAS analysis excludes water bodies.</li>
+                    <li>Output results to comma-separated-value (CSV), GeoJSON map layer, and zipped shapefile.   CSV files are generated by basin and by date to facilitate use in the website and by other applications.</li>
+                    <li>Process CSV files into time series graph products.</li>
+                    <li>Publish files to the SNODAS website.</li>
                 </ol>
                 <p>&nbsp;</p>
                 <p>&nbsp;</p>
-                <p>A summary of the analysis steps are described in the SNODAS Tools User Manual (link to <a href="http://software.openwaterfoundation.org/cdss-app-snodas-tools-doc-user/">http://software.openwaterfoundation.org/cdss-app-snodas-tools-doc-user/</a>).  More detailed explanation are provided in the SNODAS Tools Developer Manual (link to <a href="http://software.openwaterfoundation.org/cdss-app-snodas-tools-doc-dev/">http://software.openwaterfoundation.org/cdss-app-snodas-tools-doc-dev/</a>).</p>
+                <p>A summary of the analysis steps are described in the <a href="http://software.openwaterfoundation.org/cdss-app-snodas-tools-doc-user/">SNODAS Tools User Manual</a>. More detailed explanation are provided in the <a href="http://software.openwaterfoundation.org/cdss-app-snodas-tools-doc-dev/">SNODAS Tools Developer Manual</a>.</p>
             </div>
 
             <script>
