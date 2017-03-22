@@ -411,7 +411,7 @@
                                     var a = document.createElement('a');
                                     var date = document.createTextNode(result.substr(0,4) + "-" + result.substr(4,2) + "-" + result.substr(6,2));
                                         a.setAttribute("href","#");
-                                        a.setAttribute("onclick", "updateFile(" + result + ");document.getElementById('myDropdown').classList.toggle('show');return false;");
+                                        a.setAttribute("onclick", "updateFile(" + result + ");document.getElementById('myDropdown').classList.toggle('hide');return false;");
                                     a.appendChild(date);
                                     list.appendChild(a);
                                 });
@@ -536,8 +536,8 @@
                 </div>
 
                 <span style="font-size: 15px;">Increment (days): (Default is set to 1)</span><br>
-                <input type="text" name="incrementsize" placeholder="value between 1 and 10" required>
-                &nbsp;&nbsp;<i class="fa fa-question-circle" aria-hidden="true"><span class="tooltiptext">Progresses the animation by the inputted amount.<br><br>For example, if the input was five, the map data would change every 5 days.</span></i>
+                <input type="text" name="incrementsize" placeholder="value between 1 and 10">
+                &nbsp;&nbsp;<i class="fa fa-question-circle" aria-hidden="true"><span class="tooltiptext">The increment, in days, for the animation. A value of 1 will display every day's data. A value of 5 will display every fifth day.</span></i>
                 <br><br>
                 <input type="Submit" value="Submit" style="font-family: Trebuchet MS,Helvetica,sans-serif!important;" onclick="updateSliderMin_Max(this.form.startdate.value, this.form.enddate.value, this.form.incrementsize.value);return false;"/>
             </form>
@@ -842,6 +842,22 @@
 </div>
 
 <script>
+    /* Below code is used to close the dropdown menus when a user
+    clicks outside the dropdown menu. */
+    window.onclick = function(event) {
+      if (!event.target.matches('.dropbtn')) {
+
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+          }
+        }
+      }
+    }
+    
     /* Functions used for the dropdown menu. When the user clicks on the button
     toggle between hiding and showing the dropdown content. myFunction selects
     the dropdown element. */
