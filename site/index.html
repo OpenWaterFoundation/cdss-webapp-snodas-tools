@@ -569,6 +569,7 @@
                     showValue(startdate);
                     has_complete = false;
                     has_reset = true;
+                    PlaySlider();
                 }
                 /* This function is in charge of playing/running the animation
                 slider. It will progress through an array of dates that the 
@@ -631,6 +632,11 @@
                 one. */
                 function updateSliderMin_Max(startdate,enddate,scale)
                 {
+                    if(scale == undefined)
+                    {
+                        scale = 1;
+                    }
+                    console.log(scale);
                     iterations = 0;
                     has_complete = false;
                     has_reset = true;
