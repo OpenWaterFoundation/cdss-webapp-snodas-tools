@@ -59,6 +59,7 @@
                 <li>Use the <span style="font-weight: bold;">Select Date</span> button to display historical data for a specified day.</li>
                 <li>Enter animation start and end dates, press <span style="font-weight: bold;">Submit</span>, and then press the play button to view the animation of daily SWE data.</li>
                 <li>Click on a basin in the map to select the basin or use the <span style="font-weight: bold;">Select Basin</span> to select from the basin list. Then click on buttons in the lower right to display graphs.</li>
+                <li>Once a graph has been opened, click on the white <span style="font-weight: bold;">'X'</span> in the top right corner to close out of the graph view and return to the main screen.</li>
                 <li>Reposition the map by holding the mouse button down and dragging.</li>
                 <li>Zoom in and out of the map using the control in the upper left, or use the mouse wheel.</li>
                 <li>Use the <span style="font-weight: bold;">Data</span> tab on the left to access raw data.</li>
@@ -191,6 +192,10 @@
                 method. This is what controls the color of each basin depending on the 
                 Mean SME data value. This also controls the colors that are shown in the legend. */
                 function getColor(d) {
+                    if(d == undefined)
+                    {
+                        return '#000000';
+                    }
                     return d < 0.02 ? '#ffffff':
                     d < 0.04 ? '#eff3ff':
                     d < 0.2 ? '#bdd7e7':
@@ -373,7 +378,7 @@
             <div class="dropdown">
                 <button onclick="myFunction()" class="dropbtn" style="font-size: 15px;">Select Date</button>&nbsp;<span id="SNODASTitle" style="font-size: 15px;">SNODAS Date:</span><span id="FileDate" style="font-size: 15px;"></span>
                 <div id="myDropdown" class="dropdown-content">
-                    <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+                    <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()" class="search">
                     <div id="ListOfDates">
                         <script>
                             $.ajaxSetup({
@@ -409,7 +414,7 @@
                                     var a = document.createElement('a');
                                     var date = document.createTextNode(result.substr(0,4) + "-" + result.substr(4,2) + "-" + result.substr(6,2));
                                         a.setAttribute("href","#");
-                                        a.setAttribute("onclick", "updateFile(" + result + ");document.getElementById('myDropdown').classList.toggle('hide');return false;");
+                                        a.setAttribute("onclick", "updateFile(" + result + ");return false;");
                                     a.appendChild(date);
                                     list.appendChild(a);
                                 });
@@ -644,27 +649,6 @@
                     has_complete = false;
                     has_reset = true;
                     clearInterval(interval);
-
-                    // /* ERROR HANDLING */
-                    // /* Stardate must match format YYYYMMDD or YYYY-MM-DD */
-                    // itartdate.match(/^\d{4}\-\d{1,2}\-\d{1,2}$/) && !startdate.match(/^\d{8}$/) ^ stardate == "")
-                    // {
-                    //     alert("Incorrect format for Starting Date value!");
-                    //     return false;
-                    // }
-                    // /* Enddate must match format YYYYMMDD or YYYY-MM-DD */
-                    // else if(!enddate.match(/^\d{4}\-\d{1,2}\-\d{1,2}$/) && !enddate.match(/^\d{8}$/) ^ enddate == "")
-                    // {
-                    //     alert("Incorrect format for Ending Date value!");
-                    //     return false;
-                    // }
-                    // /* Increment must match format (int) or (int)(int) EX: 1 or 10. Must be between 1 and 10*/
-                    // else if(!scale.match(/^\d{1}$/) && !scale.match(/^\d{1,2}$/) && scale != "" ^ scale > 10 ^ scale != "")
-                    // {
-                    //     alert("Incorrect format for Increment value!")
-                    //     return false;
-                    // }
-
                     RangeDates = [];
                     has_reset = true;
                     if(startdate.match(/^\d{4}\-\d{1,2}\-\d{1,2}$/))
@@ -713,7 +697,7 @@
                 <div class="dropdown">
                     <button onclick="myFunction2()" class="dropbtn" style="font-size: 15px;">Select Basin</button>&nbsp;<span id="CurrentBasin" style="font-size: 15px;"></span>
                     <div id="myDropdown2" class="dropdown-content">
-                        <input type="text" placeholder="Search.." id="myInput2" onkeyup="filterFunction2()">
+                        <input type="text" placeholder="Search.." id="myInput2" onkeyup="filterFunction2()" class="search">
                         <div id="BasinList">
                             <script>
                                 document.getElementById('BasinList').appendChild(createBasinList());
@@ -721,17 +705,17 @@
                                 available geojson files of the SNODAS data */
                                 function createBasinList()
                                 {   
-                                    var list = document.createElement('ul');
+                                    var list = document.createElement('span');
                                     for(var index in SNODAS_Geometry.features)
                                     {
-                                        var li = document.createElement('li');
+                                        // var li = document.createElement('li');
                                         var a = document.createElement('a');
                                         a.setAttribute("href","#");
                                         a.setAttribute("onclick",'clickOnMapItem(' + '"' + SNODAS_Geometry.features[index]["properties"]["LOCAL_ID"] + '");');
-                                        var basin = document.createTextNode("LOCAL_ID: " + SNODAS_Geometry.features[index]["properties"]["LOCAL_ID"] + " LOCAL_NAME: " + SNODAS_Geometry.features[index]["properties"]["LOCAL_NAME"]);
+                                        a.setAttribute("style","font-size: 14px;");
+                                        var basin = document.createTextNode("LOCAL_NAME: " + SNODAS_Geometry.features[index]["properties"]["LOCAL_NAME"]);
                                         a.appendChild(basin);
-                                        li.appendChild(a);
-                                        list.appendChild(li);
+                                        list.appendChild(a);
                                     }
                                     return list;
                                 }
@@ -758,6 +742,7 @@
                 <button onclick="document.getElementById('Basin_Swe_Volume_1WeekChange').style.display='inline';">SNODAS SWE 1 Week Change Graph</button>
 
                 <div id="Basin_SnowCover" class="lightbox" style="display: none" onclick="document.getElementById('Basin_SnowCover').style.display='none'">
+                <span class="close cursor" onclick="closeModal()">&times;</span>
                     <table class="lightbox_table">
                     <tr>
                     <td class="lightbox_table_cell" align="center">
@@ -844,7 +829,7 @@
     /* Below code is used to close the dropdown menus when a user
     clicks outside the dropdown menu. */
     window.onclick = function(event) {
-      if (!event.target.matches('.dropbtn')) {
+      if (!event.target.matches('.dropbtn') && !event.target.matches('.search')) {
 
         var dropdowns = document.getElementsByClassName("dropdown-content");
         var i;

@@ -189,7 +189,6 @@ aside h1, p, h4, h3 {
     text-decoration: none;
     display: block;
     font-family: Trebuchet,Helvetica,sans-serif!important;
-
 }
 
 .dropdown span a:hover, .dropdown ul li:hover {
@@ -325,4 +324,21 @@ div .scroll {
 
 .lightbox_table_cell {
     vertical-align:middle;
+}
+
+/* The Close Button */
+.close {
+  color: white;
+  position: absolute;
+  top: 10px;
+  right: 25px;
+  font-size: 85px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #999;
+  text-decoration: none;
+  cursor: pointer;
 }
