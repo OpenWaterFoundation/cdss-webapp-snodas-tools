@@ -304,6 +304,7 @@ div .scroll {
     max-height: 750px;
     height: 750px;
     overflow: auto;
+    max-width: 
 }
 
 /* Lightbox */
