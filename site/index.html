@@ -438,7 +438,7 @@
                 It then assigns that data/object into the SNODAS_Geometry variable */
                 var SNODAS_Geometry = (function() {
                     var result;
-                    $.getJSON("json/SNODAS_geometry.geojson",function(data) {
+                    $.getJSON("json/SNODAS_CO_BasinBoundaries.geojson",function(data) {
                         result = data;
                     }); return result;
                 })();
@@ -457,9 +457,15 @@
                 {
                     for(var index in SNODAS_Geometry.features)
                     {
-                        for(var key in SNODAS_Statistics["data"][index])
+                        for(var index2 in SNODAS_Statistics["data"])
                         {
-                            SNODAS_Geometry.features[index]["properties"][key] = SNODAS_Statistics["data"][index][key];
+                            if(SNODAS_Geometry.features[index]["properties"]["LOCAL_ID"] == SNODAS_Statistics["data"][index2]["LOCAL_ID"])
+                            {
+                                for(var key in SNODAS_Statistics["data"][index2])
+                                {
+                                    SNODAS_Geometry.features[index]["properties"][key] = SNODAS_Statistics["data"][index2][key];                                                                        
+                                }
+                            }
                         }
                     }
                     return SNODAS_Geometry;
