@@ -298,6 +298,11 @@ aside h1, p, h4, h3 {
     text-align: left;
 }
 
+/* NAVBAR Sections */
+/*#navbar ul li a {
+    font-family: Trebuchet, Helvetica,sans-serif!important;
+}*/
+
 /* SCROLL */
 div .scroll {
     max-height: 750px;
