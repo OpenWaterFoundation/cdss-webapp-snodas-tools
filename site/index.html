@@ -447,7 +447,16 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                                     text[date] = text[date].trim();
                                 }
                                 Current_Date = text[0];
-                                Latest_Date = text[text.length-1];
+                                for(var index = text.length-1; index > 0; index--)
+                                {
+                                    console.log(text[index]);
+                                    console.log(text[index]=="");
+                                    if(text[index] != "")
+                                    {
+                                        Latest_Date = text[index];
+                                        break;
+                                    }
+                                }
                                 document.getElementById('ListOfDates').appendChild(createDateList(text));
                             });
 
@@ -915,8 +924,8 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                     document.getElementById("Basin_Swe_Volume_1WeekChange_img").src = "SnowpackGraphsByBasin/" + name + "-SNODAS-SWE-Volume-1WeekChange.png";
                     document.getElementById("close-button-swe-volume-change").innerHTML = name + "-SNODAS-SWE-Volume-1WeekChange.png";
 
-                    document.getElementById("Basin_Swe_Volume_Gain_img").src = ".png";
-                    document.getElementById("close-button-swe-volume-change").innerHTML = name + "-SNODAS-SWE-Volume-1WeekChange.png";
+                    document.getElementById("Basin_Swe_Volume_Gain_img").src = "SnowpackGraphsByBasin/" + name + "-SNODAS-SWE-Volume-Gain-Cumulative.png";
+                    document.getElementById("close-button-swe-volume-change").innerHTML = name + "-SNODAS-SWE-Volume-Gain-Cumulative.png";
 
                     document.getElementById("BasinID").innerHTML = "Selected Basin ID: " + name;
                     document.getElementById("BasinName").innerHTML = "Basin Name: " + getBasinName(name);
