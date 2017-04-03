@@ -343,7 +343,7 @@ div .scroll {
   cursor: pointer;
 }
 
-#close-button-snowcover, #close-button-swe, #close-button-swe-volume, #close-butt on-swe-volume-change, #close-button-swe-volume-gain {
+#close-button-snowcover, #close-button-swe, #close-button-swe-volume, #close-button-swe-volume-change, #close-button-swe-volume-gain {
     font-size: 18px;
     font-family: Trebuchet,Helvetica,sans-serif!important;
 }

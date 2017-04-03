@@ -87,21 +87,21 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
             <h3>Daily SNODAS Snowpack Products for Colorado Water Supply Basins</h3>
             <p>This website provides access to a historical archive of SNODAS data products for Colorado water supply basins. <a href="https://nsidc.org/data/g02158">Snow Data Assimilation System (SNODAS)</a> data are processed daily to calculate Snow Water Equivalent (SWE) and Snow Coverage statistics for water supply basins in Colorado. Snow Water Equivalent is the estimate of the depth of liquid water contained within the snowpack. Snow coverage is a percent of the basin land surface covered by snow (water bodies in the basin are ignored). The national SNODAS gridded dataset has been processed to provide data products for Colorado. Mean SWE is displayed in the map using a legend similar to the National Weather Service. The SNODAS Tools website provides access to an archive of daily products.</p>
             <ul>
-                <li>The website is best viewed on a widescreen display. If the layout seems out of order, try maximizing to fill the display. <span style="font-weight: bold;">Ctrl and minus</span> can be used to zoom out until the layout seems to be in correct order (this may impact all browser tabs)</li>
+                <li>The website is best viewed on a widescreen display. If the layout seems out of order, try maximizing to fill the display. <span style="font-weight: bold;">Ctrl and minus</span> can be used to zoom out until the layout seems to be in correct order.</li>
                 <li>Hover over a basin to see the daily mean SWE value and other daily statistics.</li>
                 <li>Use the <span style="font-weight: bold;">Select Date</span> button to display historical data for a specified day.</li>
                 <li>Enter animation start and end dates, press <span style="font-weight: bold;">Submit</span>, and then press the play button to view the animation of daily SWE data.</li>
                 <li>Click on a basin in the map to select the basin or use the <span style="font-weight: bold;">Select Basin</span> to select from the basin list. Then click on buttons in the lower right to display graphs.</li>
-                <li>Once a graph has been opened, click on the white <span style="font-weight: bold;">'X'</span> in the top right corner to close out of the graph view and return to the main screen.</li>
+                <li>Once a graph has been opened, click anywhere on the screen to close the graph view and return to the main screen.</li>
                 <li>Reposition the map by holding the mouse button down and dragging.</li>
                 <li>Zoom in and out of the map using the control in the upper left, or use the mouse wheel.</li>
                 <li>Use the <span style="font-weight: bold;">Data</span> tab on the left to access data files.</li>
             </ul>
-            <!-- <p>&nbsp;</p> -->
+            <p>&nbsp;</p>
             <p>Development of the SNODAS Tools was funded by the <a href="http://cwcb.state.co.us">Colorado Water Conservation Board</a>.  The tools were developed by the <a href="http://openwaterfoundation.org">Open Water Foundation</a>.
             Project resources are available on the<a href="http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas"> OWF SNODAS project website</a></p>
             <p style="font-weight: bold;">This website is under development with a scheduled completion date of June 30, 2017.  It is likely that changes in the site's functionality and access to data will occur until then.</p>
-            <p>Contact: Steve Malers,<a href="mailto:steve.mailers@openwaterfoundation.org">steve.malers@openwaterfoundation.org</p>
+            <p>Contact: Steve Malers, <a href="mailto:steve.mailers@openwaterfoundation.org">steve.malers@openwaterfoundation.org</p>
             <p>Website version 1.0.3 (2017-04-03)</p>
             </div>
             <div id="data" class="scroll" style="display: none; min-width: 300px;">
@@ -911,19 +911,19 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                 function SetSNODASPlot(name)
                 {
                     document.getElementById("Basin_SnowCover_img").src = "SnowpackGraphsByBasin/" + name + "-SNODAS-SnowCover.png";
-                    document.getElementById("close-button-snowcover").innerHTML = name + "-SNODAS-SnowCover.png";
+                    document.getElementById("close-button-snowcover").innerHTML = "Click anywhere to close graph view"
 
                     document.getElementById("Basin_SWE_img").src = "SnowpackGraphsByBasin/" + name + "-SNODAS-SWE.png";
-                    document.getElementById("close-button-swe").innerHTML = name + "-SNODAS-SWE.png";
+                    document.getElementById("close-button-swe").innerHTML = "Click anywhere to close graph view";
 
                     document.getElementById("Basin_SWE_Volume_img").src = "SnowpackGraphsByBasin/" + name + "-SNODAS-SWE-Volume.png";
-                    document.getElementById("close-button-swe-volume").innerHTML = name + "-SNODAS-SWE-Volume.png";
+                    document.getElementById("close-button-swe-volume").innerHTML = "Click anywhere to close graph view"
 
                     document.getElementById("Basin_Swe_Volume_1WeekChange_img").src = "SnowpackGraphsByBasin/" + name + "-SNODAS-SWE-Volume-1WeekChange.png";
-                    document.getElementById("close-button-swe-volume-change").innerHTML = name + "-SNODAS-SWE-Volume-1WeekChange.png";
+                    document.getElementById("close-button-swe-volume-change").innerHTML = "Click anywhere to close graph view"
 
                     document.getElementById("Basin_Swe_Volume_Gain_img").src = "SnowpackGraphsByBasin/" + name + "-SNODAS-SWE-Volume-Gain-Cumulative.png";
-                    document.getElementById("close-button-swe-volume-gain").innerHTML = name + "-SNODAS-SWE-Volume-Gain-Cumulative.png";
+                    document.getElementById("close-button-swe-volume-gain").innerHTML = "Click anywhere to close graph view"
 
                     document.getElementById("BasinID").innerHTML = "Selected Basin ID: " + name;
                     document.getElementById("BasinName").innerHTML = "Basin Name: " + getBasinName(name);
