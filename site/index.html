@@ -486,7 +486,6 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                 {
                     SNODAS_Statistics = Papa.parse(data, { header: true, skipEmptyLines: true, quotes: true});
                 });
-                console.log(SNODAS_Statistics);
                 /* The below code grabs the SNODAS data from the file SNODAS_geometry. This file contains data in
                 a geojson format that are different points forming each basin's boundaries. This function will extract
                 that data and then assign it to the SNODAS_Geometry variable.*/
@@ -650,7 +649,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                             return false;
                         }
                         startdate = RangeDates[iterations];
-                        },875);
+                        },875/step);
                     }
                 }
 
