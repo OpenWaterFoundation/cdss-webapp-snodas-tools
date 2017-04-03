@@ -485,6 +485,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                 {
                     SNODAS_Statistics = Papa.parse(data, { header: true, skipEmptyLines: true, quotes: true});
                 });
+                console.log(SNODAS_Statistics);
                 /* The below code grabs the SNODAS data from the file SNODAS_geometry. This file contains data in
                 a geojson format that are different points forming each basin's boundaries. This function will extract
                 that data and then assign it to the SNODAS_Geometry variable.*/
@@ -813,8 +814,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
 
             <!-- The following code creates a lightbox overlay. This will be displayed once a graphs button has been selected. -->
             <div id="Basin_SnowCover" class="lightbox" style="display: none" onclick="document.getElementById('Basin_SnowCover').style.display='none'">
-            <span class="close cursor" onclick="closeModal()">&times;
-            <br><span style="font-size: 20px; text-align: left;">Click to Close</span>
+            <span class="close cursor" onclick="closeModal()">&#8592;<span id="close-button-snowcover" style="vertical-align: middle;"></span>
             </span>
                 <table class="lightbox_table">
                 <tr>
@@ -831,6 +831,8 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
             <!-- The below section is used for the lightbox template once a user has selected the 'SNODAS SWE Graph'.
             Once the button has been clicked, the selected basins' SWE Graph will display on the screen. -->
             <div id="Basin_SWE" class="lightbox" style="display: none" onclick="document.getElementById('Basin_SWE').style.display='none'">
+            <span class="close cursor" onclick="closeModal()">&#8592;<span id="close-button-swe" style="vertical-align: middle;"></span>
+            </span>
                 <table class="lightbox_table">
                 <tr>
                 <td class="lightbox_table_cell" align="center">
@@ -846,6 +848,8 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
             <!-- The below section is used for the lightbox template once a user has selected the 'SNODAS SWE Volume Graph'.
             Once the button has been clicked, the selected basins' SWE Volume Graph will display on the screen. -->
             <div id="Basin_SWE_Volume" class="lightbox" style="display: none" onclick="document.getElementById('Basin_SWE_Volume').style.display='none'">
+            <span class="close cursor" onclick="closeModal()">&#8592;<span id="close-button-swe-volume" style="vertical-align: middle;"></span>
+            </span>
                 <table class="lightbox_table">
                 <tr>
                 <td class="lightbox_table_cell" align="center">
@@ -860,6 +864,8 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
             <!-- The below section is used for the lightbox template once a user has selected the 'SNODAS SWE 1 Week Chnage Graph'.
             Once the button has been clicked, the selected basins' SWE 1 Week Change Graph will display on the screen. -->
             <div id="Basin_Swe_Volume_1WeekChange" class="lightbox" style="display: none" onclick="document.getElementById('Basin_Swe_Volume_1WeekChange').style.display='none'">
+            <span class="close cursor" onclick="closeModal()">&#8592;<span id="close-button-swe-volume-change" style="vertical-align: middle;"></span>
+            </span>
                 <table class="lightbox_table">
                 <tr>
                 <td class="lightbox_table_cell" align="center">
@@ -879,9 +885,17 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                 function SetSNODASPlot(name)
                 {
                     document.getElementById("Basin_SnowCover_img").src = "SnowpackGraphsByBasin/" + name + "-SNODAS-SnowCover.png";
+                    document.getElementById("close-button-snowcover").innerHTML = name + "-SNODAS-SnowCover.png";
+
                     document.getElementById("Basin_SWE_img").src = "SnowpackGraphsByBasin/" + name + "-SNODAS-SWE.png";
+                    document.getElementById("close-button-swe").innerHTML = name + "-SNODAS-SWE.png";
+
                     document.getElementById("Basin_SWE_Volume_img").src = "SnowpackGraphsByBasin/" + name + "-SNODAS-SWE-Volume.png";
+                    document.getElementById("close-button-swe-volume").innerHTML = name + "-SNODAS-SWE-Volume.png";
+
                     document.getElementById("Basin_Swe_Volume_1WeekChange_img").src = "SnowpackGraphsByBasin/" + name + "-SNODAS-SWE-Volume-1WeekChange.png";
+                    document.getElementById("close-button-swe-volume-change").innerHTML = name + "-SNODAS-SWE-Volume-1WeekChange.png";
+
                     document.getElementById("BasinID").innerHTML = "Selected Basin ID: " + name;
                     document.getElementById("BasinName").innerHTML = "Basin Name: " + getBasinName(name);
 

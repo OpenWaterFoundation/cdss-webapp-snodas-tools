@@ -298,11 +298,6 @@ aside h1, p, h4, h3 {
     text-align: left;
 }
 
-/* NAVBAR Sections */
-/*#navbar ul li a {
-    font-family: Trebuchet, Helvetica,sans-serif!important;
-}*/
-
 /* SCROLL */
 div .scroll {
     max-height: 750px;
@@ -337,8 +332,7 @@ div .scroll {
   position: absolute;
   top: 0px;
   left: 0px;
-  /*right: 5px;*/
-  font-size: 85px;
+  font-size: 65px;
   font-weight: bold;
 }
 
@@ -347,4 +341,9 @@ div .scroll {
   color: #999;
   text-decoration: none;
   cursor: pointer;
+}
+
+#close-button-snowcover, #close-button-swe, #close-button-swe-volume, #close-button-swe-volume-change {
+    font-size: 18px;
+    font-family: Trebuchet,Helvetica,sans-serif!important;
 }
