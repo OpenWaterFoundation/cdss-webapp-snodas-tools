@@ -28,8 +28,12 @@ rem Now sync the local files up to Amazon S3
 rem - apparently can't pass an empty argument so comment out %dryrun%
 rem %dryrun%
 
+rem TODO smalers 2017-04-03 Evaluate whether StaticData files should be handled here or the automated process - for now here
+rem -Static data will need to be copied from the operational system to website when changes are made
+
 call aws s3 cp ../site/index.html %s3Folder%/index.html --profile %awsProfile%
 call aws s3 sync ../site/css %s3Folder%/css --delete --profile %awsProfile%
 call aws s3 sync ../site/images %s3Folder%/images --delete --profile %awsProfile%
 call aws s3 sync ../site/javascript %s3Folder%/javascript --delete --profile %awsProfile%
 call aws s3 sync ../site/json %s3Folder%/json --delete --profile %awsProfile%
+call aws s3 sync ../site/StaticData %s3Folder%/StaticData --delete --profile %awsProfile%
