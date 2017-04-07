@@ -338,7 +338,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                     var layer = geojson.getLayer(id);
                     //fire event 'click' on target layer 
                     layer.fireEvent('mouseover');
-                    SetSNODASPlot(itemId);
+                    SetSNODASPlot(Local_ID);
                 }
 
                 /* The below code is used to create the informational legend on the map. 
@@ -593,7 +593,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                 <br><br>
                 <input type="Submit" value="Submit" style="font-family: Trebuchet MS,Helvetica,sans-serif!important;" onclick="updateSliderMin_Max(this.form.startdate.value, this.form.enddate.value, this.form.incrementsize.value);return false;"/>
             </form>
-            <input type="range" id="dateSlider" min="null" max="null" value="" step="1" list="ticks" onchange="showValue(this.value);return false;" style="width: 350px;" disabled>
+            <input type="range" id="dateSlider" min="null" max="null" value="" step="1" onchange="showValue(this.value);return false;" style="width: 350px;" disabled>
             <div id="DataList">
             </div>
             <span id="range"></span>
