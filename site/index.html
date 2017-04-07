@@ -475,7 +475,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                                 return list;
                             }
                         </script>
-                    </div>
+                    </div> 
                 </div>
             </div>
             <script>
@@ -594,8 +594,8 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                 <input type="Submit" value="Submit" style="font-family: Trebuchet MS,Helvetica,sans-serif!important;" onclick="updateSliderMin_Max(this.form.startdate.value, this.form.enddate.value, this.form.incrementsize.value);return false;"/>
             </form>
             <input type="range" id="dateSlider" min="null" max="null" value="" step="1" onchange="showValue(this.value);return false;" style="width: 350px;" disabled>
-            <div id="DataList">
-            </div>
+            <datalist id="datalist">
+            </datalist>
             <span id="range"></span>
             <br>
             <input type="Submit" value= &#9658 style="width: 75px;" onclick="PlaySlider()">
@@ -644,7 +644,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                         interval = setInterval(function(){
                         if(iterations % step == 0)
                         {
-                            document.getElementById("dateSlider").value = this.startdate;
+                            document.getElementById("dateSlider").value = text.indexOf(startdate);
                             showValue(startdate.toString());
                         }
                         iterations++;
@@ -720,13 +720,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                     the leaflet map. */
                     updateFile(startdate);
 
-                    /* The below document.getElementById() code will update the ranges min,
-                    max, value, and step values. This is what controls the animation range
-                    and step size. The min value is the "startdate", the max value is the "enddate",
-                    the scale is the increment days integer. */
-                    document.getElementById("dateSlider").min = startdate;
-                    document.getElementById("dateSlider").value = startdate;
-                    document.getElementById("dateSlider").max = enddate;
+
 
                     /* The below code grabs the span with id "range" and updates the innerhtml to display the 
                     current layers date. It will display below the range animation as YYYY-MM-DD. */
@@ -734,22 +728,33 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
 
                     /* datalist is an element that will contain multiple option elements
                     that each contain a date specified in the RangeDates array. */
-                    var datalist = document.createElement('datalist');
-                    datalist.id = "ticks";
-                    document.getElementById('DataList').innerHTML = "";
+                    var datalist = document.getElementById('datalist');
                     
                     /* Populate the RangeDates array to contain the dates specified 
                     within the range the user inputted. For example, if the user wanted the range
                     2017-03-01 to 2017-03-05, the RangeDates array would contain the following dates: 
-                    2017-03-01, 2017-03-02, 2017-03-03,2017-03-04, 2017-03-05 */
+                    2017-03-01, 2017-03-02, 2017-03-03,2017-03-04, 2017-03-05. Also resort the array of
+                    dates to be in ascending order. This is so the animation range bar will not act in reverse.*/
+                    text.sort(function(a, b) {
+                        return a - b;
+                    });
                     var start_index = text.indexOf(startdate);
                     var end_index = text.indexOf(enddate);
-                    for(start_index; start_index >= end_index; start_index--)
+
+                    /* The below document.getElementById() code will update the ranges min,
+                    max, value, and step values. This is what controls the animation range
+                    and step size. The min value is the "startdate", the max value is the "enddate",
+                    the scale is the increment days integer. */
+                    document.getElementById("dateSlider").min = start_index;
+                    document.getElementById("dateSlider").value = start_index;
+                    document.getElementById("dateSlider").max = end_index;
+                    
+                    for(start_index; start_index <= end_index; start_index++)
                     {
                         RangeDates.push(text[start_index]);
                         var option = document.createElement('option');
-                        option.appendChild(document.createTextNode(text[start_index]));
-                        datalist.appendChild(option);
+                        option.appendChild(document.createTextNode(start_index));
+                        document.getElementById('datalist').appendChild(option);
                     }
                 }
 
