@@ -347,3 +347,12 @@ div .scroll {
     font-size: 18px;
     font-family: Trebuchet,Helvetica,sans-serif!important;
 }
+
+/* don't allow users to highligh images */
+img, span{
+    -khtml-user-select: none;
+    -o-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}

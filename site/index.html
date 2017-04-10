@@ -102,7 +102,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
             Project resources are available on the<a href="http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas"> OWF SNODAS project website</a></p>
             <p style="font-weight: bold;">This website is under development with a scheduled completion date of June 30, 2017.  It is likely that changes in the site's functionality and access to data will occur until then.</p>
             <p>Contact: Steve Malers, <a href="mailto:steve.mailers@openwaterfoundation.org">steve.malers@openwaterfoundation.org</p>
-            <p>Website version 1.0.4 (2017-04-07)</p>
+            <p>Website version 1.0.5 (2017-04-10)</p>
             </div>
             <div id="data" class="scroll" style="display: none; min-width: 300px;">
                 <p>The national SNODAS data are available from the <a href="https://nsidc.org/data/g02158">Snow Data Assimilation System (SNODAS)</a>.  The SNODAS data are processed into statistical data products by the CDSS SNODAS Tools.   The output consists of comma-separated-value (CSV) files <span style="font-weight: bold">ByDate</span> (basin data for each day) and <span style="font-weight: bold">ByBasin</span> (historical period for each basin).  Data files can be downloaded by accessing the following URL resources.  The zip file contains a shapefile with daily statistics in the attribute table (attribute names have been truncated to adhere to shapefile limit).</p>
@@ -281,7 +281,11 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
 
                 /* This feature is called by the onEachFeature function. It is what allows users to 
                 highlight over basins and will pop up a gray line outlining the basin. */   
+                var select_basin_call = false;  /* select_basin_call is a boolean value. This is set true when the ClickOnMapItem function is called.
+                                                   This boolean value is used to highlight basins and will prevent the highlight to be removed when the
+                                                   user "mouseouts" of the basin.*/
                 function highlightFeature(e) {
+                    select_basin_call = false;
                     var layer = e.target;
                     layer.setStyle({
                         weight: 6,
@@ -301,8 +305,17 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                 once a basin has been highlighted over, then the user moves the mouse it will
                 reset the layer back to the original state. */
                 function resetHighlight(e) {
-                    geojson.resetStyle(e.target);
-                    info.update();
+                    if(!e.target.feature.properties.hasBeenSelected)
+                    {
+                        geojson.resetStyle(e.target);
+                        info.update();
+                        if(select_basin_call)
+                        {
+                            var layer = geojson.getLayer(e.target.feature.properties.LOCAL_ID);
+                            layer.fireEvent('mouseover');
+                            select_basin_call = false;
+                        }
+                    }
                 }
                 
                 /* This function is called by the onEachFeature function. It is used
@@ -310,7 +323,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                 will be accessible to view. */
                 function selectBasin(e) {
                     // map.fitBounds(e.target.getBounds());
-                    SetSNODASPlot(e.target.feature.properties.LOCAL_ID);
+                    clickOnMapItem(e.target.feature.properties.LOCAL_ID);
                 }
 
                 /* This function is used when adding the SNODAS data from a csv file to the map. It makes every object
@@ -332,13 +345,27 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                 Once a basin is selected this function will imitate a user moving the 
                 cursor over a basin. This function takes in a LOCAL_ID and will highlight
                 the currently selected basin. */
+                var basin_selected = false;     /* basin_selected is a boolean value. This is set true when the ClickOnMapItem function is called.
+                                                   This boolean value is used to highlight basins and will prevent the highlight to be removed when the
+                                                   user "mouseouts" of the basin.*/
+                var old_basin;
                 function clickOnMapItem(Local_ID) {
+                    if(basin_selected)
+                    {
+                        var old_layer = geojson.getLayer(old_basin);
+                        old_layer.feature.properties.hasBeenSelected = false;
+                        old_layer.fireEvent('mouseout');
+                    }
                     var id = Local_ID;
+                    old_basin = Local_ID;
                     //get target layer by it's id
                     var layer = geojson.getLayer(id);
                     //fire event 'click' on target layer 
                     layer.fireEvent('mouseover');
+                    layer.feature.properties.hasBeenSelected = true;
                     SetSNODASPlot(Local_ID);
+                    select_basin_call = true;
+                    basin_selected = true;
                 }
 
                 /* The below code is used to create the informational legend on the map. 
@@ -524,6 +551,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                                 {
                                     SNODAS_Geometry.features[index]["properties"][key] = SNODAS_Statistics["data"][index2][key];                                                                        
                                 }
+                                SNODAS_Geometry.features[index]["properties"]["hasBeenSelected"] = false;
                             }
                         }
                     }
@@ -813,23 +841,23 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
             graph will be displayed on screen. -->
             <br>
             <br>
-            <button onclick="document.getElementById('Basin_SnowCover').style.display='inline';">SNODAS Snow Cover Graph</button>
+            <button id="button_one" onclick="document.getElementById('Basin_SnowCover').style.display='inline';" disabled>SNODAS Snow Cover Graph</button>
             <br>
             <br>
-            <button onclick="document.getElementById('Basin_SWE').style.display='inline';">SNODAS SWE Graph</button>
+            <button id="button_two" onclick="document.getElementById('Basin_SWE').style.display='inline';" disabled>SNODAS SWE Graph</button>
             <br>
             <br>
-            <button onclick="document.getElementById('Basin_SWE_Volume').style.display='inline';">SNODAS SWE Volume Graph</button>
+            <button id="button_three" onclick="document.getElementById('Basin_SWE_Volume').style.display='inline';" disabled>SNODAS SWE Volume Graph</button>
             <br>
             <br>
-            <button onclick="document.getElementById('Basin_Swe_Volume_1WeekChange').style.display='inline';">SNODAS SWE 1 Week Change Graph</button>
+            <button id="button_four" onclick="document.getElementById('Basin_Swe_Volume_1WeekChange').style.display='inline';" disabled>SNODAS SWE 1 Week Change Graph</button>
             <br>
             <br>
-            <button onclick="document.getElementById('Basin_Swe_Volume_Gain').style.display='inline';">SNODAS SWE Volume Gain, Cumulative Graph</button>
+            <button id="button_five" onclick="document.getElementById('Basin_Swe_Volume_Gain').style.display='inline';" disabled>SNODAS SWE Volume Gain, Cumulative Graph</button>
 
             <!-- The following code creates a lightbox overlay. This will be displayed once a graphs button has been selected. -->
             <div id="Basin_SnowCover" class="lightbox" style="display: none" onclick="document.getElementById('Basin_SnowCover').style.display='none'">
-            <span class="close cursor" onclick="closeModal()">&#8592;<span id="close-button-snowcover" style="vertical-align: middle;"></span>
+            <span class="close cursor" >&#8592;<span id="close-button-snowcover" style="vertical-align: middle;"></span>
             </span>
                 <table class="lightbox_table">
                 <tr>
@@ -846,7 +874,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
             <!-- The below section is used for the lightbox template once a user has selected the 'SNODAS SWE Graph'.
             Once the button has been clicked, the selected basins' SWE Graph will display on the screen. -->
             <div id="Basin_SWE" class="lightbox" style="display: none" onclick="document.getElementById('Basin_SWE').style.display='none'">
-            <span class="close cursor" onclick="closeModal()">&#8592;<span id="close-button-swe" style="vertical-align: middle;"></span>
+            <span class="close cursor" >&#8592;<span id="close-button-swe" style="vertical-align: middle;"></span>
             </span>
                 <table class="lightbox_table">
                 <tr>
@@ -863,7 +891,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
             <!-- The below section is used for the lightbox template once a user has selected the 'SNODAS SWE Volume Graph'.
             Once the button has been clicked, the selected basins' SWE Volume Graph will display on the screen. -->
             <div id="Basin_SWE_Volume" class="lightbox" style="display: none" onclick="document.getElementById('Basin_SWE_Volume').style.display='none'">
-            <span class="close cursor" onclick="closeModal()">&#8592;<span id="close-button-swe-volume" style="vertical-align: middle;"></span>
+            <span class="close cursor" >&#8592;<span id="close-button-swe-volume" style="vertical-align: middle;"></span>
             </span>
                 <table class="lightbox_table">
                 <tr>
@@ -879,7 +907,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
             <!-- The below section is used for the lightbox template once a user has selected the 'SNODAS SWE 1 Week Chnage Graph'.
             Once the button has been clicked, the selected basins' SWE 1 Week Change Graph will display on the screen. -->
             <div id="Basin_Swe_Volume_1WeekChange" class="lightbox" style="display: none" onclick="document.getElementById('Basin_Swe_Volume_1WeekChange').style.display='none'">
-            <span class="close cursor" onclick="closeModal()">&#8592;<span id="close-button-swe-volume-change" style="vertical-align: middle;"></span>
+            <span class="close cursor" >&#8592;<span id="close-button-swe-volume-change" style="vertical-align: middle;"></span>
             </span>
                 <table class="lightbox_table">
                 <tr>
@@ -895,7 +923,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
             <!-- The below section is used for the lightbox template once a user has selected the 'SNODAS SWE Volume Gain, Cumulative Graph'.
             Once the button has been clicked, the selected basins' SWE Volume Gain, Cumulative Graph will display on the screen. -->
             <div id="Basin_Swe_Volume_Gain" class="lightbox" style="display: none" onclick="document.getElementById('Basin_Swe_Volume_Gain').style.display='none'">
-            <span class="close cursor" onclick="closeModal()">&#8592;<span id="close-button-swe-volume-gain" style="vertical-align: middle;"></span>
+            <span class="close cursor" >&#8592;<span id="close-button-swe-volume-gain" style="vertical-align: middle;"></span>
             </span>
                 <table class="lightbox_table">
                 <tr>
@@ -915,6 +943,13 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                 then get updated everytime a new basin is selected */
                 function SetSNODASPlot(name)
                 {
+                    document.getElementById("button_one").disabled = false;
+                    document.getElementById("button_two").disabled = false;
+                    document.getElementById("button_three").disabled = false;
+                    document.getElementById("button_four").disabled = false;
+                    document.getElementById("button_five").disabled = false;
+
+
                     document.getElementById("Basin_SnowCover_img").src = "SnowpackGraphsByBasin/" + name + "-SNODAS-SnowCover.png";
                     document.getElementById("close-button-snowcover").innerHTML = "Click anywhere to close graph view"
 
