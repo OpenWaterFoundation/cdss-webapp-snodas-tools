@@ -79,15 +79,15 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
         <ul>
             <li><a id="aboutTab" class="active" onclick="navbarClick('about',['data','analysis'],'aboutTab');return false;">About</a></li>
             <li><a id="dataTab" class="not-active" onclick="navbarClick('data',['about','analysis'],'dataTab');return false;">Data</a></li>
-            <li><a id="analysisTab" class="not-active" onclick="navbarClick('analysis',['about','data'],'analysisTab');return false;">Analysis</a></li>
+            <li><a id="analysisTab" class="not-active" onclick="navbarClick('analysis',['about','data'],'analysisTab');return false;">Documentation</a></li>
         </ul>
         <div id="about" class="scroll">
             <!-- The following code below is used in the About tab. This tab is in the left hand side of the website. 
             Once the 'About' tab has been selected, this code will appear. -->
             <h3>Daily SNODAS Snowpack Products for Colorado Water Supply Basins</h3>
-            <p>This website provides access to a historical archive of SNODAS data products for Colorado water supply basins. <a href="https://nsidc.org/data/g02158">Snow Data Assimilation System (SNODAS)</a> data are processed daily to calculate Snow Water Equivalent (SWE) and Snow Coverage statistics for water supply basins in Colorado. Snow Water Equivalent is the estimate of the depth of liquid water contained within the snowpack. Snow coverage is a percent of the basin land surface covered by snow (water bodies in the basin are ignored). The national SNODAS gridded dataset has been processed to provide data products for Colorado. Mean SWE is displayed in the map using a legend similar to the National Weather Service. The SNODAS Tools website provides access to an archive of daily products.</p>
+            <p>This website provides access to a historical archive of SNODAS data products for Colorado water supply basins. Snow Data Assimilation System (SNODAS) data from the <a href="https://www.nohrsc.noaa.gov/interactive/html/map.html">National Operational Hydrologic Remote Sensing Center (NOHRSC)</a> are processed daily to calculate Snow Water Equivalent (SWE) and Snow Coverage statistics for water supply basins in Colorado. Snow Water Equivalent is the estimate of the depth of liquid water contained within the snowpack. Snow coverage is a percent of the basin land surface covered by snow (water bodies in the basin are ignored). The national SNODAS gridded dataset has been processed to provide data products for Colorado. Mean SWE is displayed in the map using a legend similar to the National Weather Service. The SNODAS Tools website provides access to an archive of daily products.</p>
             <ul>
-                <li>The website is best viewed on a widescreen display. If the layout seems out of order, try maximizing to fill the display. <span style="font-weight: bold;">Ctrl and minus</span> can be used to zoom out until the layout seems to be in correct order.</li>
+                <li>The website is best viewed on a widescreen display. If the layout does not clearly show a left panel with tabs, a center panel with map, and a right panel with date and basin selectors, try maximizing to fill the display. <span style="font-weight: bold;">Ctrl and minus</span> can be used to zoom out until the layout shows all components.</li>
                 <li>Hover over a basin to see the daily mean SWE value and other daily statistics.</li>
                 <li>Use the <span style="font-weight: bold;">Select Date</span> button to display historical data for a specified day.</li>
                 <li>Enter animation start and end dates, press <span style="font-weight: bold;">Submit</span>, and then press the play button to view the animation of daily SWE data.</li>
@@ -101,21 +101,33 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
             <p>Development of the SNODAS Tools was funded by the <a href="http://cwcb.state.co.us">Colorado Water Conservation Board</a>.  The tools were developed by the <a href="http://openwaterfoundation.org">Open Water Foundation</a>.
             Project resources are available on the<a href="http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas"> OWF SNODAS project website</a></p>
             <p style="font-weight: bold;">This website is under development with a scheduled completion date of June 30, 2017.  It is likely that changes in the site's functionality and access to data will occur until then.</p>
-            <p>Contact: Steve Malers, <a href="mailto:steve.mailers@openwaterfoundation.org">steve.malers@openwaterfoundation.org</p>
-            <p>Website version 1.0.5 (2017-04-10)</p>
+            <p>Contact: Joe Busto, <a href="mailto:joe.busto@state.co.us">joe.busto@state.co.us</a></p>
+            <p>Steve Malers, <a href="mailto:steve.mailers@openwaterfoundation.org">steve.malers@openwaterfoundation.forg</a></p>
+            <p>Website version 1.0.6 (2017-04-24)</p>
             </div>
             <div id="data" class="scroll" style="display: none; min-width: 300px;">
-                <p>The national SNODAS data are available from the <a href="https://nsidc.org/data/g02158">Snow Data Assimilation System (SNODAS)</a>.  The SNODAS data are processed into statistical data products by the CDSS SNODAS Tools.   The output consists of comma-separated-value (CSV) files <span style="font-weight: bold">ByDate</span> (basin data for each day) and <span style="font-weight: bold">ByBasin</span> (historical period for each basin).  Data files can be downloaded by accessing the following URL resources.  The zip file contains a shapefile with daily statistics in the attribute table (attribute names have been truncated to adhere to shapefile limit).</p>
+
+                <p>The national SNODAS data are available from the <a href="https://nsidc.org/data/g02158">Snow Data Assimilation System (SNODAS)</a> and can be viewed at <a href="https://www.nohrsc.noaa.gov/archived_data/">National Operational Hydrologic Remote Sensing Center (NOHRSC)</a>. The SNODAS data are processed into statistical data products by the CDSS SNODAS Tools.</p>
+
+                <h4>Daily Data Available for Download</h3>
+
+                <p>The output consists of comma-separated-value (CSV) files <span style="font-weight: bold">ByDate</span> (basin data for each day) and <span style="font-weight: bold">ByBasin</span> (historical period for each basin).  Data files can be downloaded by accessing the following URL resources.  The zip file contains a shapefile with daily statistics in the attribute table (attribute names have been truncated to adhere to shapefile limit).</p>
 
                 <p style="font-size: 13px">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByBasin/SnowpackStatisticsByBasin_Local_ID.csv</p>
 
                 <p style="font-size: 13px">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_YYYYMMDD.csv</p>
 
+                <p style="font-size: 13px">Latest Date Example: <a id="LatestDateCSV" href=""></a></p>
+
                 <p style="font-size: 13px">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_YYYYMMDD.geojson</p>
 
+                <p style="font-size: 13px">Latest Date Example: <a id="LatestDateGeoJson" href=""></a></p>
+
                 <p style="font-size: 13px">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_YYYYMMDD.zip</p>
-                
-                <p style="font-size: 13px">The following static resources are also available:</p>
+
+                <p style="font-size: 13px">Latest Date Example: <a id="LatestDateZip" href=""></a></p>
+
+                <h4>Static Data Available for Download</h3>                
 
                 <p style="font-size: 13px"><a href="http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/json/CO_boundary.geojson">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/json/CO_boundary.geojson</a>    (State of Colorado rectangular boundary)</p>
 
@@ -131,6 +143,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                 National Operational Hydrologic Remote Sensing Center. 2004. Snow Data Assimilation System (SNODAS) Data Products at NSIDC, Version 1.  SWE dataset.  Boulder, Colorado USA. NSIDC: National Snow and Ice Data Center. doi: http://dx.doi.org/10.7265/N5TB14TC.  Data are accessed daily, and historical period is also accessed as needed for historical period products.</h6>
             </div>
             <div id="analysis" style="display: none;">
+                <h4>Analysis Process</h4>
                 <p>SNODAS data are processed into data products using QGIS and Python software as follows:</p>
                 <ol>
                     <li>Download daily SNODAS SWE national data.</li>
@@ -142,6 +155,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                 </ol>
                 <p>&nbsp;</p>
                 <p>&nbsp;</p>
+                <h4>Documentation</h4>
                 <p>A summary of the analysis steps are described in the <a href="http://software.openwaterfoundation.org/cdss-app-snodas-tools-doc-user/">SNODAS Tools User Manual</a>. More detailed explanation is provided in the <a href="http://software.openwaterfoundation.org/cdss-app-snodas-tools-doc-dev/">SNODAS Tools Developer Manual</a>.</p>
             </div>
 
@@ -381,18 +395,18 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                 /* The code below is what shows up in the Daily Basin Statistics informational
                 legend in the bottom left corner of the map. */
                 info.update = function(props) {
-                    this._div.innerHTML = '<h4> Daily Basin Statistics </h4>' +  (props ? "<br><b>Local Name: </b>" + props.LOCAL_NAME + 
-                        "<br><b>Local ID: </b>" + props.LOCAL_ID + "<br>" + "<br><b><u> SWE (millimeters | inches)</b></u>" + "<br><b>Mean: </b>" 
-                        + Math.round(props.SNODAS_SWE_Mean_mm) + " mm | "
-                        + setOneNumberDecimal(props.SNODAS_SWE_Mean_in) + " in"
+                    this._div.innerHTML = '<h4> Daily Basin Statistics </h4>' +  (props ? "<br><b>Local Basin Name: </b>" + props.LOCAL_NAME + 
+                        "<br><b>Local Basin ID: </b>" + props.LOCAL_ID + "<br>" + "<br><b><u> SWE</b></u>" + "<br><b>Mean: </b>" 
+                        + Math.round(props.SNODAS_SWE_Mean_mm).toLocaleString('en-US') + " mm | "
+                        + Number(props.SNODAS_SWE_Mean_in).toLocaleString('en-US',{minimumFractionDigits: 1}) + " in"
                         + "<br><b>Effective Area: </b>"
-                        + setOneNumberDecimal(props.SNODAS_EffectiveArea_sqmi) + " sqmi"
+                        + Number(props.SNODAS_EffectiveArea_sqmi).toLocaleString('en-US', {mimumFractionDigits:1}) + " sqmi"
                         + "<br><b>Volume: </b>" 
-                        + Math.round(props.SNODAS_SWE_Volume_acft) + " acft"
+                        + Math.round(props.SNODAS_SWE_Volume_acft).toLocaleString('en-US') + " acft"
                         + "<br><b>Volume 1 Week Change: </b>"
-                        + Math.round(props.SNODAS_SWE_Volume_1WeekChange_acft) + " acft"
+                        + Math.round(props.SNODAS_SWE_Volume_1WeekChange_acft).toLocaleString('en-US') + " acft"
                         + "<br>" + "<br><b>Snow Cover: </b>" 
-                        + setTwoNumberDecimal(props.SNODAS_SnowCover_percent) + "%"
+                        + Math.round(props.SNODAS_SnowCover_percent).toLocaleString('en-US') + "%"
                         :'Hover over a basin');
                 };
 
@@ -447,9 +461,10 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
 
     <aside>
         <!-- The below code creates a dropdown menu. For further documentation refer to: https://www.w3schools.com/css/css_dropdowns.asp -->
+
         <div id="animation" style="background-color: #D3D3D3;">
             <div class="dropdown">
-                <button onclick="myFunction()" class="dropbtn" style="font-size: 15px;">Select Date</button>&nbsp;<span id="SNODASTitle" style="font-size: 15px;">SNODAS Date:</span><span id="FileDate" style="font-size: 15px;"></span>
+                <button onclick="myFunction()" class="dropbtn" style="font-size: 15px;">Select Date</button>&nbsp;<i class="fa fa-question-circle" aria-hidden="true"><span class="tooltiptext" style="height: 50px;">Select a date for map display</span></i>&nbsp;<span id="SNODASTitle" style="font-size: 15px;">SNODAS Date:</span><span id="FileDate" style="font-size: 15px;"></span>
                 <div id="myDropdown" class="dropdown-content">
                     <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()" class="search">
                     <div id="ListOfDates">
@@ -501,6 +516,15 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                                 });
                                 return list;
                             }
+
+                        /* SET THE Pathway For Current Date examples in data section */
+                        document.getElementById("LatestDateCSV").href = "http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_" + Current_Date + ".csv";
+                        document.getElementById("LatestDateCSV").innerHTML = "http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_" + Current_Date + ".csv";
+                        document.getElementById("LatestDateGeoJson").href = "http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_" + Current_Date + ".geojson";
+                        document.getElementById("LatestDateGeoJson").innerHTML = "http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_" + Current_Date + ".geojson";
+                        document.getElementById("LatestDateZip").href = "http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_" + Current_Date + ".zip";
+                        document.getElementById("LatestDateZip").innerHTML = "http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_" + Current_Date + ".zip";
+
                         </script>
                     </div> 
                 </div>
@@ -800,7 +824,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
             <br>
             <div style="background-color: #D3D3D3">
                 <div class="dropdown">
-                    <button onclick="myFunction2()" class="dropbtn" style="font-size: 15px;">Select Basin</button>&nbsp;<span id="CurrentBasin" style="font-size: 15px;"></span>
+                    <button onclick="myFunction2()" class="dropbtn" style="font-size: 15px;">Select Basin</button>&nbsp;<i class="fa fa-question-circle" aria-hidden="true"><span class="tooltiptext" style="height: 50px;">Select basin for graph display</span></i><span id="CurrentBasin" style="font-size: 15px;"></span>
                     <div id="myDropdown2" class="dropdown-content">
                         <input type="text" placeholder="Search.." id="myInput2" onkeyup="filterFunction2()" class="search">
                         <div id="BasinList">
