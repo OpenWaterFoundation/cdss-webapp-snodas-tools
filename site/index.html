@@ -815,7 +815,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
             <br>
             <div style="background-color: #D3D3D3">
                 <div class="dropdown">
-                    <button onclick="myFunction2()" class="dropbtn" style="font-size: 15px;">Select Basin</button>&nbsp;<i class="fa fa-question-circle" aria-hidden="true"><span class="tooltiptext" style="height: 50px;">Select basin for graph display</span></i><span id="CurrentBasin" style="font-size: 15px;"></span>
+                    <button onclick="myFunction2()" class="dropbtn" style="font-size: 15px;">Select Basin</button>&nbsp;<i class="fa fa-question-circle" aria-hidden="true"><span class="tooltiptext" style="height: 100px;">Select basin for graph display. The basin list includes the basin name and identifier.</span></i><span id="CurrentBasin" style="font-size: 15px;"></span>
                     <div id="myDropdown2" class="dropdown-content">
                         <input type="text" placeholder="Search.." id="myInput2" onkeyup="filterFunction2()" class="search">
                         <div id="BasinList">
@@ -825,6 +825,18 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                                 available geojson files of the SNODAS data */
                                 function createBasinList()
                                 {   
+                                    /* SORT Snodas_Geometry by local name and local id in ascending order A to Z */
+                                    SNODAS_Geometry.features.sort(function(a,b){
+                                        if (a["properties"]["LOCAL_NAME"].toLowerCase() < b["properties"]["LOCAL_NAME"].toLowerCase()) return -1;
+                                        if (a["properties"]["LOCAL_NAME"].toLowerCase() > b["properties"]["LOCAL_NAME"].toLowerCase()) return 1;
+                                        if (a["properties"]["LOCAL_NAME"].toLowerCase() == b["properties"]["LOCAL_NAME"].toLowerCase())
+                                        {
+                                            if (a["properties"]["LOCAL_ID"].toLowerCase() < b["properties"]["LOCAL_ID"].toLowerCase()) return -1;
+                                            if (a["properties"]["LOCAL_ID"].toLowerCase() > b["properties"]["LOCAL_ID"].toLowerCase()) return 1;
+                                            return
+                                        }
+                                        return 0;
+                                    });
                                     var list = document.createElement('span');
                                     for(var index in SNODAS_Geometry.features)
                                     {
@@ -833,7 +845,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                                         a.setAttribute("href","#");
                                         a.setAttribute("onclick",'clickOnMapItem(' + '"' + SNODAS_Geometry.features[index]["properties"]["LOCAL_ID"] + '");');
                                         a.setAttribute("style","font-size: 14px;");
-                                        var basin = document.createTextNode("LOCAL_NAME: " + SNODAS_Geometry.features[index]["properties"]["LOCAL_NAME"]);
+                                        var basin = document.createTextNode(SNODAS_Geometry.features[index]["properties"]["LOCAL_NAME"] + " (" + SNODAS_Geometry.features[index]["properties"]["LOCAL_ID"] + ")");
                                         a.appendChild(basin);
                                         list.appendChild(a);
                                     }
