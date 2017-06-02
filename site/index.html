@@ -103,7 +103,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
             <p style="font-weight: bold;">This website is under development with a scheduled completion date of June 30, 2017.  It is likely that changes in the site's functionality and access to data will occur until then.</p>
             <p>Contact: Joe Busto, <a href="mailto:joe.busto@state.co.us">joe.busto@state.co.us</a></p>
             <p>Steve Malers, <a href="mailto:steve.malers@openwaterfoundation.org">steve.malers@openwaterfoundation.org</a></p>
-            <p>Website version 1.0.6 (2017-04-24)</p>
+            <p>Website version 1.0.7 (2017-06-02)</p>
             </div>
             <div id="data" class="scroll" style="display: none; min-width: 300px;">
 
@@ -135,7 +135,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
 
                 <p style="font-size: 13px"><a href="StaticData/SNODAS_CO_BasinBoundaries.zip">StaticData/SNODAS_CO_BasinBoundaries.zip</a> (input basin boundary layer shapefile)</p>
 
-                <p style="font-size: 13px"><a href="StaticData/Watershed_Connectivity_v3.xlsx">StaticData/Watershed_Connectivity_v3.xlsx</a>    (input basin connectivity for total basin calculations)</p>
+                <p style="font-size: 13px"><a href="StaticData/Watershed_Connectivity_v4.xlsx">StaticData/Watershed_Connectivity_v3.xlsx</a>    (input basin connectivity for total basin calculations)</p>
 
                 <p>Refer to the <a href="http://software.openwaterfoundation.org/cdss-app-snodas-tools-doc-user/">SNODAS Tools User Manual</a> and <a href="http://software.openwaterfoundation.org/cdss-app-snodas-tools-doc-dev/">SNODAS Tools Developer Manual</a> for more information.</p>
 
@@ -529,7 +529,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                 });
 
                 /* The below code grabs the SNODAS data fromt he fie file SnowpackbyDate_(CURRENT DATE).csv. It then assigns that data/object into the SNODAS_Statistics variable. */
-                var SNODAS_FILE = "SnowpackStatisticsByDate/SnowpackStatisticsByDate_" + Current_Date + ".csv";
+              var SNODAS_FILE = "SnowpackStatisticsByDate/SnowpackStatisticsByDate_" + Current_Date + ".csv";
                 var SNODAS_Statistics;
                 $.get(SNODAS_FILE, function(data)
                 {
@@ -877,10 +877,16 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
             <button id="button_three" onclick="document.getElementById('Basin_SWE_Volume').style.display='inline';" disabled>SNODAS SWE Volume Graph</button>
             <br>
             <br>
-            <button id="button_four" onclick="document.getElementById('Basin_Swe_Volume_1WeekChange').style.display='inline';" disabled>SNODAS SWE 1 Week Change Graph</button>
+            <button id="button_four" onclick="document.getElementById('Basin_SWE_Upstream_Total').style.display='inline';" disabled>SNODAS SWE Upstream Total Volume Graph</button>
             <br>
             <br>
-            <button id="button_five" onclick="document.getElementById('Basin_Swe_Volume_Gain').style.display='inline';" disabled>SNODAS SWE Volume Gain, Cumulative Graph</button>
+            <button id="button_five" onclick="document.getElementById('Basin_SWE_Upstream_Cumulative').style.display='inline';" disabled>SNODAS SWE Upstream Total Volume Gain, Cumulative Graph</button>
+            <br>
+            <br>
+            <button id="button_six" onclick="document.getElementById('Basin_Swe_Volume_1WeekChange').style.display='inline';" disabled>SNODAS SWE 1 Week Change Graph</button>
+            <br>
+            <br>
+            <button id="button_seven" onclick="document.getElementById('Basin_Swe_Volume_Gain').style.display='inline';" disabled>SNODAS SWE Volume Gain, Cumulative Graph</button>
 
             <!-- The following code creates a lightbox overlay. This will be displayed once a graphs button has been selected. -->
             <div id="Basin_SnowCover" class="lightbox" style="display: none" onclick="document.getElementById('Basin_SnowCover').style.display='none'">
@@ -931,6 +937,38 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                 </table>
             </div>
 
+            <!-- The below section is used for the lightbox template once a user has selected the 'SNODAS SWE Volume Graph'.
+            Once the button has been clicked, the selected basins' SWE Volume Graph will display on the screen. -->
+            <div id="Basin_SWE_Upstream_Total" class="lightbox" style="display: none" onclick="document.getElementById('Basin_SWE_Upstream_Total').style.display='none'">
+            <span class="close cursor" >&#8592;<span id="close-button-swe-upstream-total" style="vertical-align: middle;"></span>
+            </span>
+                <table class="lightbox_table">
+                <tr>
+                <td class="lightbox_table_cell" align="center">
+                    <div id="lightbox_content">
+                        <img id="Basin_SWE_Upstream_Total_img" src="">
+                    </div>
+                </td>
+                </tr>
+                </table>
+            </div>
+
+            <!-- The below section is used for the lightbox template once a user has selected the 'SNODAS SWE Volume Graph'.
+            Once the button has been clicked, the selected basins' SWE Volume Graph will display on the screen. -->
+            <div id="Basin_SWE_Upstream_Cumulative" class="lightbox" style="display: none" onclick="document.getElementById('Basin_SWE_Upstream_Cumulative').style.display='none'">
+            <span class="close cursor" >&#8592;<span id="close-button-swe-upstream-cumulative" style="vertical-align: middle;"></span>
+            </span>
+                <table class="lightbox_table">
+                <tr>
+                <td class="lightbox_table_cell" align="center">
+                    <div id="lightbox_content">
+                        <img id="Basin_SWE_Upstream_Cumulative_img" src="">
+                    </div>
+                </td>
+                </tr>
+                </table>
+            </div>
+
             <!-- The below section is used for the lightbox template once a user has selected the 'SNODAS SWE 1 Week Chnage Graph'.
             Once the button has been clicked, the selected basins' SWE 1 Week Change Graph will display on the screen. -->
             <div id="Basin_Swe_Volume_1WeekChange" class="lightbox" style="display: none" onclick="document.getElementById('Basin_Swe_Volume_1WeekChange').style.display='none'">
@@ -975,6 +1013,8 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                     document.getElementById("button_three").disabled = false;
                     document.getElementById("button_four").disabled = false;
                     document.getElementById("button_five").disabled = false;
+                    document.getElementById("button_six").disabled = false;
+                    document.getElementById("button_seven").disabled = false;
 
 
                     document.getElementById("Basin_SnowCover_img").src = "SnowpackGraphsByBasin/" + name + "-SNODAS-SnowCover.png";
@@ -984,13 +1024,19 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                     document.getElementById("close-button-swe").innerHTML = "Click anywhere to close graph view";
 
                     document.getElementById("Basin_SWE_Volume_img").src = "SnowpackGraphsByBasin/" + name + "-SNODAS-SWE-Volume.png";
-                    document.getElementById("close-button-swe-volume").innerHTML = "Click anywhere to close graph view"
+                    document.getElementById("close-button-swe-volume").innerHTML = "Click anywhere to close graph view";
+
+                    document.getElementById("Basin_SWE_Upstream_Total_img").src = "SnowpackGraphsByBasin/" + name + "-UpstreamTotal-SNODAS-SWE-Volume.png";
+                    document.getElementById("close-button-swe-upstream-total").innerHTML = "Click anywhere to close graph view";
+
+                    document.getElementById("Basin_SWE_Upstream_Cumulative_img").src = "SnowpackGraphsByBasin/" + name + "-UpstreamTotal-SNODAS-SWE-Volume-Gain-Cumulative.png";
+                    document.getElementById("close-button-swe-upstream-cumulative").innerHTML = "Click anywhere to close graph view";
 
                     document.getElementById("Basin_Swe_Volume_1WeekChange_img").src = "SnowpackGraphsByBasin/" + name + "-SNODAS-SWE-Volume-1WeekChange.png";
-                    document.getElementById("close-button-swe-volume-change").innerHTML = "Click anywhere to close graph view"
+                    document.getElementById("close-button-swe-volume-change").innerHTML = "Click anywhere to close graph view";
 
                     document.getElementById("Basin_Swe_Volume_Gain_img").src = "SnowpackGraphsByBasin/" + name + "-SNODAS-SWE-Volume-Gain-Cumulative.png";
-                    document.getElementById("close-button-swe-volume-gain").innerHTML = "Click anywhere to close graph view"
+                    document.getElementById("close-button-swe-volume-gain").innerHTML = "Click anywhere to close graph view";
 
                     document.getElementById("BasinID").innerHTML = "Selected Basin ID: " + name;
                     document.getElementById("BasinName").innerHTML = "Basin Name: " + getBasinName(name);
