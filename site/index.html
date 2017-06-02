@@ -109,7 +109,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
 
                 <p>The national SNODAS data are available from the <a href="https://nsidc.org/data/g02158">Snow Data Assimilation System (SNODAS)</a> and can be viewed at <a href="https://www.nohrsc.noaa.gov/archived_data/">National Operational Hydrologic Remote Sensing Center (NOHRSC)</a>. The SNODAS data are processed into statistical data products by the CDSS SNODAS Tools.</p>
 
-                <h4>Daily Data Available for Download</h3>
+                <h4>Daily Data</h3>
 
                 <p>The output consists of comma-separated-value (CSV) files <span style="font-weight: bold">ByDate</span> (basin data for each day) and <span style="font-weight: bold">ByBasin</span> (historical period for each basin).  Data files can be downloaded by accessing the following URL resources.  The zip file contains a shapefile with daily statistics in the attribute table (attribute names have been truncated to adhere to shapefile limit).</p>
 
@@ -127,6 +127,22 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
 
                 <p style="font-size: 13px">Latest Date Example: <a href="http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_LatestDate.zip">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_LatestDate.zip</a></p>
 
+                <h4>Upstream Total Data Products</h4>
+
+                <p style="font-size: 13px">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_UpstreamTotal_LatestDate.csv</p>
+
+                <p style="font-size: 13px">Latest Date Example: <a href="http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_UpstreamTotal_LatestDate.csv">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_UpstreamTotal_LatestDate.csv</a></p>
+                
+
+                <p style="font-size: 13px">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByBasin/SnowpackStatisticsByBasin_UpstreamTotal_BasinID.csv</p>
+
+                <p style="font-size: 13px"><a href="http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByBasin/SnowpackStatisticsByBasin_UpstreamTotal_504.csv">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByBasin/SnowpackStatisticsByBasin_UpstreamTotal_504.csv</a></p>
+
+                <p style="font-size: 13px">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_UpstreamTotal_YYYYMMDD.csv</p>
+
+                <p style="font-size: 13px">Latest Date Example: <a href="http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_UpstreamTotal_20170602.csv">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_UpstreamTotal_20170602.csv</a></p>
+
+
                 <h4>Static Data Available for Download</h3>                
 
                 <p style="font-size: 13px"><a href="http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/json/CO_boundary.geojson">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/json/CO_boundary.geojson</a>    (State of Colorado rectangular boundary)</p>
@@ -135,7 +151,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
 
                 <p style="font-size: 13px"><a href="StaticData/SNODAS_CO_BasinBoundaries.zip">StaticData/SNODAS_CO_BasinBoundaries.zip</a> (input basin boundary layer shapefile)</p>
 
-                <p style="font-size: 13px"><a href="StaticData/Watershed_Connectivity_v4.xlsx">StaticData/Watershed_Connectivity_v3.xlsx</a>    (input basin connectivity for total basin calculations)</p>
+                <p style="font-size: 13px"><a href="StaticData/Watershed_Connectivity_v4.xlsx">StaticData/Watershed_Connectivity_v4.xlsx</a>    (input basin connectivity for total basin calculations)</p>
 
                 <p>Refer to the <a href="http://software.openwaterfoundation.org/cdss-app-snodas-tools-doc-user/">SNODAS Tools User Manual</a> and <a href="http://software.openwaterfoundation.org/cdss-app-snodas-tools-doc-dev/">SNODAS Tools Developer Manual</a> for more information.</p>
 
@@ -880,13 +896,13 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
             <button id="button_four" onclick="document.getElementById('Basin_SWE_Upstream_Total').style.display='inline';" disabled>SNODAS SWE Upstream Total Volume Graph</button>
             <br>
             <br>
-            <button id="button_five" onclick="document.getElementById('Basin_SWE_Upstream_Cumulative').style.display='inline';" disabled>SNODAS SWE Upstream Total Volume Gain, Cumulative Graph</button>
-            <br>
-            <br>
             <button id="button_six" onclick="document.getElementById('Basin_Swe_Volume_1WeekChange').style.display='inline';" disabled>SNODAS SWE 1 Week Change Graph</button>
             <br>
             <br>
             <button id="button_seven" onclick="document.getElementById('Basin_Swe_Volume_Gain').style.display='inline';" disabled>SNODAS SWE Volume Gain, Cumulative Graph</button>
+            <br>
+            <br>
+            <button id="button_five" onclick="document.getElementById('Basin_SWE_Upstream_Cumulative').style.display='inline';" disabled>SNODAS SWE Upstream Total Volume Gain, Cumulative Graph</button>
 
             <!-- The following code creates a lightbox overlay. This will be displayed once a graphs button has been selected. -->
             <div id="Basin_SnowCover" class="lightbox" style="display: none" onclick="document.getElementById('Basin_SnowCover').style.display='none'">
