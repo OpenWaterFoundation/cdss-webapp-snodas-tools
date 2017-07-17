@@ -23,6 +23,7 @@ awsProfile="$1"
 
 aws s3 cp ../site/index.html ${s3Folder}/index.html ${dryrun} --profile "$awsProfile"
 aws s3 sync ../site/css ${s3Folder}/css ${dryrun} --delete --profile "$awsProfile"
+aws s3 sync ../site/fonts ${s3Folder}/fonts ${dryrun} --delete --profile "$awsProfile"
 aws s3 sync ../site/images ${s3Folder}/images ${dryrun} --delete --profile "$awsProfile"
 aws s3 sync ../site/javascript ${s3Folder}/javascript ${dryrun} --delete --profile "$awsProfile"
 aws s3 sync ../site/json ${s3Folder}/json ${dryrun} --delete --profile "$awsProfile"

@@ -33,6 +33,7 @@ rem -Static data will need to be copied from the operational system to website w
 
 call aws s3 cp ../site/index.html %s3Folder%/index.html --profile %awsProfile%
 call aws s3 sync ../site/css %s3Folder%/css --delete --profile %awsProfile%
+call aws s3 sync ../site/fonts %s3Folder%/fonts --delete --profile %awsProfile%
 call aws s3 sync ../site/images %s3Folder%/images --delete --profile %awsProfile%
 call aws s3 sync ../site/javascript %s3Folder%/javascript --delete --profile %awsProfile%
 call aws s3 sync ../site/json %s3Folder%/json --delete --profile %awsProfile%
