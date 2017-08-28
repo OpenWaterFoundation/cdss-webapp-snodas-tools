@@ -1,19 +1,19 @@
-<!-- 
+<!--
 
-This website provides access to a historical archive of SNODAS data products for Colorado water supply basins. 
-Snow Data Assimilation System (SNODAS) data are processed daily to calculate Snow Water Equivalent (SWE) and Snow Coverage statistics for water supply basins in Colorado. 
-Snow Water Equivalent is the estimate of the depth of liquid water contained within the snowpack. 
-Snow coverage is a percent of the basin land surface covered by snow (water bodies in the basin are ignored). 
-The national SNODAS gridded dataset has been processed to provide data products for Colorado. 
-Mean SWE is displayed in the map using a legend similar to the National Weather Service. 
-The SNODAS Tools website provides access to an archive of daily products.  
+This website provides access to a historical archive of SNODAS data products for Colorado water supply basins.
+Snow Data Assimilation System (SNODAS) data are processed daily to calculate Snow Water Equivalent (SWE) and Snow Coverage statistics for water supply basins in Colorado.
+Snow Water Equivalent is the estimate of the depth of liquid water contained within the snowpack.
+Snow coverage is a percent of the basin land surface covered by snow (water bodies in the basin are ignored).
+The national SNODAS gridded dataset has been processed to provide data products for Colorado.
+Mean SWE is displayed in the map using a legend similar to the National Weather Service.
+The SNODAS Tools website provides access to an archive of daily products.
 
 If at anytime there is code that starts with the letter 'L', that is the command used by Leaflet.
 
 Layout:
 This website has a header, a nav element, an article element, and an aside element.
 The nav element contains a tab that displays an About, Data, and Analysis section. The
-article element contains a map displaying SWE data. The nav has two sections: One 
+article element contains a map displaying SWE data. The nav has two sections: One
 allows users access to an animation that will progress through a range of dates showing
 each dates data, and the other shows graphs of SWE data when a basin has been selected.
 -->
@@ -41,18 +41,18 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
 </head>
 
 <script>
-    /* This function is called when a user resizes the browser. It updates the 
+    /* This function is called when a user resizes the browser. It updates the
     size of the map and surrounding elements to fit the broswer height and
-    width. 
-    
-    Functionality: each variable is assigned the width 
+    width.
+
+    Functionality: each variable is assigned the width
     of an element. The width is called by the $('element name') command.
     Once the broswer has been resized, the lightbox map will be resized in
     order to properly fit the size. This is calculated using the header_width,
-    nav_width, and aside_width variables. 
+    nav_width, and aside_width variables.
 
     TODO: Fix element widths to work properly and resize on load.*/
-    function resize_windows() 
+    function resize_windows()
     {
         var header_width = $("header").width();
         var nav_width = $("nav").width();
@@ -72,7 +72,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
 <div id="main">
 
     <!-- The following code below is used for the navigation bar on the left hand side of the screen.
-    Each div is a certain section (ex: About, Data, Analysis) Once a certain tab has been selected the 
+    Each div is a certain section (ex: About, Data, Analysis) Once a certain tab has been selected the
     selected div's display will be set to 'active', and the other two divs will be set to 'none'. -->
     <nav id="navbar" style="max-width: 350px; min-width: 350px;">
         <ul>
@@ -81,7 +81,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
             <li><a id="analysisTab" class="not-active" onclick="navbarClick('analysis',['about','data'],'analysisTab');return false;">Documentation</a></li>
         </ul>
         <div id="about" class="scroll">
-            <!-- The following code below is used in the About tab. This tab is in the left hand side of the website. 
+            <!-- The following code below is used in the About tab. This tab is in the left hand side of the website.
             Once the 'About' tab has been selected, this code will appear. -->
             <h3>Daily SNODAS Snowpack Products for Colorado Water Supply Basins</h3>
             <p>This website provides access to a historical archive of SNODAS data products for Colorado water supply basins. Snow Data Assimilation System (SNODAS) data from the <a href="https://www.nohrsc.noaa.gov/interactive/html/map.html">National Operational Hydrologic Remote Sensing Center (NOHRSC)</a> are processed daily to calculate Snow Water Equivalent (SWE) and Snow Coverage statistics for water supply basins in Colorado. Snow Water Equivalent is the estimate of the depth of liquid water contained within the snowpack. Snow coverage is a percent of the basin land surface covered by snow (water bodies in the basin are ignored). The national SNODAS gridded dataset has been processed to provide data products for Colorado. Mean SWE is displayed in the map using a legend similar to the National Weather Service. The SNODAS Tools website provides access to an archive of daily products.</p>
@@ -102,7 +102,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
             <p style="font-weight: bold;">This website is under development with a scheduled completion date of June 30, 2017.  It is likely that changes in the site's functionality and access to data will occur until then.</p>
             <p>Contact: Joe Busto, <a href="mailto:joe.busto@state.co.us">joe.busto@state.co.us</a></p>
             <p>Steve Malers, <a href="mailto:steve.malers@openwaterfoundation.org">steve.malers@openwaterfoundation.org</a></p>
-            <p>Website version 1.0.8 (2017-07-17)</p>
+            <p>Website version 1.0.0 (2017-08-28)</p>
             </div>
             <div id="data" class="scroll" style="display: none; min-width: 300px;">
 
@@ -131,7 +131,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                 <p style="font-size: 13px">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_UpstreamTotal_LatestDate.csv</p>
 
                 <p style="font-size: 13px">Latest Date Example: <a href="http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_UpstreamTotal_LatestDate.csv">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_UpstreamTotal_LatestDate.csv</a></p>
-                
+
 
                 <p style="font-size: 13px">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByBasin/SnowpackStatisticsByBasin_UpstreamTotal_BasinID.csv</p>
 
@@ -142,7 +142,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                 <p style="font-size: 13px">Latest Date Example: <a href="http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_UpstreamTotal_20170602.csv">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_UpstreamTotal_20170602.csv</a></p>
 
 
-                <h4>Static Data Available for Download</h3>                
+                <h4>Static Data Available for Download</h3>
 
                 <p style="font-size: 13px"><a href="http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/json/CO_boundary.geojson">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/json/CO_boundary.geojson</a>    (State of Colorado rectangular boundary)</p>
 
@@ -154,7 +154,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
 
                 <p>Refer to the <a href="http://software.openwaterfoundation.org/cdss-app-snodas-tools-doc-user/">SNODAS Tools User Manual</a> and <a href="http://software.openwaterfoundation.org/cdss-app-snodas-tools-doc-dev/">SNODAS Tools Developer Manual</a> for more information.</p>
 
-                <h6>SNODAS data citation:  
+                <h6>SNODAS data citation:
                 National Operational Hydrologic Remote Sensing Center. 2004. Snow Data Assimilation System (SNODAS) Data Products at NSIDC, Version 1.  SWE dataset.  Boulder, Colorado USA. NSIDC: National Snow and Ice Data Center. doi: http://dx.doi.org/10.7265/N5TB14TC.  Data are accessed daily, and historical period is also accessed as needed for historical period products.</h6>
             </div>
             <div id="analysis" style="display: none;">
@@ -177,8 +177,8 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
             <script>
                 /* navbarClick() is called by the about, data, and
                 analysis tabs on the navbar. This will
-                set which class is active (which text is highlighted) 
-                and then show the proper 'hidden' information that is 
+                set which class is active (which text is highlighted)
+                and then show the proper 'hidden' information that is
                 in the code above. */
                 function navbarClick(source, other, source_id)
                 {
@@ -226,10 +226,10 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
             <script>
                 /* Create Leaflet Map */
                 var map = L.map('mapid', {zoomControl: false}).setView([38.99, -105.54], 7);
-                
+
                 L.tileLayer('https://api.mapbox.com/styles/v1/korysam/cixur5uy7003g2sqwthpjmbxa/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoia29yeXNhbSIsImEiOiJjaXd4dDRxbTQwMXRkMm9tZzd5b3BqdTBwIn0.A2EGyNrWG2Lbbd5c-I-94w', {
                     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy;<a href="http://mapbox.com">Mapbox</a>',
-                    maxZoom: 18     
+                    maxZoom: 18
                 }).addTo(map);
 
                 /* Top Left Corner of Map. Allows for a home button to reset
@@ -237,15 +237,15 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                 var zoomHome = L.Control.zoomHome();
                 zoomHome.addTo(map);
 
-                /* Bottom Right corner. This shows the current lat and long 
-                of the mouse cursor. 
+                /* Bottom Right corner. This shows the current lat and long
+                of the mouse cursor.
 
-                'º' used for the degree character when the latitude and longitude of the 
+                'º' used for the degree character when the latitude and longitude of the
                 cursor is dispalyed. */
                 L.control.mousePosition({position: 'bottomright',lngFormatter: function(num) {
                     var direction = (num < 0) ? 'W' : 'E';
                     var formatted = Math.abs(L.Util.formatNum(num, 3)) + 'º ' + direction;
-                    return formatted; 
+                    return formatted;
                 },
                 latFormatter: function(num) {
                     var direction = (num < 0) ? 'S' : 'N';
@@ -257,8 +257,8 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                 the map. */
                 L.control.scale({position: 'bottomright',imperial: true}).addTo(map);
 
-                /* getColor is called by the onEachFeature function. This is what controls 
-                the color of each basin depending on the  Mean SME data value. 
+                /* getColor is called by the onEachFeature function. This is what controls
+                the color of each basin depending on the  Mean SME data value.
                 This also controls the colors that are shown in the legend. */
                 function getColor(d) {
                     if(d == undefined)
@@ -286,12 +286,12 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                 var geojson;
 
                 /* The function below is called when adding the geojson data from the SNODAS files.
-                Style controls the fill color of each basin, the weight of the lines surrounding the 
-                basin, the color of the lines outlining each basin, and the opacity. */                 
+                Style controls the fill color of each basin, the weight of the lines surrounding the
+                basin, the color of the lines outlining each basin, and the opacity. */
                 function setSWELayerStyle(feature){
                     return {
                         fillColor: getColor((feature.properties.SNODAS_SWE_Mean_in == undefined ? feature.properties.SWE_Mean_inches:feature.properties.SNODAS_SWE_Mean_in)),
-                        weight: 1, 
+                        weight: 1,
                         color: 'black',
                         fillOpacity: 0.60
                     };
@@ -302,14 +302,14 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                 function setStateBoundaryStyle(feature){
                     return {
                     // fillColor: getColor(feature.properties.Mean_inches),
-                    weight: 5, 
+                    weight: 5,
                     color: 'black',
                     fillOpacity: 0,
                 };
                 }
 
-                /* This feature is called by the onEachFeature function. It is what allows users to 
-                highlight over basins and will pop up a gray line outlining the basin. */   
+                /* This feature is called by the onEachFeature function. It is what allows users to
+                highlight over basins and will pop up a gray line outlining the basin. */
                 var select_basin_call = false;  /* select_basin_call is a boolean value. This is set true when the ClickOnMapItem function is called.
                                                    This boolean value is used to highlight basins and will prevent the highlight to be removed when the
                                                    user "mouseouts" of the basin.*/
@@ -320,16 +320,16 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                         weight: 6,
                         color: '#666',
                         dashArray: '',
-                        
+
                     });
 
                     if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
                         layer.bringToFront();
                     }
-                    
+
                     info.update(layer.feature.properties);
                 }
-                
+
                 /* This function is also called by the onEachFeature function. It is used
                 once a basin has been highlighted over, then the user moves the mouse it will
                 reset the layer back to the original state. */
@@ -346,7 +346,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                         }
                     }
                 }
-                
+
                 /* This function is called by the onEachFeature function. It is used
                 if a user clicks on a basin. Once a basin is selected, the proper SWE graphs
                 will be accessible to view. */
@@ -371,7 +371,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
 
                 /* This function is used to imitate the fire event 'mouseover'.
                 It is called when a user selects a basin from the 'Select Basin' button.
-                Once a basin is selected this function will imitate a user moving the 
+                Once a basin is selected this function will imitate a user moving the
                 cursor over a basin. This function takes in a LOCAL_ID and will highlight
                 the currently selected basin. */
                 var basin_selected = false;     /* basin_selected is a boolean value. This is set true when the ClickOnMapItem function is called.
@@ -389,7 +389,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                     old_basin = Local_ID;
                     //get target layer by it's id
                     var layer = geojson.getLayer(id);
-                    //fire event 'click' on target layer 
+                    //fire event 'click' on target layer
                     layer.fireEvent('mouseover');
                     layer.feature.properties.hasBeenSelected = true;
                     SetSNODASPlot(Local_ID);
@@ -397,7 +397,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                     basin_selected = true;
                 }
 
-                /* The below code is used to create the informational legend on the map. 
+                /* The below code is used to create the informational legend on the map.
                 info.update is used to call the statistics for each basin. */
                 var info = L.control({position: 'bottomleft'});
 
@@ -410,17 +410,17 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                 /* The code below is what shows up in the Daily Basin Statistics informational
                 legend in the bottom left corner of the map. */
                 info.update = function(props) {
-                    this._div.innerHTML = '<h4> Daily Basin Statistics </h4>' +  (props ? "<br><b>Local Basin Name: </b>" + props.LOCAL_NAME + 
-                        "<br><b>Local Basin ID: </b>" + props.LOCAL_ID + "<br>" + "<br><b><u> SWE</b></u>" + "<br><b>Mean: </b>" 
+                    this._div.innerHTML = '<h4> Daily Basin Statistics </h4>' +  (props ? "<br><b>Local Basin Name: </b>" + props.LOCAL_NAME +
+                        "<br><b>Local Basin ID: </b>" + props.LOCAL_ID + "<br>" + "<br><b><u> SWE</b></u>" + "<br><b>Mean: </b>"
                         + Math.round(props.SNODAS_SWE_Mean_mm).toLocaleString('en-US') + " mm | "
                         + Number(props.SNODAS_SWE_Mean_in).toLocaleString('en-US',{minimumFractionDigits: 1}) + " in"
                         + "<br><b>Effective Area: </b>"
                         + Number(props.SNODAS_EffectiveArea_sqmi).toLocaleString('en-US', {mimumFractionDigits:1}) + " sqmi"
-                        + "<br><b>Volume: </b>" 
+                        + "<br><b>Volume: </b>"
                         + Math.round(props.SNODAS_SWE_Volume_acft).toLocaleString('en-US') + " acft"
                         + "<br><b>Volume 1 Week Change: </b>"
                         + Math.round(props.SNODAS_SWE_Volume_1WeekChange_acft).toLocaleString('en-US') + " acft"
-                        + "<br>" + "<br><b>Snow Cover: </b>" 
+                        + "<br>" + "<br><b>Snow Cover: </b>"
                         + Math.round(props.SNODAS_SnowCover_percent).toLocaleString('en-US') + "%"
                         :'Hover over a basin');
                 };
@@ -440,10 +440,10 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                 }
 
                 /* This will add the information legend to the leaflet map as a layer. */
-                info.addTo(map);    
-                
+                info.addTo(map);
+
                 /* This code below creates the legend on the map. It iterates through
-                an array of legend scale values (SWE  in inches). It then adds this to the 
+                an array of legend scale values (SWE  in inches). It then adds this to the
                 legend and will create the html code required to do so */
                 var legend = L.control({position: 'topright'});
 
@@ -518,7 +518,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                             /* createDateList will create a ul, li list that contains all the dates of
                             available geojson files of the SNODAS data */
                             function createDateList(text)
-                            {   
+                            {
                                 var list = document.createElement('span');
                                 text.forEach(function(result) {
                                     // var item = document.createElement('li');
@@ -532,7 +532,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                                 return list;
                             }
                         </script>
-                    </div> 
+                    </div>
                 </div>
             </div>
             <script>
@@ -559,15 +559,15 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                         result = data;
                     }); return result;
                 })();
-                /* This call below merges the Geometry data with the statistics of each basin. 
+                /* This call below merges the Geometry data with the statistics of each basin.
                 It then adds that merged object to the map as a layer allowing users to see
                 the SNODAS data visually on the map. */
                 geojson = L.geoJson(MergeData(SNODAS_Geometry,SNODAS_Statistics), {style: setSWELayerStyle, onEachFeature: onEachFeature}).addTo(map);
 
 
                 /* This funtion takes in a SNODAS Geometry geojson array and an array that contains the data from
-                the SnowpackStatisticsByDate/YYYYMMDD CSV file that contains data for each basin. Both of the 
-                paramaters are arrays and will be iterated using a nested for loop. 
+                the SnowpackStatisticsByDate/YYYYMMDD CSV file that contains data for each basin. Both of the
+                paramaters are arrays and will be iterated using a nested for loop.
                 This function will iterate through and match each basin with its proper data. */
                 function MergeData(SNODAS_Geometry, SNODAS_Statistics)
                 {
@@ -579,7 +579,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                             {
                                 for(var key in SNODAS_Statistics["data"][index2])
                                 {
-                                    SNODAS_Geometry.features[index]["properties"][key] = SNODAS_Statistics["data"][index2][key];                                                                        
+                                    SNODAS_Geometry.features[index]["properties"][key] = SNODAS_Statistics["data"][index2][key];
                                 }
                                 SNODAS_Geometry.features[index]["properties"]["hasBeenSelected"] = false;
                             }
@@ -607,7 +607,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                 }
             </script>
             <!-- The below code is the Animation panel. It contains multiple text fields,
-            buttons, and an input range object.--> 
+            buttons, and an input range object.-->
             <h3 style="font-size: 17px">SNODAS Animation</h3>
             <form id="sliderInfo">
 
@@ -615,8 +615,8 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                 text to show YYYY-MM-DD. -->
                 <div id="StartDate" style="font-size: 15px;">
                     <script>
-                        document.getElementById("StartDate").innerHTML = 
-                        'Starting Date: (earliest available date: ' + 
+                        document.getElementById("StartDate").innerHTML =
+                        'Starting Date: (earliest available date: ' +
                         Latest_Date.substr(0,4) + '-' + Latest_Date.substr(4,2)
                         + '-' + Latest_Date.substr(6,2) + ')';
                     </script>
@@ -631,8 +631,8 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                 text to show YYYY-MM-DD. -->
                 <div id="EndDate" style="font-size: 15px;">
                     <script>
-                        document.getElementById("EndDate").innerHTML = 
-                        'Ending Date: (latest available date: ' + 
+                        document.getElementById("EndDate").innerHTML =
+                        'Ending Date: (latest available date: ' +
                         Current_Date.substr(0,4) + '-' + Current_Date.substr(4,2)
                         + '-' + Current_Date.substr(6,2) + ')'
                     </script>
@@ -667,7 +667,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                 var iterations = 0;
 
 
-                /* This is the function the reset button calls. This will reset the 
+                /* This is the function the reset button calls. This will reset the
                 range to the beginning date (startdate) and will update certain booleans
                 so the animation can run properly */
                 function reload()
@@ -675,14 +675,14 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                     clearInterval(interval);
                     iterations = 0;
                     startdate = original_startdate;
-                    document.getElementById("dateSlider").value = startdate;
+                    document.getElementById("dateSlider").value = text.indexOf(startdate);
                     showValue(startdate);
                     has_complete = false;
                     has_reset = true;
                     PlaySlider();
                 }
                 /* This function is in charge of playing/running the animation
-                slider. It will progress through an array of dates that the 
+                slider. It will progress through an array of dates that the
                 user inputted (startdate to enddate). Once it has reached the
                 end the user must click the reset button in order to play the
                 animation again. */
@@ -718,9 +718,9 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                     }
                 }
 
-                /* This function is called by the animation pause button. When the pause button 
+                /* This function is called by the animation pause button. When the pause button
                 is clicked, it wil clear the interval that is created in the PlaySlider() function.
-                The interval variable is a timing events. This interval allows execution of code at 
+                The interval variable is a timing events. This interval allows execution of code at
                 a specified time interval. This is what pauses the animation */
                 function PauseSlider()
                 {
@@ -740,7 +740,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
 
                 /* updateSliderMin_Max is called whenever the animationsubmit button is selected.
                 It will update the min and max value of the range animation element.
-                This then also creates tick marks on the slidebar by an increment of 
+                This then also creates tick marks on the slidebar by an increment of
                 one. */
                 function updateSliderMin_Max(startdate,enddate,scale)
                 {
@@ -780,17 +780,17 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
 
 
 
-                    /* The below code grabs the span with id "range" and updates the innerhtml to display the 
+                    /* The below code grabs the span with id "range" and updates the innerhtml to display the
                     current layers date. It will display below the range animation as YYYY-MM-DD. */
                     document.getElementById("range").innerHTML = startdate.substr(0,4) + "-" + startdate.substr(4,2) + "-" + startdate.substr(6,2);
 
                     /* datalist is an element that will contain multiple option elements
                     that each contain a date specified in the RangeDates array. */
                     var datalist = document.getElementById('datalist');
-                    
-                    /* Populate the RangeDates array to contain the dates specified 
+
+                    /* Populate the RangeDates array to contain the dates specified
                     within the range the user inputted. For example, if the user wanted the range
-                    2017-03-01 to 2017-03-05, the RangeDates array would contain the following dates: 
+                    2017-03-01 to 2017-03-05, the RangeDates array would contain the following dates:
                     2017-03-01, 2017-03-02, 2017-03-03,2017-03-04, 2017-03-05. Also resort the array of
                     dates to be in ascending order. This is so the animation range bar will not act in reverse.*/
                     text.sort(function(a, b) {
@@ -806,7 +806,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                     document.getElementById("dateSlider").min = start_index;
                     document.getElementById("dateSlider").value = start_index;
                     document.getElementById("dateSlider").max = end_index;
-                    
+
                     for(start_index; start_index <= end_index; start_index++)
                     {
                         RangeDates.push(text[start_index]);
@@ -839,7 +839,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
                                 /* createDateList will create a ul, li list that contains all the dates of
                                 available geojson files of the SNODAS data */
                                 function createBasinList()
-                                {   
+                                {
                                     /* SORT Snodas_Geometry by local name and local id in ascending order A to Z */
                                     SNODAS_Geometry.features.sort(function(a,b){
                                         if (a["properties"]["LOCAL_NAME"].toLowerCase() < b["properties"]["LOCAL_NAME"].toLowerCase()) return -1;
@@ -1058,7 +1058,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
 
                 }
 
-                /* getBasinName takes in a basin id and will search through the 
+                /* getBasinName takes in a basin id and will search through the
                 SNODAS_Geometry.json file to find the local name of the basin. It will
                 then return the local name of the coinciding local id. */
                 function getBasinName(id)
@@ -1080,7 +1080,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
 <script>
     /* The below code is used to close the 'Select Date' and 'Select Basin' dropdown menus.
     When the 'Select Date' or 'Select Basin' menu is open and a user clicks outside of the dropdown
-    menu, the dropdown menu will close. */ 
+    menu, the dropdown menu will close. */
     window.onclick = function(event) {
       if (!event.target.matches('.dropbtn') && !event.target.matches('.search')) {
 
@@ -1110,7 +1110,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
     }
 
     /* filterFunction is used to grab the list of elements in the dropdown menu.
-    This function also allows users to use the search key and will display 
+    This function also allows users to use the search key and will display
     if there is a matching element. If there is nothing that mathces the search,
     then the function returns nothing and the dropdown menu will show that no elements
     match that search. */
@@ -1130,7 +1130,7 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
     }
 
     /* filterFunction is used to grab the list of elements in the dropdown menu.
-    This function also allows users to use the search key and will display 
+    This function also allows users to use the search key and will display
     if there is a matching element. If there is nothing that mathces the search,
     then the function returns nothing and the dropdown menu will show that no elements
     match that search. */
