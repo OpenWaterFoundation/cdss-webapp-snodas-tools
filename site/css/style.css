@@ -134,7 +134,7 @@ aside h1, p, h4, h3 {
 
 /* DROPDOWN BUTTON */
 #mydropdown {
-    max-height: 500px; 
+    max-height: 500px;
     overflow: auto;
     z-index: 100000;
 }
@@ -157,7 +157,7 @@ aside h1, p, h4, h3 {
 
 .dropbtn:hover, .dropbtn:focus {
     background-color: #2887C1;
-} 
+}
 
 #myInput, #myinput2 {
     border-box: box-sizing;
@@ -203,7 +203,7 @@ aside h1, p, h4, h3 {
 }
 
 .show {display:block;}
-.info { padding: 6px 8px; font: 14px/16px Arial, Helvetica, sans-serif; background: white; background: rgba(255,255,255,0.8); box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px; } 
+.info { padding: 6px 8px; font: 14px/16px Arial, Helvetica, sans-serif; background: white; background: rgba(255,255,255,0.8); box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px; }
 .info h4 { margin: 0 0 5px; color: #777; }
 .legend { text-align: left; line-height: 22px; color: #555; }
 .legend i { border: 1px solid black; width: 18px; height: 18px; float: left; margin-right: 8px,; opacity: 0.7; }
@@ -303,7 +303,7 @@ div .scroll {
     max-height: 750px;
     height: 750px;
     overflow: auto;
-    max-width: 
+    max-width:
 }
 
 /* Lightbox */
@@ -343,7 +343,7 @@ div .scroll {
   cursor: pointer;
 }
 
-#close-button-snocover, #close-button-swe, #close-button-swe-volume, #close-button-swe-volume-change, #close-button-swe-volume-gain, #close-button-swe-upstream-total, #close-button-swe-upstream-cumulative {
+#close-button-snowcover, #close-button-swe, #close-button-swe-volume, #close-button-swe-volume-change, #close-button-swe-volume-gain, #close-button-swe-upstream-total, #close-button-swe-upstream-cumulative {
     font-size: 18px;
     font-family: Trebuchet,Helvetica,sans-serif!important;
 }
