@@ -93,7 +93,27 @@ which runs daily as a scheduled process.
 **Do not deploy test data files from this repository because they will overwrite the main data files from the analysis software.**  To facilitate deployment, run the following scripts:
 
 * OWF prototype:  `build-util/copy-to-owf-amazon-s3.sh`
-* State server:  **need to document**
+* State server:  **build-util/copy-to-cdss-googlecloud-storage.bat** (see below)
+
+### Additional Instructions on how to Deploy the State server
+
+A Google account holder with permissions to `write` to the `snodas.cdss.state.co.us` bucket must run the `copy-to-cdss-googlecloud-storage.bat` script. The script pushes files up to the `snodas.cdss.state.co.us` bucket and only a Google account holder with the correct permissions can correctly run the contents of the script. 
+
+The `copy-to-cdss-googlecloud-storage.bat` script contains commands that use the [`gsutil tool`](https://cloud.google.com/storage/docs/gsutil). The `gsutil tool` is used to sync the local files to the `Google Cloud Platform` storage bucket.  It is recommended by [Google Cloud Platform](https://cloud.google.com/) that the use of the `gsutil` tool be installed as part of the `Google Cloud SDK package`. Click this [link](https://cloud.google.com/storage/docs/gsutil) to see the recommendation. The `Google Cloud SDK package`installs an SDK shell that authorizes the permissions of the Google account holder (this way permissions are not hard-coded into the `copy-to-cdss-googlecloud-storage.bat` script.)
+
+1. Must have `Google Cloud SDK Shell` downloaded on computer. 
+
+* If not already installed, follow instructions at [Google Cloud SDK Documentation](https://cloud.google.com/sdk/docs/) to install it. 
+
+2. When opening the `Google Cloud SDK Shell` terminal, you will be prompted `You must log in to continue. Would you like to login in (Y/n)?`. Enter `Y`. A browser will open prompting a Google Account login. Enter the Google Account credentials associated with the Google Storage buckets to be used. When prompted, allow `Google Cloud SDK` to access your `Google Account` by clicking the `Allow` button.
+
+* If you are not prompted when opening the `Google Cloud SDK Shell` terminal, enter `gcloud auth login [ACCOUNT]`. For more information about the `gcloud auth login` command, visit the [gcloud auth login Documentation](https://cloud.google.com/sdk/gcloud/reference/auth/login). 
+
+3. You are successfully logged in once the terminal prints: <br><br> `You are now logged in as [ACCOUNT]. Your current project is [None].`
+
+4. Set the `PROJECT_ID` by entering `gcloud config set project [PROJECT_ID]`. The project ID for the `CDSS GCP SNODAS` project is `dnr-snodas`. 
+5. Navigate to the `cdss-webapp-snodas-tools\build-util` folder. 
+6. Run the `copy-to-cdss-googlecloud-storage.bat` script. 
 
 ## Additional Documentation
 
