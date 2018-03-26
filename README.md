@@ -93,13 +93,13 @@ which runs daily as a scheduled process.
 **Do not deploy test data files from this repository because they will overwrite the main data files from the analysis software.**  To facilitate deployment, run the following scripts:
 
 * OWF prototype:  `build-util/copy-to-owf-amazon-s3.sh`
-* State server:  `build-util/copy-to-cdss-googlecloud-storage.bat` (see below)
+* State server:  `build-util/copy-to-co-gcp.bat` (see below)
 
 ### Additional Instructions on How to Deploy the Application on the State Server
 
-A Google account holder with permissions to `write` to the `snodas.cdss.state.co.us` bucket must run the `copy-to-cdss-googlecloud-storage.bat` script. The script pushes files up to the `snodas.cdss.state.co.us` bucket and only a Google account holder with the correct permissions can correctly run the contents of the script. 
+A Google account holder with permissions to `write` to the `snodas.cdss.state.co.us` bucket must run the `copy-to-co-gcp.bat` script. The script pushes files up to the `snodas.cdss.state.co.us` bucket and only a Google account holder with the correct permissions can correctly run the contents of the script. 
 
-The `copy-to-cdss-googlecloud-storage.bat` script contains commands that use the [`gsutil tool`](https://cloud.google.com/storage/docs/gsutil). The `gsutil tool` is used to sync the local files to the `Google Cloud Platform` storage bucket.  It is recommended by [Google Cloud Platform](https://cloud.google.com/) that the use of the `gsutil` tool be installed as part of the `Google Cloud SDK package`. Click this [link](https://cloud.google.com/storage/docs/gsutil) to see the recommendation. The `Google Cloud SDK package`installs an SDK shell that authorizes the permissions of the Google account holder (this way permissions are not hard-coded into the `copy-to-cdss-googlecloud-storage.bat` script.)
+The `copy-to-co-gcp.bat` script contains commands that use the [`gsutil tool`](https://cloud.google.com/storage/docs/gsutil). The `gsutil tool` is used to sync the local files to the `Google Cloud Platform` storage bucket.  It is recommended by [Google Cloud Platform](https://cloud.google.com/) that the use of the `gsutil` tool be installed as part of the `Google Cloud SDK package`. Click this [link](https://cloud.google.com/storage/docs/gsutil) to see the recommendation. The `Google Cloud SDK package`installs an SDK shell that authorizes the permissions of the Google account holder (this way permissions are not hard-coded into the `copy-to-co-gcp.bat` script.)
 
 1. Must have `Google Cloud SDK Shell` downloaded on computer. 
 
@@ -113,7 +113,7 @@ The `copy-to-cdss-googlecloud-storage.bat` script contains commands that use the
 
 4. Set the `PROJECT_ID` by entering `gcloud config set project [PROJECT_ID]`. The project ID for the `CDSS GCP SNODAS` project is `dnr-snodas`. 
 5. Navigate to the `cdss-webapp-snodas-tools\build-util` folder. 
-6. Run the `copy-to-cdss-googlecloud-storage.bat` script. 
+6. Run the `copy-to-co-gcp.bat` script. 
 
 ## Additional Documentation
 
