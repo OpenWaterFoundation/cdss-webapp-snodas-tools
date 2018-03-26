@@ -93,9 +93,9 @@ which runs daily as a scheduled process.
 **Do not deploy test data files from this repository because they will overwrite the main data files from the analysis software.**  To facilitate deployment, run the following scripts:
 
 * OWF prototype:  `build-util/copy-to-owf-amazon-s3.sh`
-* State server:  **build-util/copy-to-cdss-googlecloud-storage.bat** (see below)
+* State server:  `build-util/copy-to-cdss-googlecloud-storage.bat` (see below)
 
-### Additional Instructions on how to Deploy the State server
+### Additional Instructions on How to Deploy the Application on the State Server
 
 A Google account holder with permissions to `write` to the `snodas.cdss.state.co.us` bucket must run the `copy-to-cdss-googlecloud-storage.bat` script. The script pushes files up to the `snodas.cdss.state.co.us` bucket and only a Google account holder with the correct permissions can correctly run the contents of the script. 
 
