@@ -41,6 +41,13 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
 </head>
 
 <script>
+    /*@jurentie - retrieve base url up to the last slash in the url.
+    Should return either 'http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/'
+    or 'http://snodas.cdss.state.co.us/app/'. */
+    var url = window.location.href;
+    var baseURL = url.substr(0, url.lastIndexOf('/') + 1);
+
+
     /* This function is called when a user resizes the browser. It updates the
     size of the map and surrounding elements to fit the broswer height and
     width.
@@ -112,41 +119,91 @@ each dates data, and the other shows graphs of SWE data when a basin has been se
 
                 <p>The output consists of comma-separated-value (CSV) files <span style="font-weight: bold">ByDate</span> (basin data for each day) and <span style="font-weight: bold">ByBasin</span> (historical period for each basin).  Data files can be downloaded by accessing the following URL resources.  The zip file contains a shapefile with daily statistics in the attribute table (attribute names have been truncated to adhere to shapefile limit).</p>
 
-                <p style="font-size: 13px">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByBasin/SnowpackStatisticsByBasin_Local_ID.csv</p>
+                <p style="font-size: 13px" id="SnowpackStatisticsByBasin_Local_ID"></p>
+                <script>
+                    var directory = "SnowpackStatisticsByBasin/";
+                    /*@jurentie - use the baseURL when appending the appropriate file name so to navigate to the correct server location. Repeat for all links.*/
+                    document.getElementById("SnowpackStatisticsByBasin_Local_ID").innerHTML = baseURL + directory + "SnowpackStatisticsByBasin_Local_ID.csv";
+                </script>
 
-                <p style="font-size: 13px">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_YYYYMMDD.csv</p>
+                <p style="font-size: 13px" id="SnowpackStatisticsByDate_YYYYMMDD"></p>
+                <script>
+                    directory = "SnowpackStatisticsByDate/";
+                    document.getElementById("SnowpackStatisticsByDate_YYYYMMDD").innerHTML = baseURL + directory + "SnowpackStatisticsByDate_YYYYMMDD.csv";
+                </script>
 
-                <p style="font-size: 13px">Latest Date Example: <a href="http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_LatestDate.csv">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_LatestDate.csv</a></p>
+                <p style="font-size: 13px" id="SnowpackStatisticsByDate_LatestDate"></p>
+                <script>
+                    document.getElementById("SnowpackStatisticsByDate_LatestDate").innerHTML = "Latest Date Example: <a href='" + baseURL + directory + "SnowpackStatisticsByDate_LatestDate.csv'>" + baseURL + directory + "SnowpackStatisticsByDate_LatestDate.csv</a>";
+                </script>
 
-                <p style="font-size: 13px">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_YYYYMMDD.geojson</p>
+                <p style="font-size: 13px" id="SnowpackStatisticsByDate_YYYYMMDD-geojson"></p>
+                <script>
+                    document.getElementById("SnowpackStatisticsByDate_YYYYMMDD-geojson").innerHTML = baseURL + directory + "SnowpackStatisticsByDate_YYYYMMDD.geojson";
+                </script>
 
-                <p style="font-size: 13px">Latest Date Example: <a href="http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_LatestDate.geojson">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_LatestDate.geojson</a></p>
+                <p style="font-size: 13px" id="SnowpackStatisticsByDate_LatestDate-geojson"></a></p>
+                <script>
+                    document.getElementById("SnowpackStatisticsByDate_LatestDate-geojson").innerHTML = "Latest Date Example: <a href='" + baseURL + directory + "SnowpackStatisticsByDate_LatestDate.geojson'>" + baseURL + directory + "SnowpackStatisticsByDate_LatestDate.geojson</a>";
+                </script>
 
-                <p style="font-size: 13px">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_YYYYMMDD.zip</p>
+                <p style="font-size: 13px" id="SnowpackStatisticsByDate_YYYYMMDD-zip"></p>
+                <script>
+                    document.getElementById("SnowpackStatisticsByDate_YYYYMMDD-zip").innerHTML = baseURL + directory + "SnowpackStatisticsByDate_YYYYMMDD.zip";
+                </script>
 
-                <p style="font-size: 13px">Latest Date Example: <a href="http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_LatestDate.zip">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_LatestDate.zip</a></p>
+                <p style="font-size: 13px" id="SnowpackStatisticsByDate_LatestDate-zip"></p>
+                <script>
+                    document.getElementById("SnowpackStatisticsByDate_LatestDate-zip").innerHTML = "Latest Date Example: <a href='" + baseURL + directory + "SnowpackStatisticsByDate_LatestDate.zip'>" + baseURL + directory + "SnowpackStatisticsByDate_LatestDate.zip</a>"; 
+                </script>
 
                 <h4>Upstream Total Data Products</h4>
 
-                <p style="font-size: 13px">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_UpstreamTotal_LatestDate.csv</p>
+                <p style="font-size: 13px" id="SnowpackStatisticsByDate_UpstreamTotal_LatestDate"></p>
+                <script>
+                    document.getElementById("SnowpackStatisticsByDate_UpstreamTotal_LatestDate").innerHTML = baseURL + directory + "SnowpackStatisticsByDate_UpstreamTotal_LatestDate.csv";
+                </script>
 
-                <p style="font-size: 13px">Latest Date Example: <a href="http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_UpstreamTotal_LatestDate.csv">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_UpstreamTotal_LatestDate.csv</a></p>
+                <p style="font-size: 13px" id="SnowpackStatisticsByDate_UpstreamTotal_LatestDate-link"></a></p>
+                <script>
+                    document.getElementsById("SnowpackStatisticsByDate_UpstreamTotal_LatestDate-link").innerHTML = "Latest Date Example: <a href='" + baseURL + directory + "SnowpackStatisticsByDate_UpstreamTotal_LatestDate.csv'>" + baseURL + directory + "SnowpackStatisticsByDate_UpstreamTotal_LatestDate.csv</a>";
+                </script>
 
 
-                <p style="font-size: 13px">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByBasin/SnowpackStatisticsByBasin_UpstreamTotal_BasinID.csv</p>
+                <p style="font-size: 13px" id="SnowpackStatisticsByBasin_UpstreamTotal_BasinID"></p>
+                <script>
+                    directory = "SnowpackStatisticsByBasin/";
+                    document.getElementById("SnowpackStatisticsByBasin_UpstreamTotal_BasinID").innerHTML = baseURL + directory + "SnowpackStatisticsByBasin_UpstreamTotal_BasinID.csv";
+                </script>
 
-                <p style="font-size: 13px"><a href="http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByBasin/SnowpackStatisticsByBasin_UpstreamTotal_504.csv">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByBasin/SnowpackStatisticsByBasin_UpstreamTotal_504.csv</a></p>
+                <p style="font-size: 13px" id="SnowpackStatisticsByBasin_UpstreamTotal_504"></p>
+                <script>
+                    document.getElementById("SnowpackStatisticsByBasin_UpstreamTotal_504").innerHTML = "<a href='" + baseURL + directory + "SnowpackStatisticsByBasin_UpstreamTotal_504.csv'>" + baseURL + directory + "SnowpackStatisticsByBasin_UpstreamTotal_504.csv</a>";
+                </script>
 
-                <p style="font-size: 13px">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_UpstreamTotal_YYYYMMDD.csv</p>
+                <p style="font-size: 13px" id="SnowpackStatisticsByDate_UpstreamTotal_YYYYMMDD"></p>
+                <script>
+                    directory = "SnowpackStatisticsByDate/";
+                    document.getElementById("SnowpackStatisticsByDate_UpstreamTotal_YYYYMMDD").innerHTML = baseURL + directory + "SnowpackStatisticsByDate_UpstreamTotal_YYYYMMDD.csv";
+                </script>
 
-                <p style="font-size: 13px">Latest Date Example: <a href="http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_UpstreamTotal_20170602.csv">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/SnowpackStatisticsByDate/SnowpackStatisticsByDate_UpstreamTotal_20170602.csv</a></p>
-
+                <p style="font-size: 13px" id="SnowpackStatisticsByDate_UpstreamTotal_20170602"></a></p>
+                <script>
+                    document.getElementById("SnowpackStatisticsByDate_UpstreamTotal_20170602").innerHTML = "Latest Date Example: <a href='" + baseURL + directory + "SnowpackStatisticsByDate_UpstreamTotal_20170602.csv'>" + baseURL + directory + "SnowpackStatisticsByDate_UpstreamTotal_20170602.csv</a>";
+                </script>
 
                 <h4>Static Data Available for Download</h3>
 
-                <p style="font-size: 13px"><a href="http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/json/CO_boundary.geojson">http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/json/CO_boundary.geojson</a>    (State of Colorado rectangular boundary)</p>
+                <p style="font-size: 13px" id="CO_boundary"></a>    (State of Colorado rectangular boundary)</p>
+                <script>
+                    directory = "json/";
+                    document.getElementById("CO_boundary").innerHTML = "<a href='" + baseURL + directory + "CO_boundary.geojson'>" + baseURL + directory + "CO_boundary.geojson</a>    (State of Colorado rectangular boundary)";
+                </script>
 
-                <p style="font-size: 13px"><a href="http://projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype/json/SNODAS_CO_BasinBoundaries.geojson">json/SNODAS_CO_BasinBoundaries.geojson</a>      (basin boundaries, same as daily boundaries)</p>
+                <p style="font-size: 13px" id="SNODAS_CO_BasinBoundaries"></a>      (basin boundaries, same as daily boundaries)</p>
+                <script>
+                    document.getElementById("SNODAS_CO_BasinBoundaries").innerHTML = "<a href='" + baseURL + directory + "SNODAS_CO_BasinBoundaries.geojson'>" + baseURL + directory + "SNODAS_CO_BasinBoundaries.geojson</a>    (basin boundaries, same as daily boundaries)";
+                </script>
 
                 <p style="font-size: 13px"><a href="StaticData/SNODAS_CO_BasinBoundaries.zip">StaticData/SNODAS_CO_BasinBoundaries.zip</a> (input basin boundary layer shapefile)</p>
 
