@@ -4,6 +4,9 @@
 # - replace all the files on the web with local files
 # - location is projects.openwaterfoundation.org/owf-proj-co-cwcb-2016-snodas/prototype
 
+echo "Linux script is not functional.  Use .bat equivalent."
+exit 1
+
 # Set --dryrun to test before actually doing
 dryrun=""
 #dryrun="--dryrun"
